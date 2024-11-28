@@ -1,140 +1,108 @@
-:root {
-    --colore-primario: #2c3e50;
-    --colore-secondario: #3498db;
-    --sfondo: #ecf0f1;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Stile base */
 body {
-    font-family: 'Arial', sans-serif;
-    line-height: 1.6;
-    background-color: var(--sfondo);
-    color: #333;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
 }
 
-.menu-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    cursor: pointer;
-    width: 30px;
-    height: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.menu-toggle span {
-    width: 100%;
-    height: 3px;
-    background-color: var(--colore-primario);
-    transition: all 0.3s ease;
-}
-
-.menu-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-
-.menu-toggle.active span:nth-child(2) {
-    opacity: 0;
-}
-
-.menu-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-}
-
-.menu {
-    position: fixed;
-    top: 0;
-    right: -300px;
-    width: 300px;
-    height: 100%;
-    background-color: var(--colore-primario);
-    transition: right 0.3s ease;
-    z-index: 999;
-    padding-top: 80px;
-}
-
-.menu.active {
-    right: 0;
-}
-
-.menu ul {
-    list-style: none;
-    text-align: center;
-}
-
-.menu ul li {
-    margin: 30px 0;
-}
-
-.menu ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 22px;
-    transition: color 0.3s ease;
-}
-
-.menu ul li a:hover {
-    color: var(--colore-secondario);
-}
-
+/* Hero Section */
 .hero {
-    text-align: center;
-    padding: 100px 20px;
-    background: linear-gradient(135deg, var(--colore-primario), var(--colore-secondario));
-    color: white;
+  text-align: center;
+  padding: 100px 20px;
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
 }
 
 .hero h1 {
-    font-size: 48px;
-    margin-bottom: 20px;
+  font-size: 3rem;
 }
 
 .hero p {
-    font-size: 24px;
-    margin-bottom: 30px;
+  font-size: 1.2rem;
 }
 
-.btn {
-    display: inline-block;
-    background: white;
-    color: var(--colore-primario);
-    padding: 12px 24px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s ease;
+/* Hamburger Menu */
+.hamburger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 1000;
 }
 
-.btn:hover {
-    background: #f4f4f4;
+.hamburger .line {
+  width: 30px;
+  height: 3px;
+  background-color: #333;
+  margin: 5px 0;
+  transition: all 0.3s ease;
 }
 
-.servizi {
-    display: flex;
-    justify-content: space-around;
-    padding: 50px 20px;
-    background: white;
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  transition: right 0.3s ease;
 }
 
-.servizio {
-    text-align: center;
-    max-width: 300px;
-    padding: 20px;
-    background: var(--sfondo);
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
+.sidebar nav ul li {
+  margin: 20px 0;
+}
+
+.sidebar nav ul li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+/* Servizi Section */
+.services {
+  display: flex;
+  justify-content: space-around;
+  padding: 50px 20px;
+}
+
+.service {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+  text-align: center;
+}
+
+.service h2 {
+  margin-bottom: 10px;
+  color: #4caf50;
+}
+
+/* Footer */
 footer {
-    background: var(--colore-primario);
-    color: white;
-    text-align: center;
-    padding: 20px;
+  text-align: center;
+  padding: 20px;
+  background-color: #333;
+  color: white;
+  margin-top: 50px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .services {
+    flex-direction: column;
+    align-items: center;
+  }
 }
