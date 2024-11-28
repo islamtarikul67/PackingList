@@ -1,52 +1,57 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TK App</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TK App</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="menu-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <nav class="menu">
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Chi Siamo</a></li>
-            <li><a href="#">Servizi</a></li>
-            <li><a href="#">Contatti</a></li>
-        </ul>
+  <!-- Menu nascosto -->
+  <div class="sidebar" id="sidebar">
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Servizi</a></li>
+        <li><a href="#contact">Contattaci</a></li>
+      </ul>
     </nav>
+  </div>
 
-    <section class="hero">
-        <h1>TK App</h1>
-        <p>Soluzioni innovative per il tuo business</p>
-        <a href="#" class="btn">Scopri di più</a>
-    </section>
+  <!-- Icona menu -->
+  <div class="hamburger" id="hamburger">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
 
-    <section class="servizi">
-        <div class="servizio">
-            <h2>Servizio 1</h2>
-            <p>Descrizione del primo servizio di TK App.</p>
-        </div>
-        <div class="servizio">
-            <h2>Servizio 2</h2>
-            <p>Descrizione del secondo servizio di TK App.</p>
-        </div>
-        <div class="servizio">
-            <h2>Servizio 3</h2>
-            <p>Descrizione del terzo servizio di TK App.</p>
-        </div>
-    </section>
+  <!-- Sezione principale -->
+  <header class="hero">
+    <h1>Benvenuto su TK App</h1>
+    <p>La tua soluzione digitale moderna.</p>
+  </header>
 
-    <footer>
-        <p>&copy; 2024 TK App. Tutti i diritti riservati.</p>
-    </footer>
+  <!-- Sezioni servizi -->
+  <section id="services" class="services">
+    <div class="service">
+      <h2>Servizio 1</h2>
+      <p>Descrizione breve del servizio 1.</p>
+    </div>
+    <div class="service">
+      <h2>Servizio 2</h2>
+      <p>Descrizione breve del servizio 2.</p>
+    </div>
+    <div class="service">
+      <h2>Servizio 3</h2>
+      <p>Descrizione breve del servizio 3.</p>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 TK App. Tutti i diritti riservati.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
