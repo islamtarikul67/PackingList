@@ -7,3 +7,4 @@ document.getElementById('contactForm').addEventListener('submit', function(event
     alert('Messaggio inviato con successo!');
     // Qui puoi aggiungere il codice per inviare il messaggio a un server
 });
+
