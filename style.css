@@ -1,37 +1,141 @@
-/* Generale */
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+/* Impostazioni generali */
+* {
   margin: 0;
   padding: 0;
-  background-color: #f4f4f9;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  background-color: #f7f7f7;
   color: #333;
   text-align: center;
+  padding: 20px 0;
+}
+
+/* Contenitore principale per il contenuto */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
 
 /* Header */
 header {
   background-color: #007acc;
   color: white;
-  padding: 20px 0;
+  padding: 40px 0;
 }
 
-/* Sezioni */
-main section {
-  margin: 20px auto;
-  padding: 10px;
-  max-width: 600px;
-  background: white;
+header h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+header p {
+  font-size: 1.2em;
+  font-weight: 300;
+}
+
+/* Navbar */
+nav {
+  background-color: #333;
+  padding: 10px 0;
+}
+
+.navbar {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar li {
+  margin: 0 20px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1em;
+  transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+  color: #007acc;
+}
+
+/* Sezioni principali */
+section {
+  background-color: white;
+  margin: 20px 0;
+  padding: 30px;
+  border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
+}
+
+h2 {
+  font-size: 2em;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Servizi */
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul li {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+/* Link */
+a {
+  color: #007acc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 /* Footer */
 footer {
-  background: #333;
+  background-color: #333;
   color: white;
-  padding: 10px 0;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  padding: 20px 0;
+  margin-top: 40px;
+}
+
+footer p {
+  font-size: 1em;
+}
+
+/* Media Queries per la responsività */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 2.5em;
+  }
+
+  .navbar {
+    flex-direction: column;
+  }
+
+  .navbar li {
+    margin-bottom: 10px;
+  }
+
+  section {
+    margin: 10px 0;
+    padding: 20px;
+  }
+
+  footer {
+    font-size: 0.9em;
+  }
 }
