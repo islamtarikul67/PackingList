@@ -1,177 +1,58 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TK App</title>
-    <style>
-        :root {
-            --colore-primario: #2c3e50;
-            --colore-secondario: #3498db;
-            --sfondo: #ecf0f1;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            background-color: var(--sfondo);
-            color: #333;
-        }
-        .menu-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            width: 30px;
-            height: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .menu-toggle span {
-            width: 100%;
-            height: 3px;
-            background-color: var(--colore-primario);
-            transition: all 0.3s ease;
-        }
-        .menu-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-        .menu {
-            position: fixed;
-            top: 0;
-            right: -300px;
-            width: 300px;
-            height: 100%;
-            background-color: var(--colore-primario);
-            transition: right 0.3s ease;
-            z-index: 999;
-            padding-top: 80px;
-        }
-        .menu.active {
-            right: 0;
-        }
-        .menu ul {
-            list-style: none;
-            text-align: center;
-        }
-        .menu ul li {
-            margin: 30px 0;
-        }
-        .menu ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 22px;
-            transition: color 0.3s ease;
-        }
-        .menu ul li a:hover {
-            color: var(--colore-secondario);
-        }
-        .hero {
-            text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(135deg, var(--colore-primario), var(--colore-secondario));
-            color: white;
-        }
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        .hero p {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-        .btn {
-            display: inline-block;
-            background: white;
-            color: var(--colore-primario);
-            padding: 12px 24px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-        .btn:hover {
-            background: #f4f4f4;
-        }
-        .servizi {
-            display: flex;
-            justify-content: space-around;
-            padding: 50px 20px;
-            background: white;
-        }
-        .servizio {
-            text-align: center;
-            max-width: 300px;
-            padding: 20px;
-            background: var(--sfondo);
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        footer {
-            background: var(--colore-primario);
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TK App - Soluzioni Innovative</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="menu-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-
-    <nav class="menu">
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Chi Siamo</a></li>
-            <li><a href="#">Servizi</a></li>
-            <li><a href="#">Contatti</a></li>
-        </ul>
+  <!-- Menu nascosto -->
+  <div class="sidebar" id="sidebar">
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Servizi</a></li>
+        <li><a href="#contact">Contattaci</a></li>
+      </ul>
     </nav>
+  </div>
 
-    <section class="hero">
-        <h1>TK App</h1>
-        <p>Soluzioni innovative per il tuo business</p>
-        <a href="#" class="btn">Scopri di più</a>
-    </section>
+  <!-- Icona menu -->
+  <div class="hamburger" id="hamburger">
+    <div class="line"></div>
+    <div class="line"></div>
+    <div class="line"></div>
+  </div>
 
-    <section class="servizi">
-        <div class="servizio">
-            <h2>Servizio 1</h2>
-            <p>Descrizione del primo servizio di TK App.</p>
-        </div>
-        <div class="servizio">
-            <h2>Servizio 2</h2>
-            <p>Descrizione del secondo servizio di TK App.</p>
-        </div>
-        <div class="servizio">
-            <h2>Servizio 3</h2>
-            <p>Descrizione del terzo servizio di TK App.</p>
-        </div>
-    </section>
+  <!-- Hero Section -->
+  <header class="hero">
+    <h1>Soluzioni innovative per il tuo business</h1>
+    <p>Scopri come TK App può trasformare le tue idee in realtà.</p>
+    <a href="#services" class="btn">Scopri di più</a>
+  </header>
 
-    <footer>
-        <p>&copy; 2024 TK App. Tutti i diritti riservati.</p>
-    </footer>
+  <!-- Servizi Section -->
+  <section id="services" class="services">
+    <div class="service">
+      <h2>Servizio 1</h2>
+      <p>Descrizione del primo servizio di TK App.</p>
+    </div>
+    <div class="service">
+      <h2>Servizio 2</h2>
+      <p>Descrizione del secondo servizio di TK App.</p>
+    </div>
+    <div class="service">
+      <h2>Servizio 3</h2>
+      <p>Descrizione del terzo servizio di TK App.</p>
+    </div>
+  </section>
 
-    <script>
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-            this.classList.toggle('active');
-            document.querySelector('.menu').classList.toggle('active');
-        });
-    </script>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 TK App. Tutti i diritti riservati.</p>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
