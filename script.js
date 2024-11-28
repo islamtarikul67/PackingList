@@ -1,2 +1,4 @@
-// Mostra un messaggio di benvenuto nella console
-console.log("Benvenuto nel mio sito!");
+document.querySelector('.menu-toggle').addEventListener('click', function() {
+    this.classList.toggle('active');
+    document.querySelector('.menu').classList.toggle('active');
+});
