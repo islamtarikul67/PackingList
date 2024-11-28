@@ -1,141 +1,196 @@
-/* Impostazioni generali */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolo Scatola</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-body {
-  font-family: 'Arial', sans-serif;
-  line-height: 1.6;
-  background-color: #f7f7f7;
-  color: #333;
-  text-align: center;
-  padding: 20px 0;
-}
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-/* Contenitore principale per il contenuto */
-.container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 450px;
+            width: 100%;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
 
-/* Header */
-header {
-  background-color: #007acc;
-  color: white;
-  padding: 40px 0;
-}
+        .container:hover {
+            transform: translateY(-5px);
+        }
 
-header h1 {
-  font-size: 3em;
-  margin-bottom: 10px;
-}
+        h1 {
+            text-align: center;
+            margin: 0 0 30px 0;
+            font-size: 2.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #eee;
+        }
 
-header p {
-  font-size: 1.2em;
-  font-weight: 300;
-}
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
 
-/* Navbar */
-nav {
-  background-color: #333;
-  padding: 10px 0;
-}
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
 
-.navbar {
-  list-style-type: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-}
+        .input-group:focus-within label {
+            color: #667eea;
+        }
 
-.navbar li {
-  margin: 0 20px;
-}
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
 
-.navbar a {
-  text-decoration: none;
-  color: white;
-  font-size: 1.1em;
-  transition: color 0.3s ease;
-}
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
 
-.navbar a:hover {
-  color: #007acc;
-}
+        input::placeholder {
+            color: #aab0bc;
+        }
 
-/* Sezioni principali */
-section {
-  background-color: white;
-  margin: 20px 0;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
 
-h2 {
-  font-size: 2em;
-  color: #333;
-  margin-bottom: 20px;
-}
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
 
-/* Servizi */
-ul {
-  list-style-type: none;
-  padding-left: 0;
-}
+        button:active {
+            transform: translateY(1px);
+        }
 
-ul li {
-  font-size: 1.2em;
-  margin: 10px 0;
-}
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
 
-/* Link */
-a {
-  color: #007acc;
-  text-decoration: none;
-  font-weight: bold;
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-a:hover {
-  text-decoration: underline;
-}
+        .success {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #1a365d;
+        }
 
-/* Footer */
-footer {
-  background-color: #333;
-  color: white;
-  padding: 20px 0;
-  margin-top: 40px;
-}
+        .error {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #742a2a;
+        }
 
-footer p {
-  font-size: 1em;
-}
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calcolo Scatola</h1>
+        
+        <div class="input-group">
+            <label for="totalPieces">Pezzi Totali:</label>
+            <input type="number" id="totalPieces" placeholder="Inserisci il numero di Pezzi Totali">
+        </div>
 
-/* Media Queries per la responsività */
-@media (max-width: 768px) {
-  header h1 {
-    font-size: 2.5em;
-  }
+        <div class="input-group">
+            <label for="piecesPerBox">Pezzi per Scatola:</label>
+            <input type="number" id="piecesPerBox" placeholder="Inserisci il numero di pezzi per scatola">
+        </div>
 
-  .navbar {
-    flex-direction: column;
-  }
+        <button onclick="calculateBoxes()">Calcola</button>
 
-  .navbar li {
-    margin-bottom: 10px;
-  }
+        <div id="result"></div>
 
-  section {
-    margin: 10px 0;
-    padding: 20px;
-  }
+        <div class="copyright">
+            © 2024 Hogue Mohammed Tarikul. Tutti i diritti riservati.
+        </div>
+    </div>
 
-  footer {
-    font-size: 0.9em;
-  }
-}
+    <script>
+        function calculateBoxes() {
+            const totalPieces = parseFloat(document.getElementById('totalPieces').value);
+            const piecesPerBox = parseFloat(document.getElementById('piecesPerBox').value);
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.style.display = 'block';
+
+            if (isNaN(totalPieces) || isNaN(piecesPerBox) || piecesPerBox <= 0) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = '<strong>Errore:</strong> Per favore inserisci numeri validi';
+                return;
+            }
+
+            const fullBoxes = Math.floor(totalPieces / piecesPerBox);
+            const remainingPieces = totalPieces % piecesPerBox;
+
+            resultDiv.className = 'success';
+            let resultText = `<strong>Scatole Complete:</strong> ${fullBoxes}`;
+            if (remainingPieces > 0) {
+                resultText += `<br><strong>Pezzi Rimanenti:</strong> ${remainingPieces}`;
+            }
+            resultDiv.innerHTML = resultText;
+        }
+    </script>
+</body>
+</html>
