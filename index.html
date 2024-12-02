@@ -87,7 +87,220 @@
                     <div class="tm-intro-text-container">
                         <h2 class="tm-text-primary mb-4">Market Analysis</h2>
                         <p class="mb-4 tm-intro-text">
-                          Praesent sed pharetra lorem, blandit convallis mi. Aenean ornare elit ac metus lacinia, sed iaculis nibh semper. Pellentesque est urna.</p>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcolo Scatola</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            max-width: 450px;
+            width: 100%;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        .title-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .title-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            z-index: -1;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            padding: 20px 0;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: #555;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .input-group:focus-within label {
+            color: #667eea;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: white;
+        }
+
+        input::placeholder {
+            color: #aab0bc;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .success {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #1a365d;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #742a2a;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 0.9em;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title-container">
+            <h1>Calcolo Scatola</h1>
+        </div>
+        
+        <div class="input-group">
+            <label for="totalPieces">Pezzi Totali:</label>
+            <input type="number" id="totalPieces" placeholder="Inserisci il numero di Pezzi Totali">
+        </div>
+
+        <div class="input-group">
+            <label for="piecesPerBox">Pezzi per Scatola:</label>
+            <input type="number" id="piecesPerBox" placeholder="Inserisci il numero di pezzi per scatola">
+        </div>
+
+        <button onclick="calculateBoxes()">Calcola</button>
+
+        <div id="result"></div>
+
+        <div class="copyright">
+            © 2024 Hogue Mohammed Tarikul. Tutti i diritti riservati.
+        </div>
+    </div>
+
+    <script>
+        function calculateBoxes() {
+            const totalPieces = parseFloat(document.getElementById('totalPieces').value);
+            const piecesPerBox = parseFloat(document.getElementById('piecesPerBox').value);
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.style.display = 'block';
+
+            if (isNaN(totalPieces) || isNaN(piecesPerBox) || piecesPerBox <= 0) {
+                resultDiv.className = 'error';
+                resultDiv.innerHTML = '<strong>Errore:</strong> Per favore inserisci numeri validi';
+                return;
+            }
+
+            const fullBoxes = Math.floor(totalPieces / piecesPerBox);
+            const remainingPieces = totalPieces % piecesPerBox;
+
+            resultDiv.className = 'success';
+            let resultText = `<strong>Scatole Complete:</strong> ${fullBoxes}`;
+            if (remainingPieces > 0) {
+                resultText += `<br><strong>Pezzi Rimanenti:</strong> ${remainingPieces}`;
+            }
+            resultDiv.innerHTML = resultText;
+        }
+    </script>
+</body>
+</html>
                     </div>
                 </div>
                 
