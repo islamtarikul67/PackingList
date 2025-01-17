@@ -1,753 +1,416 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>TK APP</title>
-    <link rel="stylesheet" href="fontawesome-5.5/css/all.min.css" />
-    <link rel="stylesheet" href="slick/slick.css">
-    <link rel="stylesheet" href="slick/slick-theme.css">
-    <link rel="stylesheet" href="magnific-popup/magnific-popup.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/tooplate-infinite-loop.css" />
-  </head>
-  <body>    
-    <!-- Hero section -->
-    <section id="infinite" class="text-white tm-font-big tm-parallax">
-      <!-- Navigation -->
-      <nav class="navbar navbar-expand-md tm-navbar" id="tmNav">              
-        <div class="container">   
-          <div class="tm-next">
-              <a href="#infinite" class="navbar-brand">TK APP</a>
-          </div>             
-            
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars navbar-toggler-icon"></i>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                  <a class="nav-link tm-nav-link" href="#infinite">Home</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link tm-nav-link" href="#whatwedo">What We Do</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link tm-nav-link" href="#testimonials">Testimonials</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link tm-nav-link" href="#gallery">Gallery</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link tm-nav-link" href="#contact">Contact</a>
-              </li>                    
-            </ul>
-          </div>        
-        </div>
-      </nav>
-      
-      <div class="text-center tm-hero-text-container">
-        <div class="tm-hero-text-container-inner">
-            <h2 class="tm-hero-title">Tk APP</h2>
-            <p class="tm-hero-subtitle">
-              Bootstrap 4.0 
-              <br>
-            </p>
-        </div>        
-      </div>
-
-      <div class="tm-next tm-intro-next">
-        <a href="#whatwedo" class="text-center tm-down-arrow-link">
-          <i class="fas fa-2x fa-arrow-down tm-down-arrow"></i>
-        </a>
-      </div>      
-    </section>
-
-    <section id="whatwedo" class="tm-section-pad-top">
-      
-      <div class="container">
-
-            <div class="row tm-content-box"><!-- first row -->
-                <div class="col-lg-12 col-xl-12">
-                    <div class="tm-intro-text-container">
-                        <h2 class="tm-text-primary mb-4 tm-section-title">What We Do</h2>
-                        <p class="mb-4 tm-intro-text">
-                          This is Infinite Loop, free Bootstrap 4.0 HTML template with a parallax effect. This layout is what you can modify and use for your websites. Please spread a word to your friends about our website. Thank you for supporting us. If you have any question, you can contact us or chat with us on our <a href="https://fb.com/tooplate">Tooplate Facebook page</a>.</p>
-                    </div>
-                </div>
-
-            </div><!-- first row -->
-            
-            <div class="row tm-content-box"><!-- second row -->
-        		<div class="col-lg-1">
-                    <i class="far fa-3x fa-chart-bar text-center tm-icon"></i>
-                </div>
-                <div class="col-lg-5">
-                    <div class="tm-intro-text-container">
-                        <h2 class="tm-text-primary mb-4">Market Analysis</h2>
-                        <p class="mb-4 tm-intro-text">
-<!DOCTYPE html>
-<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcolo Scatola</title>
+    <title>Currency Converter</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
             min-height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem 1rem;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
+            align-items: start;
         }
 
-        .container {
+        .card {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
-            max-width: 450px;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             width: 100%;
-            transform: translateY(0);
-            transition: transform 0.3s ease;
+            max-width: 500px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .container:hover {
-            transform: translateY(-5px);
-        }
-
-        .title-container {
+        .card-header {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            padding: 2rem;
             position: relative;
-            margin-bottom: 30px;
+            overflow: hidden;
         }
 
-        .title-container::before {
-            content: "";
+        .card-header::before {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.4);
-            border-radius: 20px;
-            z-index: -1;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2));
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
         }
 
-        h1 {
-            text-align: center;
-            margin: 0;
-            font-size: 2.5em;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            padding: 20px 0;
+        .card-header::after {
+            content: '€ ↔ ৳';
+            position: absolute;
+            bottom: 1rem;
+            right: 1.5rem;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .card-content {
+            padding: 2rem;
         }
 
         .input-group {
-            margin-bottom: 25px;
-            position: relative;
+            background: white;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+        }
+
+        .input-group:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            font-size: 1.1em;
-            color: #555;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4b5563;
+            margin-bottom: 0.5rem;
         }
 
-        .input-group:focus-within label {
-            color: #667eea;
-        }
-
-        input {
+        input, select {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #eee;
-            border-radius: 12px;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: #f9fafb;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            border-color: #6366f1;
             background: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
 
-        input::placeholder {
-            color: #aab0bc;
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .checkbox-group:hover {
+            background-color: #f9fafb;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
         }
 
         button {
             width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             color: white;
+            padding: 1rem;
             border: none;
-            border-radius: 12px;
-            font-size: 1.2em;
+            border-radius: 1rem;
             font-weight: 600;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
         }
 
-        button:active {
-            transform: translateY(1px);
+        .results {
+            margin-top: 1.5rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+            animation: slideUp 0.3s ease-out;
         }
 
-        #result {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 12px;
-            display: none;
-            animation: fadeIn 0.5s ease;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            color: #4b5563;
+            transition: background-color 0.2s;
         }
 
-        .success {
-            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-            color: #1a365d;
+        .result-row:hover {
+            background-color: #f9fafb;
+        }
+
+        .final-total {
+            border-top: 2px solid #f0f0f0;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-weight: 700;
+            color: #6366f1;
+            font-size: 1.1rem;
+        }
+
+        .commission-info {
+            background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%);
+            padding: 1.25rem;
+            border-radius: 1rem;
+            margin-top: 1.25rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .commission-info .title {
+            color: #6366f1;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
         }
 
         .error {
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            color: #742a2a;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 1px solid #f87171;
+            color: #991b1b;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .copyright {
-            text-align: center;
-            margin-top: 30px;
-            color: #666;
-            font-size: 0.9em;
-            font-weight: 500;
-            opacity: 0.8;
+        .error::before {
+            content: '⚠️';
+            font-size: 1.2rem;
+        }
+
+        .incentive {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c7d2fe;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .card {
+                border-radius: 1rem;
+            }
+
+            .card-header {
+                padding: 1.5rem;
+            }
+
+            .card-content {
+                padding: 1.5rem;
+            }
+
+            .input-group {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="title-container">
-            <h1>Calcolo Scatola</h1>
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">Currency Exchange</h1>
         </div>
-        
-        <div class="input-group">
-            <label for="totalPieces">Pezzi Totali:</label>
-            <input type="number" id="totalPieces" placeholder="Inserisci il numero di Pezzi Totali">
-        </div>
+        <div class="card-content">
+            <div id="error" class="error" style="display: none;"></div>
 
-        <div class="input-group">
-            <label for="piecesPerBox">Pezzi per Scatola:</label>
-            <input type="number" id="piecesPerBox" placeholder="Inserisci il numero di pezzi per scatola">
-        </div>
+            <div class="input-group">
+                <label for="amount">Amount</label>
+                <input type="number" id="amount" placeholder="Enter your amount" min="0" step="any">
+            </div>
 
-        <button onclick="calculateBoxes()">Calcola</button>
+            <div class="input-group">
+                <label for="conversionType">Exchange Direction</label>
+                <select id="conversionType">
+                    <option value="EURO-TAKA">Euro (€) → Taka (৳)</option>
+                    <option value="TAKA-EURO">Taka (৳) → Euro (€)</option>
+                </select>
+            </div>
 
-        <div id="result"></div>
+            <div class="input-group">
+                <label for="exchangeRate" id="rateLabel">Exchange Rate (1 € = ? ৳)</label>
+                <input type="number" id="exchangeRate" placeholder="Current exchange rate" min="0" step="any">
+            </div>
 
-        <div class="copyright">
-            © 2024 Hogue Mohammed Tarikul. Tutti i diritti riservati.
+            <div class="input-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="incentive">
+                    <label for="incentive">Include 2.5% Incentive Bonus</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="commission">
+                    <label for="commission">Calculate Commission (18.50৳/1000৳)</label>
+                </div>
+            </div>
+
+            <button onclick="calculateTotal()">Convert Currency</button>
+
+            <div id="results" class="results" style="display: none;">
+                <!-- Results will be populated by JavaScript -->
+            </div>
         </div>
     </div>
 
     <script>
-        function calculateBoxes() {
-            const totalPieces = parseFloat(document.getElementById('totalPieces').value);
-            const piecesPerBox = parseFloat(document.getElementById('piecesPerBox').value);
-            const resultDiv = document.getElementById('result');
-
-            resultDiv.style.display = 'block';
-
-            if (isNaN(totalPieces) || isNaN(piecesPerBox) || piecesPerBox <= 0) {
-                resultDiv.className = 'error';
-                resultDiv.innerHTML = '<strong>Errore:</strong> Per favore inserisci numeri validi';
-                return;
-            }
-
-            const fullBoxes = Math.floor(totalPieces / piecesPerBox);
-            const remainingPieces = totalPieces % piecesPerBox;
-
-            resultDiv.className = 'success';
-            let resultText = `<strong>Scatole Complete:</strong> ${fullBoxes}`;
-            if (remainingPieces > 0) {
-                resultText += `<br><strong>Pezzi Rimanenti:</strong> ${remainingPieces}`;
-            }
-            resultDiv.innerHTML = resultText;
+        function formatCurrency(value, currency) {
+            return `${currency} ${new Intl.NumberFormat('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(value)}`;
         }
+
+        function validateInputs() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const rate = parseFloat(document.getElementById('exchangeRate').value);
+            const errorDiv = document.getElementById('error');
+
+            if (!amount || amount <= 0) {
+                errorDiv.textContent = 'Please enter a valid amount greater than 0';
+                errorDiv.style.display = 'block';
+                return false;
+            }
+            if (!rate || rate <= 0) {
+                errorDiv.textContent = 'Please enter a valid exchange rate greater than 0';
+                errorDiv.style.display = 'block';
+                return false;
+            }
+            errorDiv.style.display = 'none';
+            return true;
+        }
+
+        function calculateTotal() {
+            if (!validateInputs()) return;
+
+            const amount = parseFloat(document.getElementById('amount').value);
+            const rate = parseFloat(document.getElementById('exchangeRate').value);
+            const conversionType = document.getElementById('conversionType').value;
+            const includeIncentive = document.getElementById('incentive').checked;
+            const showCommission = document.getElementById('commission').checked;
+
+            const fromCurrency = conversionType === 'EURO-TAKA' ? '€' : '৳';
+            const toCurrency = conversionType === 'EURO-TAKA' ? '৳' : '€';
+
+            const convertedAmount = conversionType === 'EURO-TAKA' 
+                ? amount * rate 
+                : amount / rate;
+            const incentiveAmount = includeIncentive ? convertedAmount * 0.025 : 0;
+            const subtotal = convertedAmount + incentiveAmount;
+            const commissionAmount = Math.ceil(subtotal / 1000) * 18.50;
+
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="result-row">
+                    <span>Initial Amount:</span>
+                    <span>${formatCurrency(amount, fromCurrency)}</span>
+                </div>
+                <div class="result-row">
+                    <span>Converted Amount:</span>
+                    <span>${formatCurrency(convertedAmount, toCurrency)}</span>
+                </div>
+                ${includeIncentive ? `
+                    <div class="result-row incentive">
+                        <span>Incentive Bonus (2.5%):</span>
+                        <span>${formatCurrency(incentiveAmount, toCurrency)}</span>
+                    </div>
+                ` : ''}
+                <div class="result-row final-total">
+                    <span>Final Amount:</span>
+                    <span>${formatCurrency(subtotal, toCurrency)}</span>
+                </div>
+                ${showCommission ? `
+                    <div class="commission-info">
+                        <div class="title">Commission Details</div>
+                        <div class="result-row">
+                            <span>Commission Fee:</span>
+                            <span>${formatCurrency(commissionAmount, '৳')}</span>
+                        </div>
+                    </div>
+                ` : ''}
+            `;
+            resultsDiv.style.display = 'block';
+        }
+
+        // Update exchange rate label based on conversion type
+        document.getElementById('conversionType').addEventListener('change', function(e) {
+            const label = document.getElementById('rateLabel');
+            label.textContent = `Exchange Rate (1 € = ? ৳)`;
+        });
+
+        // Handle Enter key
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateTotal();
+            }
+        });
     </script>
 </body>
-</html>
-                    </div>
-                </div>
-                
-                <div class="col-lg-1">
-                    <i class="far fa-3x fa-comment-alt text-center tm-icon"></i>
-                </div>
-                <div class="col-lg-5">
-                    <div class="tm-intro-text-container">
-                        <h2 class="tm-text-primary mb-4">Fast Support</h2>
-                        <p class="mb-4 tm-intro-text">
-                          Credit goes to <a rel="nofollow" href="https://www.pexels.com">Pexels</a> website for all images used in this template. Cras condimentum mi et sapien dignissim luctus.</p>
-                    </div>
-                </div>
-
-            </div><!-- second row -->
-            
-            <div class="row tm-content-box"><!-- third row -->
-        		<div class="col-lg-1">
-                    <i class="fas fa-3x fa-fingerprint text-center tm-icon"></i>
-                </div>
-                <div class="col-lg-5">
-                    <div class="tm-intro-text-container">
-                        <h2 class="tm-text-primary mb-4">Top Security</h2>
-                        <p class="mb-4 tm-intro-text">
-                      You have <strong>no</strong> authority to post this template as a ZIP file on your template collection websites. You can <strong>use</strong> this template for your commercial websites.</p>
-                          
-                          <div class="tm-continue">
-                            <a href="#testimonials" class="tm-intro-text tm-btn-primary">Learn More</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-1">
-                    <i class="fas fa-3x fa-users text-center tm-icon"></i>
-                </div>
-                <div class="col-lg-5">
-                    <div class="tm-intro-text-container">
-                      <h2 class="tm-text-primary mb-4">Social Work</h2>
-                        <p class="mb-4 tm-intro-text">
-                      You can change <a href="https://fontawesome.com/icons?d=gallery">Font Awesome icons</a> by either <b><em>fas or far</em></b> in the HTML codes. For Examples:<br>
-                      <em>&lt;i class=&quot;fas fa-users&quot;&gt;&lt;i class=&quot;far fa-chart-bar&quot;&gt;</em> </p>
-                          
-                          <div class="tm-continue">
-                            <a href="#testimonials" class="tm-intro-text tm-btn-primary">Details</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div><!-- third row -->
-
-        </div>
-      
-    </section>
-    
-    <section id="testimonials" class="tm-section-pad-top tm-parallax-2">      
-      <div class="container tm-testimonials-content">
-        <div class="row">
-          <div class="col-lg-12 tm-content-box">
-            <h2 class="text-white text-center mb-4 tm-section-title">Testimonials</h2>
-            <p class="mx-auto tm-section-desc text-center">
-                Nulla dictum sem non eros euismod, eu placerat tortor lobortis. Suspendisse id velit eu libero pellentesque interdum. Etiam quis congue eros.
-              </p>
-            <div class="mx-auto tm-gallery-container tm-gallery-container-2">
-              <div class="tm-testimonials-carousel">
-                <figure class="tm-testimonial-item">
-                  <img src="img/testimonial-img-01.jpg" alt="Image" class="img-fluid mx-auto">
-                  <blockquote>This background image includes a semi-transparent overlay layer. This section also has a parallax image effect.</blockquote>
-                  <figcaption>Catherine Win (Designer)</figcaption>
-                </figure>
-
-                <figure class="tm-testimonial-item">
-                  <img src="img/testimonial-img-02.jpg" alt="Image" class="img-fluid mx-auto">
-                  <blockquote>Testimonial section comes with carousel items. You can use Infinite Loop HTML CSS template for your websites.</blockquote>
-                  <figcaption>Dual Rocker (CEO)</figcaption>
-                </figure>
-
-                <figure class="tm-testimonial-item">
-                  <img src="img/testimonial-img-03.jpg" alt="Image" class="img-fluid mx-auto">
-                  <blockquote>Nulla finibus ligula nec tortor convallis tincidunt. Interdum et malesuada fames ac ante ipsum primis in faucibus.</blockquote>
-                  <figcaption>Sandar Soft (Marketing)</figcaption>
-                </figure>
-
-                <figure class="tm-testimonial-item">
-                  <img src="img/testimonial-img-04.jpg" alt="Image" class="img-fluid mx-auto">
-                  <blockquote>Curabitur rutrum pharetra lobortis. Pellentesque vehicula, velit quis eleifend fermentum, erat arcu aliquet neque.</blockquote>
-                  <figcaption>Oliva Htoo (Designer)</figcaption>
-                </figure>
-
-                <figure class="tm-testimonial-item">
-                  <img src="img/testimonial-img-02.jpg" alt="Image" class="img-fluid mx-auto">
-                  <blockquote>Integer sit amet risus et erat imperdiet finibus. Nam lacus nunc, vulputate id ex eget, euismod auctor augue.</blockquote>
-                  <figcaption>Jacob Joker (CTO)</figcaption>
-                </figure>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="tm-bg-overlay"></div>
-    </section>
-    
-    <section id="gallery" class="tm-section-pad-top">
-      <div class="container tm-container-gallery">
-        <div class="row">
-          <div class="text-center col-12">
-              <h2 class="tm-text-primary tm-section-title mb-4">Gallery</h2>
-              <p class="mx-auto tm-section-desc">
-                Praesent sed pharetra lorem, blandit convallis mi. Aenean ornare elit ac metus lacinia, sed iaculis nibh semper. Pellentesque est urna, lobortis eu arcu a, aliquet tristique urna.
-              </p>
-          </div>            
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="mx-auto tm-gallery-container">
-                    <div class="grid tm-gallery">
-                      <a href="img/gallery-img-01.jpg">
-                        <figure class="effect-honey tm-gallery-item">
-                          <img src="img/gallery-tn-01.jpg" alt="Image 1" class="img-fluid">
-                          <figcaption>
-                            <h2><i>Physical Health <span>Exercise!</span></i></h2>
-                          </figcaption>
-                        </figure>
-                      </a>
-                      <a href="img/gallery-img-02.jpg">
-                        <figure class="effect-honey tm-gallery-item">
-                          <img src="img/gallery-tn-02.jpg" alt="Image 2" class="img-fluid">
-                          <figcaption>
-                            <h2><i>Rain on Glass <span>Second Image</span></i></h2>
-                          </figcaption>
-                        </figure>
-                      </a>
-                      <a href="img/gallery-img-03.jpg">
-                        <figure class="effect-honey tm-gallery-item">
-                          <img src="img/gallery-tn-03.jpg" alt="Image 3" class="img-fluid">
-                          <figcaption>
-                            <h2><i><span>Sea View</span> Mega City</i></h2>
-                          </figcaption>
-                        </figure>
-                      </a>
-                      <a href="img/gallery-img-04.jpg">
-                        <figure class="effect-honey tm-gallery-item">
-                          <img src="img/gallery-tn-04.jpg" alt="Image 4" class="img-fluid">
-                          <figcaption>
-                            <h2><i>Dream Girl <span>Thoughts</span></i></h2>
-                          </figcaption>
-                        </figure>
-                      </a>
-                      <a href="img/gallery-img-05.jpg">
-                        <figure class="effect-honey tm-gallery-item">
-                          <img src="img/gallery-tn-05.jpg" alt="Image 5" class="img-fluid">
-                          <figcaption>
-                            <h2><i><span>Workstation</span> Offices</i></h2>
-                          </figcaption>
-                        </figure>
-                      </a>
-                      <a href="img/gallery-img-06.jpg">
-                        <figure class="effect-honey tm-gallery-item">
-                          <img src="img/gallery-tn-06.jpg" alt="Image 6" class="img-fluid">
-                          <figcaption>
-                            <h2><i>Just Above <span>The City</span></i></h2>
-                          </figcaption>
-                        </figure>
-                      </a>
-                      <a href="img/gallery-img-01.jpg">
-                        <figure class="effect-honey tm-gallery-item">
-                          <img src="img/gallery-tn-01.jpg" alt="Image 7" class="img-fluid">
-                          <figcaption>
-                            <h2><i>Another <span>Exercise Time</span></i></h2>
-                          </figcaption>
-                        </figure>
-                      </a>
-                      <a href="img/gallery-img-02.jpg">
-                        <figure class="effect-honey tm-gallery-item">
-                          <img src="img/gallery-tn-02.jpg" alt="Image 8" class="img-fluid">
-                          <figcaption>
-                            <h2><i>Repeated <span>Image Spot</span></i></h2>
-                          </figcaption>
-                        </figure>
-                      </a>
-                    </div>
-                </div>                
-            </div>        
-          </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="tm-section-pad-top tm-parallax-2">
-    
-      <div class="container tm-container-contact">
-        
-        <div class="row">
-            
-            <div class="text-center col-12">
-                <h2 class="tm-section-title mb-4">Contact Us</h2>
-                <p class="mb-5">
-                  Proin enim orci, tincidunt quis suscipit in, placerat nec est. Vestibulum posuere faucibus posuere. Quisque aliquam velit eget leo blandit egestas. Nulla id posuere felis, quis tristique nulla.
-                </p><br>
-            </div>
-            
-            <div class="col-sm-12 col-md-6">
-              <form action="" method="get">
-                <input id="name" name="name" type="text" placeholder="Your Name" class="tm-input" required />
-                <input id="email" name="email" type="email" placeholder="Your Email" class="tm-input" required />
-                <textarea id="message" name="message" rows="8" placeholder="Message" class="tm-input" required></textarea>
-                <button type="submit" class="btn tm-btn-submit">Submit</button>
-              </form>
-            </div>
-            
-            <div class="col-sm-12 col-md-6">
-
-                <div class="contact-item">
-                  <a rel="nofollow" href="LINK" class="item-link">
-                      <i class="far fa-2x fa-comment mr-4"></i>
-                      <span class="mb-0">Chat Online</span>
-                  </a>              
-                </div>
-                
-                <div class="contact-item">
-                  <a rel="nofollow" href="mailto:mail@company.com" class="item-link">
-                      <i class="far fa-2x fa-envelope mr-4"></i>
-                      <span class="mb-0">Tkapp@gmail.com</span>
-                  </a>              
-                </div>
-                
-                <div class="contact-item">
-                  <a rel="nofollow" href="https://www.google.com/maps" class="item-link">
-                      <i class="fas fa-2x fa-map-marker-alt mr-4"></i>
-                      <span class="mb-0">Our Location</span>
-                  </a>              
-                </div>
-                
-                <div class="contact-item">
-                  <a rel="nofollow" href="tel:0100200340" class="item-link">
-                      <i class="fas fa-2x fa-phone-square mr-4"></i>
-                      <span class="mb-0">255-662-5566</span>
-                  </a>              
-                </div>
-                
-                <div class="contact-item">&nbsp;</div>
-            
-            </div>
-            
-            
-        </div><!-- row ending -->
-        
-      </div>
-
-      	<footer class="text-center small tm-footer">
-          <p class="mb-0">
-          Copyright &copy; 2024 Tk App 
-          
-          . <a rel="nofollow"https://islamtarikul67.github.io/CEx/" title="HTML templates">Designed by TK</a></p>
-        </footer>
-
-    </section>
-    
-    <script src="js/jquery-1.9.1.min.js"></script>     
-    <script src="slick/slick.min.js"></script>
-    <script src="magnific-popup/jquery.magnific-popup.min.js"></script>
-    <script src="js/easing.min.js"></script>
-    <script src="js/jquery.singlePageNav.min.js"></script>     
-    <script src="js/bootstrap.min.js"></script> 
-    <script>
-
-      function getOffSet(){
-        var _offset = 450;
-        var windowHeight = window.innerHeight;
-
-        if(windowHeight > 500) {
-          _offset = 400;
-        } 
-        if(windowHeight > 680) {
-          _offset = 300
-        }
-        if(windowHeight > 830) {
-          _offset = 210;
-        }
-
-        return _offset;
-      }
-
-      function setParallaxPosition($doc, multiplier, $object){
-        var offset = getOffSet();
-        var from_top = $doc.scrollTop(),
-          bg_css = 'center ' +(multiplier * from_top - offset) + 'px';
-        $object.css({"background-position" : bg_css });
-      }
-
-      // Parallax function
-      // Adapted based on https://codepen.io/roborich/pen/wpAsm        
-      var background_image_parallax = function($object, multiplier, forceSet){
-        multiplier = typeof multiplier !== 'undefined' ? multiplier : 0.5;
-        multiplier = 1 - multiplier;
-        var $doc = $(document);
-        // $object.css({"background-attatchment" : "fixed"});
-
-        if(forceSet) {
-          setParallaxPosition($doc, multiplier, $object);
-        } else {
-          $(window).scroll(function(){          
-            setParallaxPosition($doc, multiplier, $object);
-          });
-        }
-      };
-
-      var background_image_parallax_2 = function($object, multiplier){
-        multiplier = typeof multiplier !== 'undefined' ? multiplier : 0.5;
-        multiplier = 1 - multiplier;
-        var $doc = $(document);
-        $object.css({"background-attachment" : "fixed"});
-        
-        $(window).scroll(function(){
-          if($(window).width() > 768) {
-            var firstTop = $object.offset().top,
-                pos = $(window).scrollTop(),
-                yPos = Math.round((multiplier * (firstTop - pos)) - 186);              
-
-            var bg_css = 'center ' + yPos + 'px';
-
-            $object.css({"background-position" : bg_css });
-          } else {
-            $object.css({"background-position" : "center" });
-          }
-        });
-      };
-      
-      $(function(){
-        // Hero Section - Background Parallax
-        background_image_parallax($(".tm-parallax"), 0.30, false);
-        background_image_parallax_2($("#contact"), 0.80);   
-        background_image_parallax_2($("#testimonials"), 0.80);   
-        
-        // Handle window resize
-        window.addEventListener('resize', function(){
-          background_image_parallax($(".tm-parallax"), 0.30, true);
-        }, true);
-
-        // Detect window scroll and update navbar
-        $(window).scroll(function(e){          
-          if($(document).scrollTop() > 120) {
-            $('.tm-navbar').addClass("scroll");
-          } else {
-            $('.tm-navbar').removeClass("scroll");
-          }
-        });
-        
-        // Close mobile menu after click 
-        $('#tmNav a').on('click', function(){
-          $('.navbar-collapse').removeClass('show'); 
-        })
-
-        // Scroll to corresponding section with animation
-        $('#tmNav').singlePageNav({
-          'easing': 'easeInOutExpo',
-          'speed': 600
-        });        
-        
-        // Add smooth scrolling to all links
-        // https://www.w3schools.com/howto/howto_css_smooth_scroll.asp
-        $("a").on('click', function(event) {
-          if (this.hash !== "") {
-            event.preventDefault();
-            var hash = this.hash;
-
-            $('html, body').animate({
-              scrollTop: $(hash).offset().top
-            }, 600, 'easeInOutExpo', function(){
-              window.location.hash = hash;
-            });
-          } // End if
-        });
-
-        // Pop up
-        $('.tm-gallery').magnificPopup({
-          delegate: 'a',
-          type: 'image',
-          gallery: { enabled: true }
-        });
-
-        $('.tm-testimonials-carousel').slick({
-          dots: true,
-          prevArrow: false,
-          nextArrow: false,
-          infinite: false,
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          responsive: [
-            {
-              breakpoint: 992,
-              settings: {
-                slidesToShow: 2
-              }
-            },
-            {
-              breakpoint: 768,
-              settings: {
-                slidesToShow: 2
-              }
-            }, 
-            {
-              breakpoint: 480,
-              settings: {
-                  slidesToShow: 1
-              }                 
-            }
-          ]
-        });
-
-        // Gallery
-        $('.tm-gallery').slick({
-          dots: true,
-          infinite: false,
-          slidesToShow: 5,
-          slidesToScroll: 2,
-          responsive: [
-          {
-            breakpoint: 1199,
-            settings: {
-              slidesToShow: 4,
-              slidesToScroll: 2
-            }
-          },
-          {
-            breakpoint: 991,
-            settings: {
-              slidesToShow: 3,
-              slidesToScroll: 2
-            }
-          },
-          {
-            breakpoint: 767,
-            settings: {
-              slidesToShow: 2,
-              slidesToScroll: 1
-            }
-          },
-          {
-            breakpoint: 480,
-            settings: {
-              slidesToShow: 1,
-              slidesToScroll: 1
-            }
-          }
-        ]
-        });
-      });
-    </script>
-  </body>
-</html>
+</html>v
