@@ -89,7 +89,6 @@
 
     <!-- Form per aggiungere nuove spese -->
     <div class="form-container">
-        <input type="text" id="newData" placeholder="Data (es. 30-gen-25)">
         <input type="text" id="newDescrizione" placeholder="Descrizione">
         <input type="number" id="newImporto" placeholder="Importo (€)">
         <button class="add-btn" onclick="aggiungiSpesa()">Aggiungi</button>
@@ -120,6 +119,16 @@
             { data: "10-nov-24", descrizione: "Abbonamento Palestra", importo: "45", stato: "Da Pagare", check: false },
             { data: "08-nov-24", descrizione: "Bolletta del Telefono", importo: "60", stato: "Da Pagare", check: false }
         ];
+
+        // Funzione per ottenere la data di oggi in formato "gg-mmm-aa"
+        function getDataOggi() {
+            const mesi = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
+            let oggi = new Date();
+            let giorno = oggi.getDate().toString().padStart(2, "0");
+            let mese = mesi[oggi.getMonth()];
+            let anno = oggi.getFullYear().toString().slice(-2);
+            return `${giorno}-${mese}-${anno}`;
+        }
 
         // Funzione per creare la tabella
         function creaTabella() {
@@ -169,21 +178,19 @@
             alert("Dati aggiornati!");
         }
 
-        // Aggiunge una nuova spesa
+        // Aggiunge una nuova spesa con data automatica
         function aggiungiSpesa() {
-            let data = document.getElementById("newData").value.trim();
             let descrizione = document.getElementById("newDescrizione").value.trim();
             let importo = document.getElementById("newImporto").value.trim();
 
-            if (data === "" || descrizione === "" || importo === "") {
+            if (descrizione === "" || importo === "") {
                 alert("Compila tutti i campi!");
                 return;
             }
 
-            spese.push({ data, descrizione, importo, stato: "Da Pagare", check: false });
+            spese.push({ data: getDataOggi(), descrizione, importo, stato: "Da Pagare", check: false });
             localStorage.setItem("spese", JSON.stringify(spese));
 
-            document.getElementById("newData").value = "";
             document.getElementById("newDescrizione").value = "";
             document.getElementById("newImporto").value = "";
 
