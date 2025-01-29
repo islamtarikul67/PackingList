@@ -45,18 +45,57 @@
             padding: 10px 15px;
             font-size: 16px;
             cursor: pointer;
-            background: #28a745;
-            color: white;
+            margin: 5px;
             border: none;
             border-radius: 5px;
+            color: white;
         }
-        button:hover {
+        .update-btn {
+            background: #28a745;
+        }
+        .update-btn:hover {
             background: #218838;
+        }
+        .reset-btn {
+            background: #dc3545;
+        }
+        .reset-btn:hover {
+            background: #c82333;
+        }
+        .add-btn {
+            background: #007bff;
+        }
+        .add-btn:hover {
+            background: #0056b3;
+        }
+        .delete-btn {
+            background: #ff9800;
+        }
+        .delete-btn:hover {
+            background: #e68900;
+        }
+        .form-container {
+            margin-bottom: 10px;
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
         }
     </style>
 </head>
 <body>
 
+    <h2>Tracciamento Spese</h2>
+
+    <!-- Form per aggiungere nuove spese -->
+    <div class="form-container">
+        <input type="text" id="newData" placeholder="Data (es. 30-gen-25)">
+        <input type="text" id="newDescrizione" placeholder="Descrizione">
+        <input type="number" id="newImporto" placeholder="Importo (€)">
+        <button class="add-btn" onclick="aggiungiSpesa()">Aggiungi</button>
+    </div>
+
+    <!-- Tabella -->
     <table>
         <thead>
             <tr>
@@ -65,32 +104,27 @@
                 <th>Importo</th>
                 <th>Stato</th>
                 <th>Check</th>
+                <th>Azioni</th>
             </tr>
         </thead>
-        <tbody id="tabella-spese">
-        </tbody>
+        <tbody id="tabella-spese"></tbody>
     </table>
 
-    <button onclick="salvaDati()">Aggiorna</button>
+    <button class="update-btn" onclick="salvaDati()">Aggiorna</button>
+    <button class="reset-btn" onclick="resetDati()">Reset Dati</button>
 
     <script>
-        // Dati iniziali
+        // Dati iniziali (se non ci sono dati salvati nel localStorage)
         let spese = JSON.parse(localStorage.getItem("spese")) || [
             { data: "25-nov-24", descrizione: "Bolletta Elettrica", importo: "100", stato: "Pagato", check: true },
-            { data: "05-nov-24", descrizione: "Abbonamento Internet", importo: "50", stato: "Pagato", check: true },
             { data: "10-nov-24", descrizione: "Abbonamento Palestra", importo: "45", stato: "Da Pagare", check: false },
-            { data: "25-nov-24", descrizione: "Abbonamento Netflix", importo: "15", stato: "Pagato", check: true },
-            { data: "30-nov-24", descrizione: "Bolletta Acqua", importo: "30", stato: "Da Pagare", check: false },
-            { data: "16-nov-24", descrizione: "Idraulico", importo: "80", stato: "Da Pagare", check: false },
-            { data: "11-nov-24", descrizione: "Assicurazione Auto", importo: "120", stato: "Da Pagare", check: false },
-            { data: "08-nov-24", descrizione: "Bolletta del Telefono", importo: "60", stato: "Da Pagare", check: false },
-            { data: "17-nov-24", descrizione: "Riparazione Casa", importo: "200", stato: "Da Pagare", check: false }
+            { data: "08-nov-24", descrizione: "Bolletta del Telefono", importo: "60", stato: "Da Pagare", check: false }
         ];
 
         // Funzione per creare la tabella
         function creaTabella() {
             let tbody = document.getElementById("tabella-spese");
-            tbody.innerHTML = ""; 
+            tbody.innerHTML = "";
 
             spese.forEach((spesa, index) => {
                 let row = document.createElement("tr");
@@ -101,6 +135,7 @@
                     <td contenteditable="true">€${spesa.importo}</td>
                     <td class="${spesa.stato === 'Pagato' ? 'pagato' : 'da-pagare'}">${spesa.stato}</td>
                     <td><input type="checkbox" ${spesa.check ? "checked" : ""} onchange="cambiaStato(${index}, this)"></td>
+                    <td><button class="delete-btn" onclick="rimuoviSpesa(${index})">Elimina</button></td>
                 `;
 
                 tbody.appendChild(row);
@@ -111,8 +146,7 @@
         function cambiaStato(index, checkbox) {
             spese[index].check = checkbox.checked;
             spese[index].stato = checkbox.checked ? "Pagato" : "Da Pagare";
-
-            creaTabella(); // Aggiorna la tabella
+            creaTabella();
         }
 
         // Salva i dati aggiornati
@@ -131,8 +165,44 @@
             });
 
             localStorage.setItem("spese", JSON.stringify(spese));
-            creaTabella(); 
+            creaTabella();
             alert("Dati aggiornati!");
+        }
+
+        // Aggiunge una nuova spesa
+        function aggiungiSpesa() {
+            let data = document.getElementById("newData").value.trim();
+            let descrizione = document.getElementById("newDescrizione").value.trim();
+            let importo = document.getElementById("newImporto").value.trim();
+
+            if (data === "" || descrizione === "" || importo === "") {
+                alert("Compila tutti i campi!");
+                return;
+            }
+
+            spese.push({ data, descrizione, importo, stato: "Da Pagare", check: false });
+            localStorage.setItem("spese", JSON.stringify(spese));
+
+            document.getElementById("newData").value = "";
+            document.getElementById("newDescrizione").value = "";
+            document.getElementById("newImporto").value = "";
+
+            creaTabella();
+        }
+
+        // Rimuove una spesa
+        function rimuoviSpesa(index) {
+            spese.splice(index, 1);
+            localStorage.setItem("spese", JSON.stringify(spese));
+            creaTabella();
+        }
+
+        // Resetta i dati alle impostazioni iniziali
+        function resetDati() {
+            if (confirm("Sei sicuro di voler ripristinare i dati iniziali?")) {
+                localStorage.removeItem("spese");
+                location.reload();
+            }
         }
 
         // Carica la tabella all'avvio
