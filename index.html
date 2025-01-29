@@ -3,30 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tracciamento Spese</title>
+    <title>Gestione Spese</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #f0f2f5;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
         }
         table {
-            width: 80%;
+            width: 100%;
             border-collapse: collapse;
-            background: white;
-            margin-bottom: 20px;
+            margin-top: 10px;
         }
         th, td {
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 12px;
             text-align: center;
         }
         th {
-            background: #333;
+            background: #007bff;
             color: white;
         }
         .pagato {
@@ -43,7 +53,7 @@
         }
         button {
             padding: 10px 15px;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             margin: 5px;
             border: none;
@@ -75,62 +85,61 @@
             background: #e68900;
         }
         .form-container {
+            display: flex;
+            gap: 10px;
             margin-bottom: 10px;
         }
         input {
-            padding: 5px;
-            margin: 5px;
+            padding: 8px;
+            flex: 1;
         }
     </style>
 </head>
 <body>
 
-    <h2>Tracciamento Spese</h2>
+    <h2>Gestione Spese</h2>
 
-    <!-- Form per aggiungere nuove spese -->
-    <div class="form-container">
-        <input type="text" id="newDescrizione" placeholder="Descrizione">
-        <input type="number" id="newImporto" placeholder="Importo (€)">
-        <button class="add-btn" onclick="aggiungiSpesa()">Aggiungi</button>
+    <div class="container">
+        <div class="form-container">
+            <input type="text" id="newDescrizione" placeholder="Descrizione">
+            <input type="number" id="newImporto" placeholder="Importo (€)">
+            <input type="date" id="newScadenza">
+            <button class="add-btn" onclick="aggiungiSpesa()">Aggiungi</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Descrizione</th>
+                    <th>Importo</th>
+                    <th>Scadenza</th>
+                    <th>Stato</th>
+                    <th>Check</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody id="tabella-spese"></tbody>
+        </table>
+
+        <button class="update-btn" onclick="salvaDati()">Aggiorna</button>
+        <button class="reset-btn" onclick="resetDati()">Reset Dati</button>
     </div>
 
-    <!-- Tabella -->
-    <table>
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Descrizione</th>
-                <th>Importo</th>
-                <th>Stato</th>
-                <th>Check</th>
-                <th>Azioni</th>
-            </tr>
-        </thead>
-        <tbody id="tabella-spese"></tbody>
-    </table>
-
-    <button class="update-btn" onclick="salvaDati()">Aggiorna</button>
-    <button class="reset-btn" onclick="resetDati()">Reset Dati</button>
-
     <script>
-        // Dati iniziali (se non ci sono dati salvati nel localStorage)
         let spese = JSON.parse(localStorage.getItem("spese")) || [
-            { data: "25-nov-24", descrizione: "Bolletta Elettrica", importo: "100", stato: "Pagato", check: true },
-            { data: "10-nov-24", descrizione: "Abbonamento Palestra", importo: "45", stato: "Da Pagare", check: false },
-            { data: "08-nov-24", descrizione: "Bolletta del Telefono", importo: "60", stato: "Da Pagare", check: false }
+            { data: "25-nov-24", descrizione: "Bolletta Elettrica", importo: "100", scadenza: "2024-11-30", stato: "Pagato", check: true },
+            { data: "10-nov-24", descrizione: "Abbonamento Palestra", importo: "45", scadenza: "2024-11-15", stato: "Da Pagare", check: false }
         ];
 
-        // Funzione per ottenere la data di oggi in formato "gg-mmm-aa"
         function getDataOggi() {
-            const mesi = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"];
             let oggi = new Date();
             let giorno = oggi.getDate().toString().padStart(2, "0");
-            let mese = mesi[oggi.getMonth()];
+            let mese = oggi.getMonth() + 1;
             let anno = oggi.getFullYear().toString().slice(-2);
-            return `${giorno}-${mese}-${anno}`;
+            return `${giorno}-${["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"][mese - 1]}-${anno}`;
         }
 
-        // Funzione per creare la tabella
         function creaTabella() {
             let tbody = document.getElementById("tabella-spese");
             tbody.innerHTML = "";
@@ -142,6 +151,7 @@
                     <td contenteditable="true">${spesa.data}</td>
                     <td contenteditable="true">${spesa.descrizione}</td>
                     <td contenteditable="true">€${spesa.importo}</td>
+                    <td><input type="date" value="${spesa.scadenza}" onchange="cambiaScadenza(${index}, this)"></td>
                     <td class="${spesa.stato === 'Pagato' ? 'pagato' : 'da-pagare'}">${spesa.stato}</td>
                     <td><input type="checkbox" ${spesa.check ? "checked" : ""} onchange="cambiaStato(${index}, this)"></td>
                     <td><button class="delete-btn" onclick="rimuoviSpesa(${index})">Elimina</button></td>
@@ -151,14 +161,17 @@
             });
         }
 
-        // Cambia lo stato quando si clicca sulla checkbox
         function cambiaStato(index, checkbox) {
             spese[index].check = checkbox.checked;
             spese[index].stato = checkbox.checked ? "Pagato" : "Da Pagare";
             creaTabella();
         }
 
-        // Salva i dati aggiornati
+        function cambiaScadenza(index, input) {
+            spese[index].scadenza = input.value;
+            salvaDati();
+        }
+
         function salvaDati() {
             let righe = document.querySelectorAll("#tabella-spese tr");
 
@@ -168,8 +181,9 @@
                     data: celle[0].textContent.trim(),
                     descrizione: celle[1].textContent.trim(),
                     importo: celle[2].textContent.replace("€", "").trim(),
-                    stato: celle[3].textContent.trim(),
-                    check: celle[4].querySelector("input").checked
+                    scadenza: celle[3].querySelector("input").value,
+                    stato: celle[4].textContent.trim(),
+                    check: celle[5].querySelector("input").checked
                 };
             });
 
@@ -178,33 +192,32 @@
             alert("Dati aggiornati!");
         }
 
-        // Aggiunge una nuova spesa con data automatica
         function aggiungiSpesa() {
             let descrizione = document.getElementById("newDescrizione").value.trim();
             let importo = document.getElementById("newImporto").value.trim();
+            let scadenza = document.getElementById("newScadenza").value;
 
-            if (descrizione === "" || importo === "") {
+            if (descrizione === "" || importo === "" || scadenza === "") {
                 alert("Compila tutti i campi!");
                 return;
             }
 
-            spese.push({ data: getDataOggi(), descrizione, importo, stato: "Da Pagare", check: false });
+            spese.push({ data: getDataOggi(), descrizione, importo, scadenza, stato: "Da Pagare", check: false });
             localStorage.setItem("spese", JSON.stringify(spese));
 
             document.getElementById("newDescrizione").value = "";
             document.getElementById("newImporto").value = "";
+            document.getElementById("newScadenza").value = "";
 
             creaTabella();
         }
 
-        // Rimuove una spesa
         function rimuoviSpesa(index) {
             spese.splice(index, 1);
             localStorage.setItem("spese", JSON.stringify(spese));
             creaTabella();
         }
 
-        // Resetta i dati alle impostazioni iniziali
         function resetDati() {
             if (confirm("Sei sicuro di voler ripristinare i dati iniziali?")) {
                 localStorage.removeItem("spese");
@@ -212,7 +225,6 @@
             }
         }
 
-        // Carica la tabella all'avvio
         creaTabella();
     </script>
 
