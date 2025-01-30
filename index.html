@@ -12,32 +12,66 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background-color: #f0f2f5;
+            background-color: #f8f9fa;
             padding: 20px;
-            margin: 0;
         }
         h2 {
             color: #333;
-            margin-bottom: 20px;
+            text-align: center;
         }
         .container {
             background: white;
-            padding: 15px;
+            padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
+        }
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        input {
+            padding: 10px;
+            flex: 1;
+            min-width: 150px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            width: 100%;
+            max-width: 200px;
+        }
+        .add-btn { background: #007bff; }
+        .add-btn:hover { background: #0056b3; }
+        .update-btn { background: #28a745; }
+        .update-btn:hover { background: #218838; }
+        .reset-btn { background: #dc3545; }
+        .reset-btn:hover { background: #c82333; }
+        .delete-btn { background: #ff9800; }
+        .delete-btn:hover { background: #e68900; }
+        .table-container {
             overflow-x: auto;
+            max-width: 100%;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
-            min-width: 600px;
+            min-width: 700px;
         }
         th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
+            border: 1px solid #ddd;
+            padding: 12px;
             text-align: center;
         }
         th {
@@ -56,62 +90,34 @@
             transform: scale(1.3);
             cursor: pointer;
         }
-        button {
-            padding: 10px 15px;
-            font-size: 14px;
-            cursor: pointer;
-            margin: 5px;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            width: 100%;
-            max-width: 200px;
-            transition: background 0.3s ease;
-        }
-        .update-btn { background: #28a745; }
-        .reset-btn { background: #dc3545; }
-        .add-btn { background: #007bff; }
-        .delete-btn { background: #ff9800; }
-        button:hover {
-            opacity: 0.8;
-        }
-        .form-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        input {
-            padding: 8px;
-            flex: 1;
-            min-width: 150px;
-        }
         @media (max-width: 600px) {
-            table {
+            input {
                 font-size: 14px;
-            }
-            button {
-                font-size: 12px;
                 padding: 8px;
             }
-            input {
-                font-size: 12px;
-                padding: 6px;
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
+            table {
+                font-size: 14px;
             }
         }
     </style>
 </head>
 <body>
+
     <h2>Gestione Spese</h2>
-    <div class="container" role="region" aria-labelledby="gestione-spese">
+
+    <div class="container">
         <div class="form-container">
-            <input type="text" id="newDescrizione" placeholder="Descrizione" aria-label="Inserisci descrizione spesa">
-            <input type="number" id="newImporto" placeholder="Importo (€)" aria-label="Inserisci importo spesa">
-            <input type="date" id="newScadenza" aria-label="Seleziona data scadenza spesa">
-            <button class="add-btn" onclick="aggiungiSpesa()" aria-label="Aggiungi nuova spesa">Aggiungi</button>
+            <input type="text" id="newDescrizione" placeholder="Descrizione">
+            <input type="number" id="newImporto" placeholder="Importo (€)">
+            <input type="date" id="newScadenza">
+            <button class="add-btn" onclick="aggiungiSpesa()">Aggiungi</button>
         </div>
-        <div style="overflow-x:auto;">
+
+        <div class="table-container">
             <table>
                 <thead>
                     <tr>
@@ -127,30 +133,32 @@
                 <tbody id="tabella-spese"></tbody>
             </table>
         </div>
-        <button class="update-btn" onclick="salvaDati()" aria-label="Salva dati">Aggiorna</button>
-        <button class="reset-btn" onclick="resetDati()" aria-label="Resetta dati">Reset Dati</button>
+
+        <button class="update-btn" onclick="salvaDati()">Aggiorna</button>
+        <button class="reset-btn" onclick="resetDati()">Reset Dati</button>
     </div>
 
     <script>
-        const storageKey = "spese";
-        let spese = JSON.parse(localStorage.getItem(storageKey)) || [
+        let spese = JSON.parse(localStorage.getItem("spese")) || [
             { data: "25-nov-24", descrizione: "Bolletta Elettrica", importo: "100", scadenza: "2024-11-30", stato: "Pagato", check: true },
             { data: "10-nov-24", descrizione: "Abbonamento Palestra", importo: "45", scadenza: "2024-11-15", stato: "Da Pagare", check: false }
         ];
 
         function getDataOggi() {
-            const oggi = new Date();
-            const giorno = String(oggi.getDate()).padStart(2, '0');
-            const mese = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"][oggi.getMonth()];
-            const anno = String(oggi.getFullYear()).slice(-2);
+            let oggi = new Date();
+            let giorno = oggi.getDate().toString().padStart(2, "0");
+            let mese = oggi.getMonth() + 1;
+            let anno = oggi.getFullYear();
             return `${giorno}-${mese}-${anno}`;
         }
 
         function creaTabella() {
-            const tbody = document.getElementById("tabella-spese");
+            let tbody = document.getElementById("tabella-spese");
             tbody.innerHTML = "";
+
             spese.forEach((spesa, index) => {
-                const row = document.createElement("tr");
+                let row = document.createElement("tr");
+
                 row.innerHTML = `
                     <td contenteditable="true">${spesa.data}</td>
                     <td contenteditable="true">${spesa.descrizione}</td>
@@ -158,8 +166,9 @@
                     <td><input type="date" value="${spesa.scadenza}" onchange="cambiaScadenza(${index}, this)"></td>
                     <td class="${spesa.stato === 'Pagato' ? 'pagato' : 'da-pagare'}">${spesa.stato}</td>
                     <td><input type="checkbox" ${spesa.check ? "checked" : ""} onchange="cambiaStato(${index}, this)"></td>
-                    <td><button class="delete-btn" onclick="rimuoviSpesa(${index})" aria-label="Elimina spesa">Elimina</button></td>
+                    <td><button class="delete-btn" onclick="rimuoviSpesa(${index})">Elimina</button></td>
                 `;
+
                 tbody.appendChild(row);
             });
         }
@@ -167,7 +176,6 @@
         function cambiaStato(index, checkbox) {
             spese[index].check = checkbox.checked;
             spese[index].stato = checkbox.checked ? "Pagato" : "Da Pagare";
-            salvaDati();
             creaTabella();
         }
 
@@ -177,44 +185,40 @@
         }
 
         function salvaDati() {
-            localStorage.setItem(storageKey, JSON.stringify(spese));
+            localStorage.setItem("spese", JSON.stringify(spese));
             alert("Dati aggiornati!");
         }
 
         function aggiungiSpesa() {
-            const descrizione = document.getElementById("newDescrizione").value.trim();
-            const importo = document.getElementById("newImporto").value.trim();
-            const scadenza = document.getElementById("newScadenza").value;
+            let descrizione = document.getElementById("newDescrizione").value.trim();
+            let importo = document.getElementById("newImporto").value.trim();
+            let scadenza = document.getElementById("newScadenza").value;
 
-            if (!descrizione || !importo || !scadenza) {
+            if (descrizione === "" || importo === "" || scadenza === "") {
                 alert("Compila tutti i campi!");
                 return;
             }
 
             spese.push({ data: getDataOggi(), descrizione, importo, scadenza, stato: "Da Pagare", check: false });
-            localStorage.setItem(storageKey, JSON.stringify(spese));
-
-            document.getElementById("newDescrizione").value = "";
-            document.getElementById("newImporto").value = "";
-            document.getElementById("newScadenza").value = "";
-
+            salvaDati();
             creaTabella();
         }
 
         function rimuoviSpesa(index) {
             spese.splice(index, 1);
-            localStorage.setItem(storageKey, JSON.stringify(spese));
+            salvaDati();
             creaTabella();
         }
 
         function resetDati() {
             if (confirm("Vuoi resettare tutto?")) {
-                localStorage.removeItem(storageKey);
+                localStorage.removeItem("spese");
                 location.reload();
             }
         }
 
         creaTabella();
     </script>
+
 </body>
 </html>
