@@ -8,15 +8,17 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            font-size: 0.9em; /* Riduce un po' le dimensioni del testo */
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            font-size: 0.9em; /* Riduce un po' le dimensioni del testo */
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 5px; /* Riduce un po' il padding */
             text-align: center;
         }
         th {
@@ -38,8 +40,8 @@
                 top: 0;
             }
         }
-        .barcode {
-            margin: 5px auto;
+        .barcode-cell {
+            text-align: left !important; /* Allinea a sinistra la cella del barcode */
         }
     </style>
     <!-- Include JsBarcode library -->
@@ -47,13 +49,12 @@
 </head>
 <body>
 
-<h1>Packing List</h1>
+<h1 style="font-size: 1.2em;">Packing List</h1> <!-- Aumenta un po' la dimensione dell'intestazione -->
 
 <table id="packingListTable">
     <thead>
         <tr>
             <th>Codice</th>
-            <th>Descrizione</th>
             <th>Quantità scatole</th>
             <th>Lotto</th>
             <th>Quantità totale</th>
@@ -64,21 +65,19 @@
     <tbody>
         <tr>
             <td>PMD1501R04.4610<br>PMD1501R04.4610</td>
-            <td>PMD1501R04.4610<br>PMD1501R04.4610</td>
             <td>39 CASETTE. X 60<br>Lotto: 240187</td>
             <td>Lotto: 240187</td>
             <td>2340PZ</td>
             <td>2°</td>
-            <td><svg class="barcode" jsbarcode-value="PMD1501R04.4610" jsbarcode-format="CODE39"></svg></td>
+            <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1501R04.4610" jsbarcode-format="CODE39"></svg></td>
         </tr>
         <tr>
-            <td>PMD1095R02.4610<br>PMD1095R02.4610</td>
             <td>PMD1095R02.4610<br>PMD1095R02.4610</td>
             <td>3 CASETTE. X 200<br>1 CASETTA X 196<br>Lotto: 240267</td>
             <td>Lotto: 240267</td>
             <td>796PZ</td>
             <td>2°</td>
-            <td><svg class="barcode" jsbarcode-value="PMD1095R02.4610" jsbarcode-format="CODE39"></svg></td>
+            <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1095R02.4610" jsbarcode-format="CODE39"></svg></td>
         </tr>
     </tbody>
 </table>
@@ -97,22 +96,44 @@
         const newRow = table.insertRow();
 
         // Aggiungi le celle per ogni colonna
-        for (let i = 0; i < 6; i++) {
-            const newCell = newRow.insertCell(i);
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.style.width = '100%';
-            newCell.appendChild(input);
-        }
+        const codeCell = newRow.insertCell(0);
+        const quantityBoxesCell = newRow.insertCell(1);
+        const lotCell = newRow.insertCell(2);
+        const totalQuantityCell = newRow.insertCell(3);
+        const palletNumberCell = newRow.insertCell(4);
+        const barcodeCell = newRow.insertCell(5);
 
-        // Aggiungi cella per il codice a barre
-        const barcodeCell = newRow.insertCell(6);
+        const codeInput = document.createElement('input');
+        codeInput.type = 'text';
+        codeInput.style.width = '100%';
+        codeCell.appendChild(codeInput);
+
+        const quantityBoxesInput = document.createElement('input');
+        quantityBoxesInput.type = 'text';
+        quantityBoxesInput.style.width = '100%';
+        quantityBoxesCell.appendChild(quantityBoxesInput);
+
+        const lotInput = document.createElement('input');
+        lotInput.type = 'text';
+        lotInput.style.width = '100%';
+        lotCell.appendChild(lotInput);
+
+        const totalQuantityInput = document.createElement('input');
+        totalQuantityInput.type = 'text';
+        totalQuantityInput.style.width = '100%';
+        totalQuantityCell.appendChild(totalQuantityInput);
+
+        const palletNumberInput = document.createElement('input');
+        palletNumberInput.type = 'text';
+        palletNumberInput.style.width = '100%';
+        palletNumberCell.appendChild(palletNumberInput);
+
         const barcodeSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         barcodeSvg.classList.add("barcode");
+        barcodeSvg.classList.add("barcode-cell");
         barcodeCell.appendChild(barcodeSvg);
 
         // Genera il codice a barre quando l'utente inserisce il valore
-        const codeInput = newRow.cells[0].querySelector('input');
         codeInput.addEventListener('input', function () {
             barcodeSvg.setAttribute('jsbarcode-value', codeInput.value);
             JsBarcode(barcodeSvg, codeInput.value, { format: "CODE39" });
