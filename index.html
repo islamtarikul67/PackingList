@@ -22,8 +22,21 @@
         th {
             background-color: #f2f2f2;
         }
-        .add-row {
+        .add-row, .print-btn {
             margin-top: 20px;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #packingListTable, #packingListTable * {
+                visibility: visible;
+            }
+            #packingListTable {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
         }
     </style>
 </head>
@@ -44,17 +57,17 @@
     </thead>
     <tbody>
         <tr>
-            <td>PMD1501R04.4610</td>
-            <td>PMD1501R04.4610</td>
-            <td>39 CASETTE. X 60</td>
+            <td>PMD1501R04.4610<br>PMD1501R04.4610</td>
+            <td>PMD1501R04.4610<br>PMD1501R04.4610</td>
+            <td>39 CASETTE. X 60<br>Lotto: 240187</td>
             <td>Lotto: 240187</td>
             <td>2340PZ</td>
             <td>2°</td>
         </tr>
         <tr>
-            <td>PMD1095R02.4610</td>
-            <td>PMD1095R02.4610</td>
-            <td>3 CASETTE. X 200<br>1 CASETTA X 196</td>
+            <td>PMD1095R02.4610<br>PMD1095R02.4610</td>
+            <td>PMD1095R02.4610<br>PMD1095R02.4610</td>
+            <td>3 CASETTE. X 200<br>1 CASETTA X 196<br>Lotto: 240267</td>
             <td>Lotto: 240267</td>
             <td>796PZ</td>
             <td>2°</td>
@@ -64,6 +77,10 @@
 
 <div class="add-row">
     <button onclick="addRow()">Aggiungi Nuova Riga</button>
+</div>
+
+<div class="print-btn">
+    <button onclick="window.print()">Stampa Packing List</button>
 </div>
 
 <script>
