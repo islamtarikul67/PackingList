@@ -127,3 +127,24 @@ footer {
         font-size: 1em;
     }
 }
+/* Animazioni CSS */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content, .about h2, .about p, .services h2, .service-cards {
+    animation: fadeInUp 1s ease-in-out;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.hero-content.visible, .about h2.visible, .about p.visible, .services h2.visible, .service-cards.visible {
+    opacity: 1;
+}
