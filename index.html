@@ -3,219 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generatore di Etichette</title>
-    <style>
-        /* Reset di base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .input-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 100%;
-            max-width: 400px;
-        }
-        input[type="text"] {
-            padding: 12px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        input[type="text"]:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-        .button-container {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        button {
-            padding: 12px 24px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 8px;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-        button:active {
-            transform: scale(0.95);
-        }
-        #label-container {
-            width: 150mm; /* Larghezza 150 mm */
-            height: 100mm; /* Altezza 100 mm */
-            border: 1px solid #ccc;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-top: 30px;
-            background-color: white;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            border-radius: 12px;
-        }
-        #label-container h3 {
-            margin: 0;
-            font-size: 1.5rem;
-            color: #333;
-            text-align: center;
-            padding: 10px;
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            background-color: #f0f8ff;
-            margin-bottom: 10px;
-        }
-        #label-container p {
-            margin: 0;
-            font-size: 1.2rem;
-            color: #555;
-            text-align: center;
-            padding: 10px;
-            border: 2px solid #007bff;
-            border-radius: 8px;
-            background-color: #f0f8ff;
-        }
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #label-container, #label-container * {
-                visibility: visible;
-            }
-            #label-container {
-                position: fixed;
-                left: 0;
-                top: 0;
-                width: 150mm;
-                height: 100mm;
-                margin: 0;
-                border: none;
-                box-shadow: none;
-            }
-            @page {
-                size: A4 landscape;
-                margin: 0;
-            }
-        }
-    </style>
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Generatore di Etichette</h1>
-    <div class="input-container">
-        <input type="text" id="nome-cliente" placeholder="Nome del Cliente">
-        <input type="text" id="indirizzo" placeholder="Indirizzo">
-    </div>
-    <div class="button-container">
-        <button onclick="generaEtichetta()">Genera Etichetta</button>
-        <button onclick="stampaEtichetta()">Stampa Etichetta</button>
-    </div>
-    <div id="label-container">
-        <h3 id="etichetta-nome"></h3>
-        <p id="etichetta-indirizzo"></p>
-    </div>
-    <script>
-        function generaEtichetta() {
-            const nomeCliente = document.getElementById('nome-cliente').value.trim();
-            const indirizzo = document.getElementById('indirizzo').value.trim();
-            if (!nomeCliente || !indirizzo) {
-                alert("Inserisci il nome del cliente e l'indirizzo!");
-                return;
-            }
-            document.getElementById('etichetta-nome').innerText = nomeCliente;
-            document.getElementById('etichetta-indirizzo').innerText = indirizzo;
-        }
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-        function stampaEtichetta() {
-            const nomeCliente = document.getElementById('nome-cliente').value.trim();
-            const indirizzo = document.getElementById('indirizzo').value.trim();
-            if (!nomeCliente || !indirizzo) {
-                alert("Inserisci il nome del cliente e l'indirizzo prima di stampare!");
-                return;
-            }
-            // Usa la finestra attuale per la stampa
-            const printWindow = window.open('', '', 'width=600,height=400');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Etichetta</title>
-                        <style>
-                            body {
-                                font-family: Arial, sans-serif;
-                                margin: 0;
-                                padding: 0;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                width: 100vw;
-                                height: 100vh;
-                                background-color: white;
-                            }
-                            h3 {
-                                font-size: 24px;
-                                margin: 0;
-                                text-align: center;
-                                padding: 10px;
-                                border: 2px solid #007bff;
-                                border-radius: 8px;
-                                background-color: #f0f8ff;
-                                margin-bottom: 10px;
-                            }
-                            p {
-                                font-size: 18px;
-                                margin: 0;
-                                text-align: center;
-                                padding: 10px;
-                                border: 2px solid #007bff;
-                                border-radius: 8px;
-                                background-color: #f0f8ff;
-                            }
-                            @page {
-                                size: A4 landscape;
-                                margin: 0;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div style="width: 150mm; height: 100mm; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                            <h3>${nomeCliente}</h3>
-                            <p>${indirizzo}</p>
-                        </div>
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
-        }
-    </script>
+    <section class="hero">
+        <h1>BENVENUTO NEL MIO PORTFOLIO</h1>
+        <p>Sono un creativo e mi piace costruire cose digitali.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Il mio nome</p>
+    </footer>
 </body>
 </html>
