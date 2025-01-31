@@ -111,6 +111,10 @@
                 border: none;
                 box-shadow: none;
             }
+            @page {
+                size: A4;
+                margin: 0;
+            }
         }
     </style>
 </head>
@@ -148,7 +152,6 @@
                 return;
             }
             // Usa la finestra attuale per la stampa
-            const labelContainer = document.getElementById('label-container');
             const printWindow = window.open('', '', 'width=600,height=400');
             printWindow.document.write(`
                 <html>
@@ -176,10 +179,14 @@
                                 margin: 10px 0;
                                 text-align: center;
                             }
+                            @page {
+                                size: A4;
+                                margin: 0;
+                            }
                         </style>
                     </head>
                     <body>
-                        <div>
+                        <div style="width: 150mm; height: 100mm; display: flex; flex-direction: column; justify-content: center; align-items: center;">
                             <h3>${nomeCliente}</h3>
                             <p>${indirizzo}</p>
                         </div>
