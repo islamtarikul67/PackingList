@@ -3,168 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Moderno</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="hero">
-        <div class="hero-content">
-            <h1>BENVENUTO NEL MIO PORTFOLIO</h1>
-            <p>Sono un creativo e mi piace costruire cose digitali.</p>
-            <a href="#about" class="btn">Scopri di più</a>
+    <div class="container">
+        <h1>Lista delle Cose da Fare</h1>
+        <div class="input-container">
+            <input type="text" id="taskInput" placeholder="Inserisci una nuova attività...">
+            <button id="addTaskBtn">Aggiungi</button>
         </div>
-    </header>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2>Chi sono</h2>
-            <p>Scrivi qui una breve descrizione di te stesso...</p>
-        </div>
-    </section>
-
-    <section class="services">
-        <div class="container">
-            <h2>Cosa faccio</h2>
-            <div class="service-cards">
-                <div class="service-card">
-                    <i class="fas fa-palette"></i>
-                    <h3>Design UX/UI</h3>
-                    <p>Creo interfacce intuitive e coinvolgenti.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-code"></i>
-                    <h3>Sviluppo Frontend</h3>
-                    <p>Costruisco siti web veloci e reattivi.</p>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-paint-brush"></i>
-                    <h3>Progettazione Grafica</h3>
-                    <p>Realizzo grafiche accattivanti e professionali.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="portfolio">
-        <div class="container">
-            <h2>I miei progetti</h2>
-            <div class="carousel">
-                <div class="carousel-item">
-                    <img src="https://via.placeholder.com/600x400" alt="Project 1">
-                    <h3>Progetto 1</h3>
-                    <p>Descrizione del progetto 1...</p>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://via.placeholder.com/600x400" alt="Project 2">
-                    <h3>Progetto 2</h3>
-                    <p>Descrizione del progetto 2...</p>
-                </div>
-                <!-- Aggiungi altri progetti -->
-            </div>
-            <button class="prev">‹</button>
-            <button class="next">›</button>
-        </div>
-    </section>
-
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Dettagli del Progetto</h2>
-            <p>Qui puoi inserire i dettagli del progetto selezionato...</p>
-        </div>
+        <ul id="taskList"></ul>
     </div>
 
-    <!-- Form di Contatto -->
-    <section class="contact">
-        <div class="container">
-            <h2>Contattami</h2>
-            <form action="#" method="POST">
-                <label for="name">Nome:</label>
-                <input type="text" id="name" name="name" required>
-                
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-                
-                <label for="message">Messaggio:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
-                
-                <button type="submit">Invia</button>
-            </form>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 Il mio nome</p>
-        </div>
-    </footer>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const elements = document.querySelectorAll('.hero-content, .about h2, .about p, .services h2, .service-cards');
-        elements.forEach((el, index) => {
-            setTimeout(() => {
-                el.classList.add('visible');
-            }, 300 * index); // Ritardo incrementale per ogni elemento
-        });
-    });
-
-    let currentIndex = 0;
-
-    function showSlide(index) {
-        const items = document.querySelectorAll('.carousel-item');
-        if (index >= items.length) {
-            currentIndex = 0;
-        } else if (index < 0) {
-            currentIndex = items.length - 1;
-        } else {
-            currentIndex = index;
-        }
-
-        const offset = -currentIndex * 100;
-        document.querySelector('.carousel').style.transform = `translateX(${offset}%)`;
-    }
-
-    document.querySelector('.prev').addEventListener('click', () => {
-        showSlide(currentIndex - 1);
-    });
-
-    document.querySelector('.next').addEventListener('click', () => {
-        showSlide(currentIndex + 1);
-    });
-
-    // Avvia la presentazione automatica
-    setInterval(() => {
-        showSlide(currentIndex + 1);
-    }, 5000);
-
-    // Modal
-    const modal = document.getElementById("modal");
-    const span = document.getElementsByClassName("close")[0];
-
-    // Apri il modal quando si clicca su un progetto
-    document.querySelectorAll('.carousel-item').forEach(item => {
-        item.addEventListener('click', () => {
-            modal.style.display = "block";
-        });
-    });
-
-    // Chiudi il modal quando si clicca sulla 'x'
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    // Chiudi il modal quando si clicca fuori dall'area del contenuto
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
