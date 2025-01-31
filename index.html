@@ -3,28 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <title>Portfolio Moderno</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About</a></li>
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>BENVENUTO NEL MIO PORTFOLIO</h1>
+            <p>Sono un creativo e mi piace costruire cose digitali.</p>
+            <a href="#about" class="btn">Scopri di più</a>
+        </div>
     </header>
 
-    <section class="hero">
-        <h1>BENVENUTO NEL MIO PORTFOLIO</h1>
-        <p>Sono un creativo e mi piace costruire cose digitali.</p>
+    <section id="about" class="about">
+        <div class="container">
+            <h2>Chi sono</h2>
+            <p>Scrivi qui una breve descrizione di te stesso...</p>
+        </div>
+    </section>
+
+    <section class="services">
+        <div class="container">
+            <h2>Cosa faccio</h2>
+            <div class="service-cards">
+                <div class="service-card">
+                    <h3>Design UX/UI</h3>
+                    <p>Creo interfacce intuitive e coinvolgenti.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Sviluppo Frontend</h3>
+                    <p>Costruisco siti web veloci e reattivi.</p>
+                </div>
+                <div class="service-card">
+                    <h3>Progettazione Grafica</h3>
+                    <p>Realizzo grafiche accattivanti e professionali.</p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <footer>
-        <p>&copy; 2023 Il mio nome</p>
+        <div class="container">
+            <p>&copy; 2023 Il mio nome</p>
+        </div>
     </footer>
 </body>
 </html>
