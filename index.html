@@ -30,18 +30,6 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
-        .ddt-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .ddt-info div {
-            width: 16%;
-            border: 1px solid #ddd;
-            padding: 10px;
-            box-sizing: border-box;
-            text-align: center;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -133,16 +121,6 @@
         <p>Prodotto conforme INFORMAZIONI per il cliente</p>
         <p>Mod.7.5.1/xx Rev.x del xx/xx/xx</p>
     </div>
-    <div class="section no-print">
-        <div class="ddt-info">
-            <div>DDT N. ________________ DEL ________________</div>
-            <div>DDT N. ________________ DEL ________________</div>
-            <div>DDT N. ________________ DEL ________________</div>
-            <div>DDT N. ________________ DEL ________________</div>
-            <div>DDT N. ________________ DEL ________________</div>
-            <div>DDT N. ________________ DEL ________________</div>
-        </div>
-    </div>
     <div class="section">
         <table id="packingListTable">
             <thead>
@@ -162,7 +140,7 @@
                     <td>Lotto: 240187</td>
                     <td>2340PZ</td>
                     <td>2°</td>
-                    <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1501R04.4610" jsbarcode-format="CODE39"></svg></td>
+                    <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1501R04.4610" jsbarcode-format="CODE39"></svg><br>PMD1501R04.4610</td>
                 </tr>
                 <tr>
                     <td>PMD1095R02.4610<br>PMD1095R02.4610</td>
@@ -170,7 +148,7 @@
                     <td>Lotto: 240267</td>
                     <td>796PZ</td>
                     <td>2°</td>
-                    <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1095R02.4610" jsbarcode-format="CODE39"></svg></td>
+                    <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1095R02.4610" jsbarcode-format="CODE39"></svg><br>PMD1095R02.4610</td>
                 </tr>
             </tbody>
         </table>
@@ -246,6 +224,11 @@
 
         // Genera il codice a barre quando l'utente inserisce il valore
         JsBarcode(barcodeSvg, code, { format: "CODE39" });
+
+        // Aggiungi il codice sotto il barcode
+        const codeText = document.createElement('div');
+        codeText.textContent = code;
+        barcodeCell.appendChild(codeText);
 
         // Resetta i campi del form
         document.getElementById('dataForm').reset();
