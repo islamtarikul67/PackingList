@@ -1,195 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Currency Converter</title>
+    <title>Generatore di Etichette</title>
     <style>
+        /* Reset di base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
         }
-
         body {
-            min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 2rem 1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            align-items: start;
+            min-height: 100vh;
+            padding: 20px;
         }
-
-        .card {
-            background: white;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             width: 100%;
-            max-width: 500px;
-            overflow: hidden;
-            padding: 2rem;
+            max-width: 400px;
+        }
+        input[type="text"] {
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        input[type="text"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        #label-container {
+            width: 150mm; /* Larghezza 150 mm */
+            height: 100mm; /* Altezza 100 mm */
+            border: 1px solid #ccc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+        }
+        #label-container h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #333;
             text-align: center;
         }
-
-        h1 {
-            font-size: 1.8rem;
-            color: #6366f1;
-        }
-
-        .input-group {
-            margin: 1rem 0;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #ddd;
-            border-radius: 0.75rem;
-            font-size: 1rem;
-            background: #f9fafb;
-        }
-
-        button {
-            width: 100%;
-            background: #6366f1;
-            color: white;
-            padding: 1rem;
-            border: none;
-            border-radius: 1rem;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-top: 1rem;
-        }
-
-        button:hover {
-            background: #4f46e5;
-        }
-
-        .exchange-rate {
-            margin-top: 1rem;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .results {
-            margin-top: 1.5rem;
-            background: #f9fafb;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-        }
-
-        .final-total {
-            font-weight: 700;
-            color: #6366f1;
+        #label-container p {
+            margin: 10px 0;
             font-size: 1.2rem;
+            color: #555;
+            text-align: center;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #label-container, #label-container * {
+                visibility: visible;
+            }
+            #label-container {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 150mm;
+                height: 100mm;
+                margin: 0;
+                border: none;
+                box-shadow: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Currency Exchange</h1>
-
-        <div class="input-group">
-            <label for="amount">Amount</label>
-            <input type="number" id="amount" placeholder="Enter amount" min="0" step="any">
-        </div>
-
-        <div class="input-group">
-            <label for="conversionType">Exchange Direction</label>
-            <select id="conversionType">
-                <option value="EURO-TAKA">Euro (€) → Taka (৳)</option>
-                <option value="TAKA-EURO">Taka (৳) → Euro (€)</option>
-            </select>
-        </div>
-
-        <p class="exchange-rate"><strong>Exchange Rate:</strong> 1 € = <span id="rateValue">125</span> ৳</p>
-        <button onclick="updateRate()">Update Exchange Rate</button>
-
-        <button onclick="calculateTotal()">Convert Currency</button>
-
-        <div id="results" class="results" style="display: none;"></div>
+    <h1>Generatore di Etichette</h1>
+    <div class="input-container">
+        <input type="text" id="nome-cliente" placeholder="Nome del Cliente">
+        <input type="text" id="indirizzo" placeholder="Indirizzo">
     </div>
-
+    <div class="button-container">
+        <button onclick="generaEtichetta()">Genera Etichetta</button>
+        <button onclick="stampaEtichetta()">Stampa Etichetta</button>
+    </div>
+    <div id="label-container">
+        <h3 id="etichetta-nome"></h3>
+        <p id="etichetta-indirizzo"></p>
+    </div>
     <script>
-        // Tassi di cambio predefiniti
-        const exchangeRates = {
-            "EURO-TAKA": 125, // 1 € = 125 ৳
-            "TAKA-EURO": 1 / 125 // 1 ৳ = 0.008 €
-        };
-
-        function formatCurrency(value, currency) {
-            return `${currency} ${new Intl.NumberFormat('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }).format(value)}`;
-        }
-
-        function calculateTotal() {
-            const amount = parseFloat(document.getElementById('amount').value);
-            const conversionType = document.getElementById('conversionType').value;
-            const rate = exchangeRates[conversionType];
-
-            if (!amount || amount <= 0) {
-                alert("Please enter a valid amount!");
+        function generaEtichetta() {
+            const nomeCliente = document.getElementById('nome-cliente').value.trim();
+            const indirizzo = document.getElementById('indirizzo').value.trim();
+            if (!nomeCliente || !indirizzo) {
+                alert("Inserisci il nome del cliente e l'indirizzo!");
                 return;
             }
-
-            const fromCurrency = conversionType === 'EURO-TAKA' ? '€' : '৳';
-            const toCurrency = conversionType === 'EURO-TAKA' ? '৳' : '€';
-
-            const convertedAmount = conversionType === 'EURO-TAKA' 
-                ? amount * rate 
-                : amount / rate;
-
-            document.getElementById('results').innerHTML = `
-                <div class="result-row">
-                    <span>Initial Amount:</span>
-                    <span>${formatCurrency(amount, fromCurrency)}</span>
-                </div>
-                <div class="result-row final-total">
-                    <span>Converted Amount:</span>
-                    <span>${formatCurrency(convertedAmount, toCurrency)}</span>
-                </div>
-            `;
-            document.getElementById('results').style.display = 'block';
+            document.getElementById('etichetta-nome').innerText = nomeCliente;
+            document.getElementById('etichetta-indirizzo').innerText = indirizzo;
         }
 
-        function updateRate() {
-            const newRate = prompt("Enter the new exchange rate (1 € = ? ৳):");
-            if (newRate && !isNaN(newRate) && newRate > 0) {
-                exchangeRates["EURO-TAKA"] = parseFloat(newRate);
-                exchangeRates["TAKA-EURO"] = 1 / parseFloat(newRate);
-                document.getElementById('rateValue').textContent = newRate;
-            } else {
-                alert("Invalid exchange rate!");
+        function stampaEtichetta() {
+            const nomeCliente = document.getElementById('nome-cliente').value.trim();
+            const indirizzo = document.getElementById('indirizzo').value.trim();
+            if (!nomeCliente || !indirizzo) {
+                alert("Inserisci il nome del cliente e l'indirizzo prima di stampare!");
+                return;
             }
+            // Usa la finestra attuale per la stampa
+            const labelContainer = document.getElementById('label-container');
+            const printWindow = window.open('', '', 'width=600,height=400');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Etichetta</title>
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                margin: 0;
+                                padding: 0;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                width: 150mm;
+                                height: 100mm;
+                                background-color: white;
+                            }
+                            h3 {
+                                font-size: 24px;
+                                margin: 0;
+                                text-align: center;
+                            }
+                            p {
+                                font-size: 18px;
+                                margin: 10px 0;
+                                text-align: center;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div>
+                            <h3>${nomeCliente}</h3>
+                            <p>${indirizzo}</p>
+                        </div>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
         }
-
-        document.getElementById('conversionType').addEventListener('change', function() {
-            const conversionType = this.value;
-            const rate = exchangeRates[conversionType];
-            document.getElementById('rateValue').textContent = conversionType === 'EURO-TAKA' 
-                ? rate.toFixed(2) 
-                : (1 / rate).toFixed(6);
-        });
     </script>
 </body>
 </html>
