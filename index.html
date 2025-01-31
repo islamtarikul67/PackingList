@@ -3,19 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Packing List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .add-row {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Lista delle Cose da Fare</h1>
-        <div class="input-container">
-            <input type="text" id="taskInput" placeholder="Inserisci una nuova attività...">
-            <button id="addTaskBtn">Aggiungi</button>
-        </div>
-        <ul id="taskList"></ul>
-    </div>
 
-    <script src="app.js"></script>
+<h1>Packing List</h1>
+
+<table id="packingListTable">
+    <thead>
+        <tr>
+            <th>Codice</th>
+            <th>Descrizione</th>
+            <th>Quantità scatole</th>
+            <th>Lotto</th>
+            <th>Quantità totale</th>
+            <th>Bancale n.</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>PMD1501R04.4610</td>
+            <td>PMD1501R04.4610</td>
+            <td>39 CASETTE. X 60</td>
+            <td>Lotto: 240187</td>
+            <td>2340PZ</td>
+            <td>2°</td>
+        </tr>
+        <tr>
+            <td>PMD1095R02.4610</td>
+            <td>PMD1095R02.4610</td>
+            <td>3 CASETTE. X 200<br>1 CASETTA X 196</td>
+            <td>Lotto: 240267</td>
+            <td>796PZ</td>
+            <td>2°</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="add-row">
+    <button onclick="addRow()">Aggiungi Nuova Riga</button>
+</div>
+
+<script>
+    function addRow() {
+        const table = document.getElementById('packingListTable').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+
+        // Aggiungi le celle per ogni colonna
+        for (let i = 0; i < 6; i++) {
+            const newCell = newRow.insertCell(i);
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.style.width = '100%';
+            newCell.appendChild(input);
+        }
+    }
+</script>
+
 </body>
 </html>
