@@ -43,6 +43,31 @@
         .barcode-cell {
             text-align: left !important; /* Allinea a sinistra la cella del barcode */
         }
+        /* Stile per il popup */
+        #popupOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #popupContent {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+        #closePopup {
+            margin-left: auto;
+            display: block;
+        }
     </style>
     <!-- Include JsBarcode library -->
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
@@ -63,35 +88,54 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>PMD1501R04.4610<br>PMD1501R04.4610</td>
-            <td>39 CASETTE. X 60<br>Lotto: 240187</td>
-            <td>Lotto: 240187</td>
-            <td>2340PZ</td>
-            <td>2°</td>
-            <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1501R04.4610" jsbarcode-format="CODE39"></svg></td>
-        </tr>
-        <tr>
-            <td>PMD1095R02.4610<br>PMD1095R02.4610</td>
-            <td>3 CASETTE. X 200<br>1 CASETTA X 196<br>Lotto: 240267</td>
-            <td>Lotto: 240267</td>
-            <td>796PZ</td>
-            <td>2°</td>
-            <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1095R02.4610" jsbarcode-format="CODE39"></svg></td>
-        </tr>
     </tbody>
 </table>
 
 <div class="add-row">
-    <button onclick="addRow()">Aggiungi Nuova Riga</button>
+    <button onclick="openPopup()">Aggiungi Nuova Riga</button>
 </div>
 
 <div class="print-btn">
     <button onclick="window.print()">Stampa Packing List</button>
 </div>
 
+<!-- Popup per inserimento dati -->
+<div id="popupOverlay"></div>
+<div id="popupContent">
+    <button id="closePopup" onclick="closePopup()">X</button>
+    <form id="dataForm">
+        <label for="code">Codice:</label><br>
+        <input type="text" id="code" name="code"><br>
+        <label for="quantityBoxes">Quantità scatole:</label><br>
+        <input type="text" id="quantityBoxes" name="quantityBoxes"><br>
+        <label for="lot">Lotto:</label><br>
+        <input type="text" id="lot" name="lot"><br>
+        <label for="totalQuantity">Quantità totale:</label><br>
+        <input type="text" id="totalQuantity" name="totalQuantity"><br>
+        <label for="palletNumber">Bancale n.:</label><br>
+        <input type="text" id="palletNumber" name="palletNumber"><br><br>
+        <button type="button" onclick="addRowFromPopup()">Aggiungi</button>
+    </form>
+</div>
+
 <script>
-    function addRow() {
+    function openPopup() {
+        document.getElementById('popupOverlay').style.display = 'block';
+        document.getElementById('popupContent').style.display = 'block';
+    }
+
+    function closePopup() {
+        document.getElementById('popupOverlay').style.display = 'none';
+        document.getElementById('popupContent').style.display = 'none';
+    }
+
+    function addRowFromPopup() {
+        const code = document.getElementById('code').value;
+        const quantityBoxes = document.getElementById('quantityBoxes').value;
+        const lot = document.getElementById('lot').value;
+        const totalQuantity = document.getElementById('totalQuantity').value;
+        const palletNumber = document.getElementById('palletNumber').value;
+
         const table = document.getElementById('packingListTable').getElementsByTagName('tbody')[0];
         const newRow = table.insertRow();
 
@@ -103,30 +147,11 @@
         const palletNumberCell = newRow.insertCell(4);
         const barcodeCell = newRow.insertCell(5);
 
-        const codeInput = document.createElement('input');
-        codeInput.type = 'text';
-        codeInput.style.width = '100%';
-        codeCell.appendChild(codeInput);
-
-        const quantityBoxesInput = document.createElement('input');
-        quantityBoxesInput.type = 'text';
-        quantityBoxesInput.style.width = '100%';
-        quantityBoxesCell.appendChild(quantityBoxesInput);
-
-        const lotInput = document.createElement('input');
-        lotInput.type = 'text';
-        lotInput.style.width = '100%';
-        lotCell.appendChild(lotInput);
-
-        const totalQuantityInput = document.createElement('input');
-        totalQuantityInput.type = 'text';
-        totalQuantityInput.style.width = '100%';
-        totalQuantityCell.appendChild(totalQuantityInput);
-
-        const palletNumberInput = document.createElement('input');
-        palletNumberInput.type = 'text';
-        palletNumberInput.style.width = '100%';
-        palletNumberCell.appendChild(palletNumberInput);
+        codeCell.textContent = code;
+        quantityBoxesCell.textContent = quantityBoxes;
+        lotCell.textContent = lot;
+        totalQuantityCell.textContent = totalQuantity;
+        palletNumberCell.textContent = palletNumber;
 
         const barcodeSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         barcodeSvg.classList.add("barcode");
@@ -134,17 +159,20 @@
         barcodeCell.appendChild(barcodeSvg);
 
         // Genera il codice a barre quando l'utente inserisce il valore
-        codeInput.addEventListener('input', function () {
-            barcodeSvg.setAttribute('jsbarcode-value', codeInput.value);
-            JsBarcode(barcodeSvg, codeInput.value, { format: "CODE39" });
-        });
+        JsBarcode(barcodeSvg, code, { format: "CODE39" });
+
+        // Resetta i campi del form
+        document.getElementById('dataForm').reset();
+        
+        // Chiudi il popup
+        closePopup();
     }
 
     // Genera i codici a barre esistenti
     window.onload = function() {
         const barcodes = document.querySelectorAll('.barcode');
         barcodes.forEach(barcode => {
-            JsBarcode(barcode, barcode.getAttribute('jsbarcode-value'), { format: "CODE39" });
+            JsBarcode(barcode, barcode.closest('td').previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent, { format: "CODE39" });
         });
     };
 </script>
