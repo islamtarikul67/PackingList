@@ -38,7 +38,12 @@
                 top: 0;
             }
         }
+        .barcode {
+            margin: 5px auto;
+        }
     </style>
+    <!-- Include JsBarcode library -->
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 </head>
 <body>
 
@@ -53,6 +58,7 @@
             <th>Lotto</th>
             <th>Quantità totale</th>
             <th>Bancale n.</th>
+            <th>Codice a Barre</th>
         </tr>
     </thead>
     <tbody>
@@ -63,6 +69,7 @@
             <td>Lotto: 240187</td>
             <td>2340PZ</td>
             <td>2°</td>
+            <td><svg class="barcode" jsbarcode-value="PMD1501R04.4610" jsbarcode-format="CODE39"></svg></td>
         </tr>
         <tr>
             <td>PMD1095R02.4610<br>PMD1095R02.4610</td>
@@ -71,6 +78,7 @@
             <td>Lotto: 240267</td>
             <td>796PZ</td>
             <td>2°</td>
+            <td><svg class="barcode" jsbarcode-value="PMD1095R02.4610" jsbarcode-format="CODE39"></svg></td>
         </tr>
     </tbody>
 </table>
@@ -96,7 +104,28 @@
             input.style.width = '100%';
             newCell.appendChild(input);
         }
+
+        // Aggiungi cella per il codice a barre
+        const barcodeCell = newRow.insertCell(6);
+        const barcodeSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        barcodeSvg.classList.add("barcode");
+        barcodeCell.appendChild(barcodeSvg);
+
+        // Genera il codice a barre quando l'utente inserisce il valore
+        const codeInput = newRow.cells[0].querySelector('input');
+        codeInput.addEventListener('input', function () {
+            barcodeSvg.setAttribute('jsbarcode-value', codeInput.value);
+            JsBarcode(barcodeSvg, codeInput.value, { format: "CODE39" });
+        });
     }
+
+    // Genera i codici a barre esistenti
+    window.onload = function() {
+        const barcodes = document.querySelectorAll('.barcode');
+        barcodes.forEach(barcode => {
+            JsBarcode(barcode, barcode.getAttribute('jsbarcode-value'), { format: "CODE39" });
+        });
+    };
 </script>
 
 </body>
