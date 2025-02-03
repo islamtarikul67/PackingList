@@ -3,248 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Packing List</title>
+    <title>Packing List con Barcode</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-        }
-        h1, h2, p {
-            text-align: center;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
             color: #333;
-        }
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .section {
-            width: 100%;
-            max-width: 1000px;
-            margin-bottom: 20px;
-            background-color: white;
+            text-align: center;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+        }
+        h2 {
+            color: #222;
+            margin-bottom: 20px;
         }
         table {
-            width: 100%;
+            width: 90%;
+            margin: 20px auto;
             border-collapse: collapse;
-            font-size: 0.9em;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
+            padding: 12px;
+            text-align: center;
         }
         th {
-            background-color: #f2f2f2;
-            color: #333;
+            background-color: #007BFF;
+            color: white;
         }
-        .barcode-cell svg {
-            width: 100%;
-            height: 40px;
+        .lotto {
+            background-color: yellow;
+            font-weight: bold;
         }
-        .add-row, .print-btn {
+        input {
+            width: 90%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
             text-align: center;
         }
         button {
+            margin: 10px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
             background-color: #007BFF;
             color: white;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            transition: 0.3s;
         }
         button:hover {
             background-color: #0056b3;
         }
-        /* Stile per il popup */
-        #popupOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-        #popupContent {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            z-index: 1001;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 500px;
-        }
-        #closePopup {
-            margin-left: auto;
-            display: block;
-            cursor: pointer;
-            color: red;
-        }
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            .section, .section * {
-                visibility: visible;
-            }
-            .section {
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-            button {
-                display: none;
-            }
-        }
     </style>
-    <!-- Include JsBarcode library -->
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
 </head>
 <body>
+    <h2>Packing List con Codici a Barre</h2>
+    <button onclick="addRow()">➕ Aggiungi Codice</button>
+    <button onclick="printList()">🖨️ Stampa Packing List</button>
+    <table id="packingTable">
+        <thead>
+            <tr>
+                <th>CODICE</th>
+                <th>Quantità Scatole</th>
+                <th>Quantità Totale</th>
+                <th>Lotto</th>
+                <th>Bancale</th>
+                <th>Barcode</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="codice1" value="PMD1501R04.4610" oninput="updateBarcode(1)"></td>
+                <td><input type="text" value="39 CASETTE X 60"></td>
+                <td><input type="text" value="2340 PZ"></td>
+                <td class="lotto"><input type="text" value="240187"></td>
+                <td><input type="text" value="2°"></td>
+                <td><svg id="barcode1"></svg></td>
+            </tr>
+            <tr>
+                <td><input type="text" id="codice2" value="PMD1095R02.4610" oninput="updateBarcode(2)"></td>
+                <td><input type="text" value="3 CASETTE X 200, 1 CASETTA X 196"></td>
+                <td><input type="text" value="796 PZ"></td>
+                <td class="lotto"><input type="text" value="240267"></td>
+                <td><input type="text" value="2°"></td>
+                <td><svg id="barcode2"></svg></td>
+            </tr>
+        </tbody>
+    </table>
 
-<div class="container">
-    <h1>Packing List</h1>
-    <div class="section">
-        <p>Prodotto conforme INFORMAZIONI per il cliente</p>
-        <p>Mod.7.5.1/xx Rev.x del xx/xx/xx</p>
-    </div>
-    <div class="section">
-        <table id="packingListTable">
-            <thead>
-                <tr>
-                    <th>Codice</th>
-                    <th>Quantità scatole</th>
-                    <th>Lotto</th>
-                    <th>Quantità totale</th>
-                    <th>Bancale n.</th>
-                    <th>Codice a Barre</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>PMD1501R04.4610<br>PMD1501R04.4610</td>
-                    <td>39 CASETTE. X 60</td>
-                    <td>Lotto: 240187</td>
-                    <td>2340PZ</td>
-                    <td>2°</td>
-                    <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1501R04.4610" jsbarcode-format="CODE39"></svg><br>PMD1501R04.4610</td>
-                </tr>
-                <tr>
-                    <td>PMD1095R02.4610<br>PMD1095R02.4610</td>
-                    <td>3 CASETTE. X 200<br>1 CASETTA X 196</td>
-                    <td>Lotto: 240267</td>
-                    <td>796PZ</td>
-                    <td>2°</td>
-                    <td class="barcode-cell"><svg class="barcode" jsbarcode-value="PMD1095R02.4610" jsbarcode-format="CODE39"></svg><br>PMD1095R02.4610</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="section no-print">
-        <div class="add-row">
-            <button onclick="openPopup()">Aggiungi Nuova Riga</button>
-        </div>
-        <div class="print-btn">
-            <button onclick="window.print()">Stampa Packing List</button>
-        </div>
-    </div>
-</div>
-
-<!-- Popup per inserimento dati -->
-<div id="popupOverlay"></div>
-<div id="popupContent">
-    <span id="closePopup" onclick="closePopup()">&times;</span>
-    <form id="dataForm">
-        <label for="code">Codice:</label><br>
-        <input type="text" id="code" name="code" required><br>
-        <label for="quantityBoxes">Quantità scatole:</label><br>
-        <input type="text" id="quantityBoxes" name="quantityBoxes" required><br>
-        <label for="lot">Lotto:</label><br>
-        <input type="text" id="lot" name="lot" required><br>
-        <label for="totalQuantity">Quantità totale:</label><br>
-        <input type="text" id="totalQuantity" name="totalQuantity" required><br>
-        <label for="palletNumber">Bancale n.:</label><br>
-        <input type="text" id="palletNumber" name="palletNumber" required><br><br>
-        <button type="button" onclick="addRowFromPopup()">Aggiungi</button>
-    </form>
-</div>
-
-<script>
-    function openPopup() {
-        document.getElementById('popupOverlay').style.display = 'block';
-        document.getElementById('popupContent').style.display = 'block';
-    }
-
-    function closePopup() {
-        document.getElementById('popupOverlay').style.display = 'none';
-        document.getElementById('popupContent').style.display = 'none';
-    }
-
-    function addRowFromPopup() {
-        const code = document.getElementById('code').value;
-        const quantityBoxes = document.getElementById('quantityBoxes').value;
-        const lot = document.getElementById('lot').value;
-        const totalQuantity = document.getElementById('totalQuantity').value;
-        const palletNumber = document.getElementById('palletNumber').value;
-
-        const table = document.getElementById('packingListTable').getElementsByTagName('tbody')[0];
-        const newRow = table.insertRow();
-
-        // Aggiungi le celle per ogni colonna
-        const codeCell = newRow.insertCell(0);
-        const quantityBoxesCell = newRow.insertCell(1);
-        const lotCell = newRow.insertCell(2);
-        const totalQuantityCell = newRow.insertCell(3);
-        const palletNumberCell = newRow.insertCell(4);
-        const barcodeCell = newRow.insertCell(5);
-
-        codeCell.textContent = code;
-        quantityBoxesCell.textContent = quantityBoxes;
-        lotCell.textContent = lot;
-        totalQuantityCell.textContent = totalQuantity;
-        palletNumberCell.textContent = palletNumber;
-
-        const barcodeSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        barcodeSvg.classList.add("barcode");
-        barcodeSvg.classList.add("barcode-cell");
-        barcodeCell.appendChild(barcodeSvg);
-
-        // Genera il codice a barre quando l'utente inserisce il valore
-        JsBarcode(barcodeSvg, code, { format: "CODE39" });
-
-        // Aggiungi il codice sotto il barcode
-        const codeText = document.createElement('div');
-        codeText.textContent = code;
-        barcodeCell.appendChild(codeText);
-
-        // Resetta i campi del form
-        document.getElementById('dataForm').reset();
+    <script>
+        let rowCount = 2;
         
-        // Chiudi il popup
-        closePopup();
-    }
-
-    // Genera i codici a barre esistenti
-    window.onload = function() {
-        const barcodes = document.querySelectorAll('.barcode');
-        barcodes.forEach(barcode => {
-            JsBarcode(barcode, barcode.closest('td').previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent, { format: "CODE39" });
+        document.addEventListener("DOMContentLoaded", function() {
+            updateBarcode(1);
+            updateBarcode(2);
         });
-    };
-</script>
 
+        function updateBarcode(num) {
+            let codice = document.getElementById(`codice${num}`).value;
+            if (JsBarcode) {
+                JsBarcode(`#barcode${num}`, codice, { format: "CODE128", displayValue: true });
+            } else {
+                console.error("JsBarcode non è stato caricato correttamente.");
+            }
+        }
+
+        function addRow() {
+            rowCount++;
+            let table = document.getElementById("packingTable").getElementsByTagName('tbody')[0];
+            let newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td><input type="text" id="codice${rowCount}" oninput="updateBarcode(${rowCount})"></td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td class="lotto"><input type="text"></td>
+                <td><input type="text"></td>
+                <td><svg id="barcode${rowCount}"></svg></td>
+            `;
+        }
+
+        function printList() {
+            window.print();
+        }
+    </script>
 </body>
 </html>
