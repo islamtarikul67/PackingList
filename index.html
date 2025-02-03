@@ -18,7 +18,7 @@
             margin-bottom: 20px;
         }
         table {
-            width: 90%;
+            width: 100%;
             margin: 20px auto;
             border-collapse: collapse;
             background: white;
@@ -39,12 +39,19 @@
             background-color: yellow;
             font-weight: bold;
         }
-        input {
+        input, textarea {
             width: 90%;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
             text-align: center;
+            font-size: 14px;
+            resize: none;
+        }
+        textarea {
+            height: 50px;
+            text-align: left;
+            white-space: pre-wrap;
         }
         button {
             margin: 10px;
@@ -60,12 +67,30 @@
         button:hover {
             background-color: #0056b3;
         }
+        @media print {
+            @page {
+                size: A4 landscape;
+                margin: 10mm;
+            }
+            body * {
+                visibility: hidden;
+            }
+            #packingTable, #packingTable * {
+                visibility: visible;
+            }
+            #packingTable {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <h2>Packing List con Codici a Barre</h2>
     <button onclick="addRow()">➕ Aggiungi Codice</button>
-    <button onclick="printList()">🖨️ Stampa Packing List</button>
+    <button onclick="window.print()">🖨️ Stampa Packing List</button>
     <table id="packingTable">
         <thead>
             <tr>
@@ -80,7 +105,7 @@
         <tbody>
             <tr>
                 <td><input type="text" id="codice1" value="PMD1501R04.4610" oninput="updateBarcode(1)"></td>
-                <td><input type="text" value="39 CASETTE X 60"></td>
+                <td><textarea>39 CASETTE X 60</textarea></td>
                 <td><input type="text" value="2340 PZ"></td>
                 <td class="lotto"><input type="text" value="240187"></td>
                 <td><input type="text" value="2°"></td>
@@ -88,7 +113,8 @@
             </tr>
             <tr>
                 <td><input type="text" id="codice2" value="PMD1095R02.4610" oninput="updateBarcode(2)"></td>
-                <td><input type="text" value="3 CASETTE X 200, 1 CASETTA X 196"></td>
+                <td><textarea>3 CASETTE X 200
+1 CASETTA X 196</textarea></td>
                 <td><input type="text" value="796 PZ"></td>
                 <td class="lotto"><input type="text" value="240267"></td>
                 <td><input type="text" value="2°"></td>
@@ -120,16 +146,12 @@
             let newRow = table.insertRow();
             newRow.innerHTML = `
                 <td><input type="text" id="codice${rowCount}" oninput="updateBarcode(${rowCount})"></td>
-                <td><input type="text"></td>
+                <td><textarea></textarea></td>
                 <td><input type="text"></td>
                 <td class="lotto"><input type="text"></td>
                 <td><input type="text"></td>
                 <td><svg id="barcode${rowCount}"></svg></td>
             `;
-        }
-
-        function printList() {
-            window.print();
         }
     </script>
 </body>
