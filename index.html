@@ -3,211 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sharif Talurder - Pizzaiolo Professionista</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;500;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Sito in Costruzione</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Lora', serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9f9f9;
-        }
-
-        /* Header */
-        header {
-            background: #2c3e50;
-            color: white;
-            padding: 1rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
         }
-
-        .logo h1 {
-            font-family: 'Roboto', sans-serif;
-            font-weight: 700;
-            font-size: 1.5rem;
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 20px;
         }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
+        p {
+            font-size: 1.2em;
+            color: #666;
         }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-family: 'Roboto', sans-serif;
+        .gif-container {
+            margin-top: 20px;
         }
-
-        /* Sezioni principali */
-        section {
-            padding: 5rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Chi Sono */
-        .about {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .about-img {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .skills {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        /* Progetti */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .project-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-
-        /* Footer */
-        footer {
-            background: #2c3e50;
-            color: white;
-            padding: 3rem 2rem;
-            text-align: center;
-        }
-
-        .social-links {
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            color: white;
-            margin: 0 1rem;
-            font-size: 1.5rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .about {
-                grid-template-columns: 1fr;
-            }
-            
-            .nav-links {
-                display: none;
-            }
+        img {
+            width: 300px; /* Puoi modificare la dimensione del GIF */
+            height: auto;
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">
-                <h1>SHARIF TALURDER</h1>
-                <p>Pizzaiolo Professionista</p>
-            </div>
-            <div class="nav-links">
-                <a href="#about">Chi Sono</a>
-                <a href="#projects">Progetti</a>
-                <a href="#contacts">Contatti</a>
-            </div>
-        </nav>
-    </header>
 
-    <section id="about">
-        <div class="about">
-            <img src="https://i.ibb.co/4wv8sTk7/9108910d-b760-4ff7-9308-e1978c8cd226.jpg" alt="Sharif Talurder" class="about-img">
-            <div>
-                <h2>Chi Sono</h2>
-                <p>Pizzaiolo professionista con oltre 5 anni di esperienza nella preparazione artigianale e gestione di forni a legna. Specializzato in tradizione napoletana e innovazione contemporanea.</p>
-                <div class="skills">
-                    <div>✔ Preparazione impasti</div>
-                    <div>✔ Gestione forno a legna</div>
-                    <div>✔ Controllo qualità</div>
-                    <div>✔ Gestione team</div>
-                </div>
-            </div>
+    <div>
+        <h1>Sito in Costruzione</h1>
+        <p>Torna presto per scoprire il nostro contenuto!</p>
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Sito in costruzione">
         </div>
-    </section>
+    </div>
 
-    <section id="projects">
-        <h2>Progetti</h2>
-        <div class="projects-grid">
-            <div class="project-card">
-                <img src="https://i.ibb.co/rjxtJ8R/8911a412-9cf9-4ecb-b4d7-31d3a8cc3462.png" alt="Progetto 1">
-                <div class="card-content">
-                    <h3>Pizzeria Artigianale</h3>
-                    <p>Realizzazione menu stagionale con ingredienti locali</p>
-                </div>
-            </div>
-            <!-- Aggiungi altri progetti -->
-        </div>
-    </section>
-
-    <footer>
-        <div class="contact-info">
-            <p>📧 sharif@live.it</p>
-            <p>📱 328 4461400</p>
-            <p>📍 Via Piazza Vittorio Emanuele II 17/11</p>
-        </div>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-        </div>
-    </footer>
-
-    <script>
-        // Validazione modulo contatti
-        document.querySelector('form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            if (!validateEmail(email)) {
-                alert('Inserisci un indirizzo email valido');
-                return;
-            }
-            alert('Messaggio inviato con successo!');
-        });
-
-        function validateEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-    </script>
 </body>
 </html>
