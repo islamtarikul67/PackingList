@@ -1,47 +1,244 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sito in Costruzione</title>
+    <title>Curriculum Vitae</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
-        h1 {
-            font-size: 2.5em;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
             color: #333;
-            margin-bottom: 20px;
         }
-        p {
-            font-size: 1.2em;
-            color: #666;
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 1200px;
         }
-        .gif-container {
-            margin-top: 20px;
+
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
         }
-        img {
-            width: 300px; /* Puoi modificare la dimensione del GIF */
-            height: auto;
+
+        .sidebar .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar .profile img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #1abc9c;
+        }
+
+        .sidebar .profile h2 {
+            margin-top: 15px;
+            font-size: 1.8rem;
+        }
+
+        .sidebar .profile p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .sidebar .contact, .sidebar .skills {
+            margin-top: 30px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #1abc9c;
+            display: inline-block;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .sidebar ul li i {
+            margin-right: 10px;
+            color: #1abc9c;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .main-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .main-content .section {
+            margin-bottom: 30px;
+        }
+
+        .main-content .section h3 {
+            font-size: 1.7rem;
+            margin-bottom: 15px;
+            color: #34495e;
+            position: relative;
+        }
+
+        .main-content .section h3::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: #1abc9c;
+            bottom: -5px;
+            left: 0;
+            border-radius: 2px;
+        }
+
+        .main-content p, .main-content ul {
+            margin-top: 15px;
+            line-height: 1.8;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .main-content ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .footer button {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .footer button:hover {
+            background: linear-gradient(135deg, #16a085, #1abc9c);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                text-align: center;
+            }
+
+            .sidebar .profile img {
+                margin-bottom: 15px;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile">
+                <img src="https://i.ibb.co/4wv8sTk7/9108910d-b760-4ff7-9308-e1978c8cd226.jpg" alt="Profile Picture">
+                <h2>Sharif Talukder</h2>
+                <p>Pizzaiolo Professionista</p>
+            </div>
+            <div class="contact">
+                <h3>Contatti</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> sharif@live.it</li>
+                    <li><i class="fas fa-phone"></i> 3284461400</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Pieve di Soligo, Italia</li>
+                </ul>
+            </div>
+            <div class="skills">
+                <h3>Competenze</h3>
+                <ul>
+                    <li><i class="fas fa-check"></i> Preparazione e cottura delle pizze</li>
+                    <li><i class="fas fa-check"></i> Gestione degli ingredienti</li>
+                    <li><i class="fas fa-check"></i> Controllo qualità</li>
+                    <li><i class="fas fa-check"></i> Lettura del disegno tecnico</li>
+                </ul>
+            </div>
+        </div>
 
-    <div>
-        <h1>Sito in Costruzione</h1>
-        <p>Torna presto per scoprire il nostro contenuto!</p>
-        <div class="gif-container">
-            <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Sito in costruzione">
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Descrizione</h2>
+            <p>Pizzaiolo altamente qualificato con oltre 6 anni di esperienza nella preparazione di pizze artigianali in ambienti dinamici e di alta qualità. Specializzato nell’utilizzo di ingredienti freschi e di prima scelta, garantendo sempre la massima soddisfazione del cliente. Ho una comprovata esperienza nella gestione del processo produttivo, nel controllo qualità e nel rispetto delle norme igienico-sanitarie, contribuendo al successo del team e al raggiungimento degli obiettivi aziendali.</p>
+
+            <p>Le mie competenze includono:</p>
+            <ul>
+                <li><strong>Preparazione e cottura delle pizze</strong> secondo metodi tradizionali e innovativi.</li>
+                <li><strong>Gestione degli ingredienti</strong>, dalla selezione al monitoraggio delle scorte.</li>
+                <li><strong>Controllo qualità</strong> per garantire uno standard eccellente in ogni prodotto.</li>
+                <li><strong>Teamwork</strong> e capacità organizzative per migliorare il flusso operativo in cucina.</li>
+            </ul>
+
+            <div class="section">
+                <h3>Esperienza</h3>
+                <ul>
+                    <li>
+                        <strong>Adetto Alle Macchine</strong> - Tecno Componenti SRL (2016-2017)
+                        <p>Attrezzaggio delle macchine per lo stampaggio di componenti in plastica, controllo qualità, e utilizzo di strumenti di misura.</p>
+                    </li>
+                    <li>
+                        <strong>Pizzaiolo</strong> - Pizzalonga Away DA PINO (2017-Attuale)
+                        <p>Responsabile della preparazione e cottura delle pizze, gestione degli ingredienti e supervisione delle norme igienico-sanitarie.</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Istruzione</h3>
+                <p>Qualifica Professionale - Operatore Meccanico<br>I.P.S.I.A. Pittoni (2010-2013)</p>
+            </div>
+
+            <div class="footer">
+    <a href="https://www.swisstransfer.com/d/51ef9b0f-1a7b-4cfb-a4eb-eec82dcf5316" download>
+        <button>Scarica CV</button>
+    </a>
+</div>
+
         </div>
     </div>
-
 </body>
 </html>
