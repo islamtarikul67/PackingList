@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Ramadan Prayer Times - March 2023</title>
     <style>
         /* Reset default styles and set up layout */
@@ -11,45 +13,49 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Roboto', sans-serif; /* Modern sans-serif font */
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
         }
 
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             color: #333;
             line-height: 1.6;
-            padding: 20px;
+            padding: 0;
             min-height: 100vh;
+            margin: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         }
 
         .container {
-            max-width: 1200px;
-            width: 90%;
-            padding: 30px;
+            max-width: 100%;
+            width: 100%;
+            padding: 20px;
             background-color: #ffffff;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px 0;
         }
 
         .container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.15);
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         header h1 {
-            color: #e74c3c; /* Vibrant red-orange for a modern touch */
-            font-size: 2.8em;
+            color: #e74c3c;
+            font-size: 1.8em;
             font-weight: 700;
             margin-bottom: 10px;
             text-transform: uppercase;
@@ -58,24 +64,26 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin-top: 15px;
             background-color: #fff;
             border-radius: 8px;
             overflow: hidden;
+            font-size: 0.9em;
         }
 
         th, td {
-            padding: 16px;
+            padding: 12px;
             text-align: center;
             border: 1px solid #f0f0f0;
             transition: background-color 0.3s ease, transform 0.2s ease;
+            -webkit-user-select: none; /* Prevent text selection on iOS */
         }
 
         th {
@@ -100,19 +108,23 @@
         }
 
         .checkbox-cell {
-            width: 5%;
+            width: 15%;
         }
 
         input[type="checkbox"] {
-            transform: scale(1.5);
-            margin-right: 10px;
+            transform: scale(1.8); /* Larger for touch targets on mobile */
+            margin-right: 8px;
             cursor: pointer;
-            accent-color: #e74c3c; /* Matches header color for consistency */
+            accent-color: #e74c3c;
             transition: transform 0.2s ease;
-        }
-
-        input[type="checkbox"]:hover {
-            transform: scale(1.6);
+            /* Ensure touch-friendly hit area */
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #e74c3c;
+            border-radius: 4px;
+            background-color: #fff;
+            position: relative;
         }
 
         input[type="checkbox"]:checked {
@@ -120,39 +132,54 @@
             border-color: #e74c3c;
         }
 
+        input[type="checkbox"]:checked::after {
+            content: '\2713'; /* Checkmark symbol */
+            color: white;
+            font-size: 16px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        input[type="checkbox"]:hover {
+            transform: scale(1.9);
+        }
+
         .save-button {
             display: block;
-            margin: 25px auto 0;
-            padding: 12px 30px;
+            margin: 20px auto 0;
+            padding: 10px 25px;
             background-color: #e74c3c;
             color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+            box-shadow: 0 3px 10px rgba(231, 76, 60, 0.3);
+            -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
         }
 
         .save-button:hover {
             background-color: #c0392b;
             transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(192, 57, 43, 0.4);
+            box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4);
         }
 
         .save-button:active {
             transform: translateY(0);
-            box-shadow: 0 3px 10px rgba(192, 57, 43, 0.3);
+            box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
         }
 
         footer {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
             color: #7f8c8d;
-            font-size: 0.9em;
+            font-size: 0.8em;
             opacity: 0.8;
             transition: opacity 0.3s ease;
         }
@@ -161,59 +188,18 @@
             opacity: 1;
         }
 
-        /* Responsive design */
-        @media (max-width: 768px) {
+        /* iOS-specific fixes */
+        @supports (-webkit-touch-callout: none) {
             .container {
-                padding: 20px;
-            }
-
-            header h1 {
-                font-size: 2.2em;
+                -webkit-overflow-scrolling: touch;
             }
 
             table {
-                font-size: 0.9em;
+                -webkit-user-select: none;
             }
 
-            th, td {
-                padding: 12px;
-            }
-
-            .save-button {
-                padding: 10px 25px;
-                font-size: 1em;
-            }
-
-            .checkbox-cell {
-                width: 10%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 15px;
-                width: 95%;
-            }
-
-            header h1 {
-                font-size: 1.8em;
-            }
-
-            table {
-                font-size: 0.8em;
-            }
-
-            th, td {
-                padding: 10px;
-            }
-
-            .save-button {
-                padding: 8px 20px;
-                font-size: 0.9em;
-            }
-
-            .checkbox-cell {
-                width: 15%;
+            input[type="checkbox"] {
+                -webkit-appearance: none;
             }
         }
     </style>
@@ -540,6 +526,11 @@
                 }
                 checkbox.addEventListener('change', function() {
                     savePreference(date, this.checked);
+                });
+                // Add touch event for better iOS compatibility
+                checkbox.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    this.click();
                 });
             });
         });
