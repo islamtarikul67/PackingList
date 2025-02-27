@@ -3,242 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curriculum Vitae</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Ramadan Prayer Times - March 2023</title>
     <style>
+        /* Reset default styles and set up layout */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Roboto', sans-serif; /* Modern sans-serif font */
         }
 
         body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #74ebd5, #9face6);
-            color: #333;
         }
 
         .container {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            background: #fff;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-            width: 90%;
             max-width: 1200px;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            background: linear-gradient(135deg, #2c3e50, #34495e);
-            color: white;
+            width: 90%;
             padding: 30px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .sidebar .profile {
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        header {
             text-align: center;
             margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
         }
 
-        .sidebar .profile img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #1abc9c;
+        header h1 {
+            color: #e74c3c; /* Vibrant red-orange for a modern touch */
+            font-size: 2.8em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: fadeIn 1s ease-in;
         }
 
-        .sidebar .profile h2 {
-            margin-top: 15px;
-            font-size: 1.8rem;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .sidebar .profile p {
-            font-size: 0.9rem;
-            opacity: 0.8;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
         }
 
-        .sidebar .contact, .sidebar .skills {
-            margin-top: 30px;
+        th, td {
+            padding: 16px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
-        .sidebar h3 {
-            margin-bottom: 15px;
-            font-size: 1.3rem;
-            border-bottom: 2px solid #1abc9c;
-            display: inline-block;
+        th {
+            background-color: #e74c3c;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .sidebar ul {
-            list-style: none;
-            margin-top: 15px;
+        tr {
+            background-color: #ffffff;
         }
 
-        .sidebar ul li {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            font-size: 0.95rem;
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
 
-        .sidebar ul li i {
+        tr:hover {
+            background-color: #fef5f5;
+            transform: scale(1.02);
+        }
+
+        .checkbox-cell {
+            width: 5%;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.5);
             margin-right: 10px;
-            color: #1abc9c;
+            cursor: pointer;
+            accent-color: #e74c3c; /* Matches header color for consistency */
+            transition: transform 0.2s ease;
         }
 
-        /* Main Content */
-        .main-content {
-            padding: 40px;
-            background: #f8f9fa;
+        input[type="checkbox"]:hover {
+            transform: scale(1.6);
         }
 
-        .main-content h2 {
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            color: #2c3e50;
+        input[type="checkbox"]:checked {
+            background-color: #e74c3c;
+            border-color: #e74c3c;
         }
 
-        .main-content .section {
-            margin-bottom: 30px;
-        }
-
-        .main-content .section h3 {
-            font-size: 1.7rem;
-            margin-bottom: 15px;
-            color: #34495e;
-            position: relative;
-        }
-
-        .main-content .section h3::after {
-            content: '';
-            position: absolute;
-            width: 60px;
-            height: 4px;
-            background: #1abc9c;
-            bottom: -5px;
-            left: 0;
-            border-radius: 2px;
-        }
-
-        .main-content p, .main-content ul {
-            margin-top: 15px;
-            line-height: 1.8;
-            font-size: 1rem;
-            color: #555;
-        }
-
-        .main-content ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .footer button {
-            background: linear-gradient(135deg, #1abc9c, #16a085);
+        .save-button {
+            display: block;
+            margin: 25px auto 0;
+            padding: 12px 30px;
+            background-color: #e74c3c;
             color: white;
             border: none;
-            padding: 12px 25px;
             border-radius: 25px;
-            font-size: 1rem;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
+            font-size: 1.1em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
         }
 
-        .footer button:hover {
-            background: linear-gradient(135deg, #16a085, #1abc9c);
-            transform: scale(1.05);
+        .save-button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(192, 57, 43, 0.4);
         }
 
+        .save-button:active {
+            transform: translateY(0);
+            box-shadow: 0 3px 10px rgba(192, 57, 43, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 0.9em;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        footer:hover {
+            opacity: 1;
+        }
+
+        /* Responsive design */
         @media (max-width: 768px) {
             .container {
-                grid-template-columns: 1fr;
+                padding: 20px;
             }
 
-            .sidebar {
-                text-align: center;
+            header h1 {
+                font-size: 2.2em;
             }
 
-            .sidebar .profile img {
-                margin-bottom: 15px;
+            table {
+                font-size: 0.9em;
+            }
+
+            th, td {
+                padding: 12px;
+            }
+
+            .save-button {
+                padding: 10px 25px;
+                font-size: 1em;
+            }
+
+            .checkbox-cell {
+                width: 10%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                width: 95%;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            table {
+                font-size: 0.8em;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .save-button {
+                padding: 8px 20px;
+                font-size: 0.9em;
+            }
+
+            .checkbox-cell {
+                width: 15%;
             }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="profile">
-                <img src="https://i.ibb.co/4wv8sTk7/9108910d-b760-4ff7-9308-e1978c8cd226.jpg" alt="Profile Picture">
-                <h2>Sharif Talukder</h2>
-                <p>Pizzaiolo Professionista</p>
-            </div>
-            <div class="contact">
-                <h3>Contatti</h3>
-                <ul>
-                    <li><i class="fas fa-envelope"></i> sharif@live.it</li>
-                    <li><i class="fas fa-phone"></i> 3284461400</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Pieve di Soligo, Italia</li>
-                </ul>
-            </div>
-            <div class="skills">
-                <h3>Competenze</h3>
-                <ul>
-                    <li><i class="fas fa-check"></i> Preparazione e cottura delle pizze</li>
-                    <li><i class="fas fa-check"></i> Gestione degli ingredienti</li>
-                    <li><i class="fas fa-check"></i> Controllo qualità</li>
-                    <li><i class="fas fa-check"></i> Lettura del disegno tecnico</li>
-                </ul>
-            </div>
-        </div>
+        <header>
+            <h1>Ramadan Prayer Times - March 2023</h1>
+        </header>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <h2>Descrizione</h2>
-            <p>Pizzaiolo altamente qualificato con oltre 6 anni di esperienza nella preparazione di pizze artigianali in ambienti dinamici e di alta qualità. Specializzato nell’utilizzo di ingredienti freschi e di prima scelta, garantendo sempre la massima soddisfazione del cliente. Ho una comprovata esperienza nella gestione del processo produttivo, nel controllo qualità e nel rispetto delle norme igienico-sanitarie, contribuendo al successo del team e al raggiungimento degli obiettivi aziendali.</p>
+        <table id="prayerTimesTable">
+            <thead>
+                <tr>
+                    <th class="checkbox-cell"></th>
+                    <th>Date</th>
+                    <th>Sehri Fair</th>
+                    <th>Dohr</th>
+                    <th>Asr</th>
+                    <th>Iftar Maghrib</th>
+                    <th>Ishaa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 1 Marzo"></td>
+                    <td>Sab, 1 Marzo</td>
+                    <td>5:09</td>
+                    <td>12:22</td>
+                    <td>4:09</td>
+                    <td>5:56</td>
+                    <td>7:35</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 2 Marzo"></td>
+                    <td>Dom, 2 Marzo</td>
+                    <td>5:07</td>
+                    <td>12:21</td>
+                    <td>4:10</td>
+                    <td>5:57</td>
+                    <td>7:37</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 3 Marzo"></td>
+                    <td>Lun, 3 Marzo</td>
+                    <td>5:05</td>
+                    <td>12:21</td>
+                    <td>4:11</td>
+                    <td>5:59</td>
+                    <td>7:38</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mar, 4 Marzo"></td>
+                    <td>Mar, 4 Marzo</td>
+                    <td>5:04</td>
+                    <td>12:21</td>
+                    <td>4:12</td>
+                    <td>6:00</td>
+                    <td>7:40</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mer, 5 Marzo"></td>
+                    <td>Mer, 5 Marzo</td>
+                    <td>5:02</td>
+                    <td>12:21</td>
+                    <td>4:13</td>
+                    <td>6:02</td>
+                    <td>7:41</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Gio, 6 Marzo"></td>
+                    <td>Gio, 6 Marzo</td>
+                    <td>5:00</td>
+                    <td>12:21</td>
+                    <td>4:15</td>
+                    <td>6:03</td>
+                    <td>7:42</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Ven, 7 Marzo"></td>
+                    <td>Ven, 7 Marzo</td>
+                    <td>4:58</td>
+                    <td>12:20</td>
+                    <td>4:16</td>
+                    <td>6:04</td>
+                    <td>7:44</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 8 Marzo"></td>
+                    <td>Sab, 8 Marzo</td>
+                    <td>4:56</td>
+                    <td>12:20</td>
+                    <td>4:18</td>
+                    <td>6:06</td>
+                    <td>7:45</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 9 Marzo"></td>
+                    <td>Dom, 9 Marzo</td>
+                    <td>4:54</td>
+                    <td>12:20</td>
+                    <td>4:18</td>
+                    <td>6:07</td>
+                    <td>7:47</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 10 Marzo"></td>
+                    <td>Lun, 10 Marzo</td>
+                    <td>4:52</td>
+                    <td>12:19</td>
+                    <td>4:19</td>
+                    <td>6:09</td>
+                    <td>7:48</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mar, 11 Marzo"></td>
+                    <td>Mar, 11 Marzo</td>
+                    <td>4:50</td>
+                    <td>12:19</td>
+                    <td>4:20</td>
+                    <td>6:10</td>
+                    <td>7:50</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mer, 12 Marzo"></td>
+                    <td>Mer, 12 Marzo</td>
+                    <td>4:48</td>
+                    <td>12:19</td>
+                    <td>4:22</td>
+                    <td>6:11</td>
+                    <td>7:51</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Gio, 13 Marzo"></td>
+                    <td>Gio, 13 Marzo</td>
+                    <td>4:46</td>
+                    <td>12:19</td>
+                    <td>4:23</td>
+                    <td>6:13</td>
+                    <td>7:53</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Ven, 14 Marzo"></td>
+                    <td>Ven, 14 Marzo</td>
+                    <td>4:44</td>
+                    <td>12:19</td>
+                    <td>4:24</td>
+                    <td>6:14</td>
+                    <td>7:54</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 15 Marzo"></td>
+                    <td>Sab, 15 Marzo</td>
+                    <td>4:42</td>
+                    <td>12:18</td>
+                    <td>4:25</td>
+                    <td>6:15</td>
+                    <td>7:55</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 16 Marzo"></td>
+                    <td>Dom, 16 Marzo</td>
+                    <td>4:40</td>
+                    <td>12:18</td>
+                    <td>4:26</td>
+                    <td>6:17</td>
+                    <td>7:58</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 17 Marzo"></td>
+                    <td>Lun, 17 Marzo</td>
+                    <td>4:38</td>
+                    <td>12:18</td>
+                    <td>4:27</td>
+                    <td>6:18</td>
+                    <td>7:58</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mar, 18 Marzo"></td>
+                    <td>Mar, 18 Marzo</td>
+                    <td>4:36</td>
+                    <td>12:17</td>
+                    <td>4:28</td>
+                    <td>6:19</td>
+                    <td>8:00</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mer, 19 Marzo"></td>
+                    <td>Mer, 19 Marzo</td>
+                    <td>4:34</td>
+                    <td>12:17</td>
+                    <td>4:29</td>
+                    <td>6:21</td>
+                    <td>8:02</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Gio, 20 Marzo"></td>
+                    <td>Gio, 20 Marzo</td>
+                    <td>4:32</td>
+                    <td>12:17</td>
+                    <td>4:30</td>
+                    <td>6:22</td>
+                    <td>8:03</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Ven, 21 Marzo"></td>
+                    <td>Ven, 21 Marzo</td>
+                    <td>4:30</td>
+                    <td>12:17</td>
+                    <td>4:31</td>
+                    <td>6:23</td>
+                    <td>8:05</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 22 Marzo"></td>
+                    <td>Sab, 22 Marzo</td>
+                    <td>4:27</td>
+                    <td>12:16</td>
+                    <td>4:32</td>
+                    <td>6:25</td>
+                    <td>8:06</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 23 Marzo"></td>
+                    <td>Dom, 23 Marzo</td>
+                    <td>4:25</td>
+                    <td>12:16</td>
+                    <td>4:33</td>
+                    <td>6:26</td>
+                    <td>8:08</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 24 Marzo"></td>
+                    <td>Lun, 24 Marzo</td>
+                    <td>4:23</td>
+                    <td>12:16</td>
+                    <td>4:34</td>
+                    <td>6:27</td>
+                    <td>8:09</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mar, 25 Marzo"></td>
+                    <td>Mar, 25 Marzo</td>
+                    <td>4:21</td>
+                    <td>12:15</td>
+                    <td>4:35</td>
+                    <td>6:29</td>
+                    <td>8:12</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mer, 26 Marzo"></td>
+                    <td>Mer, 26 Marzo</td>
+                    <td>4:19</td>
+                    <td>12:15</td>
+                    <td>4:36</td>
+                    <td>6:30</td>
+                    <td>8:14</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Gio, 27 Marzo"></td>
+                    <td>Gio, 27 Marzo</td>
+                    <td>4:17</td>
+                    <td>12:15</td>
+                    <td>4:37</td>
+                    <td>6:31</td>
+                    <td>8:14</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Ven, 28 Marzo"></td>
+                    <td>Ven, 28 Marzo</td>
+                    <td>4:14</td>
+                    <td>12:14</td>
+                    <td>4:38</td>
+                    <td>6:33</td>
+                    <td>8:16</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 29 Marzo"></td>
+                    <td>Sab, 29 Marzo</td>
+                    <td>4:12</td>
+                    <td>12:14</td>
+                    <td>4:39</td>
+                    <td>6:34</td>
+                    <td>8:17</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 30 Marzo"></td>
+                    <td>Dom, 30 Marzo</td>
+                    <td>4:10</td>
+                    <td>12:14</td>
+                    <td>4:40</td>
+                    <td>6:35</td>
+                    <td>8:19</td>
+                </tr>
+                <tr>
+                    <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 31 Marzo"></td>
+                    <td>Lun, 31 Marzo</td>
+                    <td>4:08</td>
+                    <td>12:14</td>
+                    <td>4:41</td>
+                    <td>6:37</td>
+                    <td>8:21</td>
+                </tr>
+            </tbody>
+        </table>
 
-            <p>Le mie competenze includono:</p>
-            <ul>
-                <li><strong>Preparazione e cottura delle pizze</strong> secondo metodi tradizionali e innovativi.</li>
-                <li><strong>Gestione degli ingredienti</strong>, dalla selezione al monitoraggio delle scorte.</li>
-                <li><strong>Controllo qualità</strong> per garantire uno standard eccellente in ogni prodotto.</li>
-                <li><strong>Teamwork</strong> e capacità organizzative per migliorare il flusso operativo in cucina.</li>
-            </ul>
+        <button class="save-button" onclick="savePreferences()">Save Preferences</button>
 
-            <div class="section">
-                <h3>Esperienza</h3>
-                <ul>
-                    <li>
-                        <strong>Adetto Alle Macchine</strong> - Tecno Componenti SRL (2016-2017)
-                        <p>Attrezzaggio delle macchine per lo stampaggio di componenti in plastica, controllo qualità, e utilizzo di strumenti di misura.</p>
-                    </li>
-                    <li>
-                        <strong>Pizzaiolo</strong> - Pizzalonga Away DA PINO (2017-Attuale)
-                        <p>Responsabile della preparazione e cottura delle pizze, gestione degli ingredienti e supervisione delle norme igienico-sanitarie.</p>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="section">
-                <h3>Istruzione</h3>
-                <p>Qualifica Professionale - Operatore Meccanico<br>I.P.S.I.A. Pittoni (2010-2013)</p>
-            </div>
-
-            <div class="footer">
-    <a href="https://www.swisstransfer.com/d/51ef9b0f-1a7b-4cfb-a4eb-eec82dcf5316" download>
-        <button>Scarica CV</button>
-    </a>
-</div>
-
-        </div>
+        <footer>
+            <p>© 2023 Ramadan Prayer Times. All rights reserved.</p>
+        </footer>
     </div>
+
+    <script>
+        // Load saved preferences from localStorage when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.prayer-checkbox');
+            const savedPrefs = JSON.parse(localStorage.getItem('prayerPreferences')) || {};
+
+            checkboxes.forEach(checkbox => {
+                const date = checkbox.getAttribute('data-date');
+                if (savedPrefs[date]) {
+                    checkbox.checked = true;
+                }
+                checkbox.addEventListener('change', function() {
+                    savePreference(date, this.checked);
+                });
+            });
+        });
+
+        // Save preferences to localStorage
+        function savePreference(date, checked) {
+            const prefs = JSON.parse(localStorage.getItem('prayerPreferences')) || {};
+            prefs[date] = checked;
+            localStorage.setItem('prayerPreferences', JSON.stringify(prefs));
+        }
+
+        // Save all preferences when the button is clicked
+        function savePreferences() {
+            const checkboxes = document.querySelectorAll('.prayer-checkbox');
+            const prefs = {};
+
+            checkboxes.forEach(checkbox => {
+                const date = checkbox.getAttribute('data-date');
+                prefs[date] = checkbox.checked;
+            });
+
+            localStorage.setItem('prayerPreferences', JSON.stringify(prefs));
+            alert('Preferences saved successfully!');
+        }
+    </script>
 </body>
 </html>
