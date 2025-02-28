@@ -131,7 +131,7 @@
 
         .save-button {
             display: block;
-            margin: 20px auto;
+            margin: 20px auto 0;
             padding: 10px 25px;
             background-color: #ff0000;
             color: #fff;
@@ -144,6 +144,7 @@
             letter-spacing: 1px;
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 3px 10px rgba(255, 0, 0, 0.3);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .save-button:hover {
@@ -589,7 +590,7 @@
             </table>
         </div>
 
-        <button class="save-button" onclick="savePreferences()">Salva Preferenze</button>
+        <button class="save-button" onclick="savePreferences()">Save Preferences</button>
 
         <footer>
             <p>© 2025 Ramadan Prayer Times. All rights reserved.</p>
@@ -597,6 +598,53 @@
     </div>
 
     <script>
-        // Carica le preferenze salvate al caricamento della pagina
+        // Carica le preferenze salvate dal localStorage quando la pagina si carica
         document.addEventListener('DOMContentLoaded', function() {
-            const​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const savedPrefs = JSON.parse(localStorage.getItem('prayerPreferences')) || {};
+
+            checkboxes.forEach(checkbox => {
+                const day = checkbox.getAttribute('name');
+                if (savedPrefs[day]) {
+                    checkbox.checked = true;
+                    checkbox.closest('tr').classList.add('checked');
+                }
+                checkbox.addEventListener('change', function() {
+                    savePreference(day, this.checked);
+                    if (this.checked) {
+                        this.closest('tr').classList.add('checked');
+                    } else {
+                        this.closest('tr').classList.remove('checked');
+                    }
+                });
+                // Aggiungi evento touch per compatibilità con iOS
+                checkbox.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    this.click();
+                });
+            });
+        });
+
+        // Salva una preferenza nel localStorage
+        function savePreference(day, checked) {
+            const prefs = JSON.parse(localStorage.getItem('prayerPreferences')) || {};
+            prefs[day] = checked;
+            localStorage.setItem('prayerPreferences', JSON.stringify(prefs));
+        }
+
+        // Salva tutte le preferenze quando il pulsante viene cliccato
+        function savePreferences() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const prefs = {};
+
+            checkboxes.forEach(checkbox => {
+                const day = checkbox.getAttribute('name');
+                prefs[day] = checkbox.checked;
+            });
+
+            localStorage.setItem('prayerPreferences', JSON.stringify(prefs));
+            alert('Preferences saved successfully!');
+        }
+    </script>
+</body>
+</html>
