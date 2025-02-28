@@ -1,44 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ramadan Prayer Times</title>
     <style>
-        /* Stile originale mantenuto invariato */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Lato', sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background: linear-gradient(135deg, #f0f8ff 0%, #a2cffe 100%);
             color: #333;
-            line-height: 1.6;
-            padding: 0;
+            padding: 20px;
             min-height: 100vh;
-            margin: 0;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            -webkit-overflow-scrolling: touch;
+            align-items: center;
         }
 
         .container {
-            max-width: 100%;
+            max-width: 1000px;
             width: 100%;
-            padding: 20px;
             background-color: #ffffff;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin: 10px 0;
         }
 
         .container:hover {
@@ -48,24 +39,22 @@
 
         header {
             text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #e0e0e0;
+            padding: 20px;
+            background-color: #ff0000;
+            color: #fff;
+            border-bottom: 2px solid #00ff00;
         }
 
         header h1 {
-            color: #2c3e50;
-            font-size: 1.8em;
+            font-size: 28px;
             font-weight: 700;
             margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: fadeIn 1s ease-in;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
         }
 
         .table-wrapper {
@@ -77,29 +66,49 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            background-color: #fff;
-            border-radius: 8px;
-            font-size: 0.9em;
+            font-size: 14px;
         }
 
         th, td {
-            padding: 12px;
+            padding: 12px 15px;
             text-align: center;
-            border: 1px solid #f0f0f0;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            -webkit-user-select: none;
+            border: 1px solid #e0e0e0;
+            min-width: 80px;
         }
 
         th {
-            background-color: #2c3e50;
-            color: white;
+            background-color: #ff0000;
+            color: #fff;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             position: sticky;
             top: 0;
             z-index: 1;
+        }
+
+        .section-header {
+            background-color: #ffcccc;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            border-top: 2px solid #00ff00;
+        }
+
+        .checkbox-column {
+            width: 5%;
+            min-width: 50px;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 5px;
+            vertical-align: middle;
+            cursor: pointer;
+            accent-color: #ff0000;
+            transition: transform 0.2s ease;
+        }
+
+        input[type="checkbox"]:hover {
+            transform: scale(1.6);
         }
 
         tr {
@@ -113,117 +122,66 @@
         tr:hover {
             background-color: #f5f8fa;
             transform: scale(1.02);
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         tr.checked {
             background-color: #e8f5e9;
-            border: 1px solid #f0f0f0;
-        }
-
-        .sehri, .iftar {
-            font-weight: 500;
-            color: #27ae60;
-        }
-
-        .default {
-            color: #333;
-        }
-
-        .checkbox-cell {
-            width: 15%;
-        }
-
-        input[type="checkbox"] {
-            transform: scale(1.8);
-            margin-right: 8px;
-            cursor: pointer;
-            accent-color: #2c3e50;
-            transition: transform 0.2s ease;
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border: 2px solid #2c3e50;
-            border-radius: 4px;
-            background-color: #fff;
-            position: relative;
-        }
-
-        input[type="checkbox"]:checked {
-            background-color: #2c3e50;
-            border-color: #2c3e50;
-        }
-
-        input[type="checkbox"]:checked::after {
-            content: '\2713';
-            color: white;
-            font-size: 16px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        input[type="checkbox"]:hover {
-            transform: scale(1.9);
         }
 
         .save-button {
             display: block;
-            margin: 20px auto 0;
+            margin: 20px auto;
             padding: 10px 25px;
-            background-color: #2c3e50;
-            color: white;
+            background-color: #ff0000;
+            color: #fff;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 16px;
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 3px 10px rgba(44, 62, 80, 0.3);
-            -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 3px 10px rgba(255, 0, 0, 0.3);
         }
 
         .save-button:hover {
-            background-color: #34495e;
+            background-color: #cc0000;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 73, 94, 0.4);
+            box-shadow: 0 5px 15px rgba(204, 0, 0, 0.4);
         }
 
         .save-button:active {
             transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(52, 73, 94, 0.3);
+            box-shadow: 0 2px 8px rgba(204, 0, 0, 0.3);
         }
 
         footer {
             text-align: center;
-            margin-top: 20px;
-            color: #7f8c8d;
-            font-size: 0.8em;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
+            padding: 15px;
+            color: #666;
+            font-size: 12px;
+            border-top: 1px solid #e0e0e0;
         }
 
-        footer:hover {
-            opacity: 1;
-        }
-
-        @supports (-webkit-touch-callout: none) {
-            .container {
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .table-wrapper {
-                -webkit-overflow-scrolling: touch;
-            }
-
+        @media (max-width: 768px) {
             table {
-                -webkit-user-select: none;
+                font-size: 12px;
             }
-
-            input[type="checkbox"] {
-                -webkit-appearance: none;
+            th, td {
+                padding: 10px 12px;
+                min-width: 60px;
+            }
+            .container {
+                margin: 10px;
+            }
+            header h1 {
+                font-size: 22px;
+            }
+            .save-button {
+                font-size: 14px;
+                padding: 8px 20px;
             }
         }
     </style>
@@ -233,306 +191,406 @@
     <div class="container">
         <header>
             <h1>Ramadan Prayer Times</h1>
+            <p>Via Gaetano Schiratti, N°134, 31053 Pieve Di Soligo, Treviso, Italy</p>
+            <p>Metodo Hanafi (Fajr 18° - Isha 17°)</p>
         </header>
 
         <div class="table-wrapper">
-            <table id="prayerTimesTable">
+            <table>
                 <thead>
                     <tr>
-                        <th class="checkbox-cell"></th>
-                        <th>Date</th>
-                        <th>Sehri Fair</th>
-                        <th>Dohr</th>
+                        <th class="checkbox-column"></th>
+                        <th>Ramadan</th>
+                        <th>Data</th>
+                        <th>Giorno</th>
+                        <th>Fine Sehri</th>
+                        <th>Fajr</th>
+                        <th>Zuhr</th>
                         <th>Asr</th>
-                        <th>Iftar Maghrib</th>
-                        <th>Ishaa</th>
+                        <th>Iftar (Maghrib)</th>
+                        <th>Isha</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 1 Marzo"></td>
-                        <td>Sab, 1 Marzo</td>
-                        <td class="sehri">5:10</td>
-                        <td class="default">12:24</td>
-                        <td class="default">4:12</td>
-                        <td class="iftar">6:02</td>
-                        <td class="default">7:31</td>
+                    <!-- 10 DAY RAHMAH -->
+                    <tr class="section-header">
+                        <td colspan="10">10 DAY RAHMAH</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 2 Marzo"></td>
-                        <td>Dom, 2 Marzo</td>
-                        <td class="sehri">5:08</td>
-                        <td class="default">12:24</td>
-                        <td class="default">4:13</td>
-                        <td class="iftar">6:03</td>
-                        <td class="default">7:32</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day1" id="day1"></td>
+                        <td>01</td>
+                        <td>Marzo 01</td>
+                        <td>Sab</td>
+                        <td>05:12 AM</td>
+                        <td>05:10 AM</td>
+                        <td>12:24 PM</td>
+                        <td>04:12 PM</td>
+                        <td>06:02 PM</td>
+                        <td>07:31 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 3 Marzo"></td>
-                        <td>Lun, 3 Marzo</td>
-                        <td class="sehri">5:06</td>
-                        <td class="default">12:24</td>
-                        <td class="default">4:14</td>
-                        <td class="iftar">6:05</td>
-                        <td class="default">7:34</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day2" id="day2"></td>
+                        <td>02</td>
+                        <td>Marzo 02</td>
+                        <td>Dom</td>
+                        <td>05:10 AM</td>
+                        <td>05:08 AM</td>
+                        <td>12:24 PM</td>
+                        <td>04:13 PM</td>
+                        <td>06:03 PM</td>
+                        <td>07:32 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mar, 4 Marzo"></td>
-                        <td>Mar, 4 Marzo</td>
-                        <td class="sehri">5:04</td>
-                        <td class="default">12:23</td>
-                        <td class="default">4:15</td>
-                        <td class="iftar">6:06</td>
-                        <td class="default">7:35</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day3" id="day3"></td>
+                        <td>03</td>
+                        <td>Marzo 03</td>
+                        <td>Lun</td>
+                        <td>05:08 AM</td>
+                        <td>05:06 AM</td>
+                        <td>12:24 PM</td>
+                        <td>04:14 PM</td>
+                        <td>06:04 PM</td>
+                        <td>07:33 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mer, 5 Marzo"></td>
-                        <td>Mer, 5 Marzo</td>
-                        <td class="sehri">5:02</td>
-                        <td class="default">12:23</td>
-                        <td class="default">4:16</td>
-                        <td class="iftar">6:07</td>
-                        <td class="default">7:37</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day4" id="day4"></td>
+                        <td>04</td>
+                        <td>Marzo 04</td>
+                        <td>Mar</td>
+                        <td>05:06 AM</td>
+                        <td>05:04 AM</td>
+                        <td>12:23 PM</td>
+                        <td>04:15 PM</td>
+                        <td>06:05 PM</td>
+                        <td>07:34 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Gio, 6 Marzo"></td>
-                        <td>Gio, 6 Marzo</td>
-                        <td class="sehri">5:00</td>
-                        <td class="default">12:23</td>
-                        <td class="default">4:17</td>
-                        <td class="iftar">6:08</td>
-                        <td class="default">7:38</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day5" id="day5"></td>
+                        <td>05</td>
+                        <td>Marzo 05</td>
+                        <td>Mer</td>
+                        <td>05:04 AM</td>
+                        <td>05:02 AM</td>
+                        <td>12:23 PM</td>
+                        <td>04:16 PM</td>
+                        <td>06:06 PM</td>
+                        <td>07:35 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Ven, 7 Marzo"></td>
-                        <td>Ven, 7 Marzo</td>
-                        <td class="sehri">4:57</td>
-                        <td class="default">12:23</td>
-                        <td class="default">4:18</td>
-                        <td class="iftar">6:09</td>
-                        <td class="default">7:39</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day6" id="day6"></td>
+                        <td>06</td>
+                        <td>Marzo 06</td>
+                        <td>Gio</td>
+                        <td>05:02 AM</td>
+                        <td>05:00 AM</td>
+                        <td>12:23 PM</td>
+                        <td>04:17 PM</td>
+                        <td>06:07 PM</td>
+                        <td>07:36 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 8 Marzo"></td>
-                        <td>Sab, 8 Marzo</td>
-                        <td class="sehri">4:55</td>
-                        <td class="default">12:22</td>
-                        <td class="default">4:19</td>
-                        <td class="iftar">6:10</td>
-                        <td class="default">7:41</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day7" id="day7"></td>
+                        <td>07</td>
+                        <td>Marzo 07</td>
+                        <td>Ven</td>
+                        <td>05:00 AM</td>
+                        <td>04:58 AM</td>
+                        <td>12:23 PM</td>
+                        <td>04:18 PM</td>
+                        <td>06:08 PM</td>
+                        <td>07:37 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 9 Marzo"></td>
-                        <td>Dom, 9 Marzo</td>
-                        <td class="sehri">4:53</td>
-                        <td class="default">12:22</td>
-                        <td class="default">4:20</td>
-                        <td class="iftar">6:11</td>
-                        <td class="default">7:42</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day8" id="day8"></td>
+                        <td>08</td>
+                        <td>Marzo 08</td>
+                        <td>Sab</td>
+                        <td>04:58 AM</td>
+                        <td>04:56 AM</td>
+                        <td>12:22 PM</td>
+                        <td>04:19 PM</td>
+                        <td>06:09 PM</td>
+                        <td>07:38 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 10 Marzo"></td>
-                        <td>Lun, 10 Marzo</td>
-                        <td class="sehri">4:51</td>
-                        <td class="default">12:22</td>
-                        <td class="default">4:21</td>
-                        <td class="iftar">6:12</td>
-                        <td class="default">7:44</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day9" id="day9"></td>
+                        <td>09</td>
+                        <td>Marzo 09</td>
+                        <td>Dom</td>
+                        <td>04:56 AM</td>
+                        <td>04:54 AM</td>
+                        <td>12:22 PM</td>
+                        <td>04:20 PM</td>
+                        <td>06:10 PM</td>
+                        <td>07:39 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mar, 11 Marzo"></td>
-                        <td>Mar, 11 Marzo</td>
-                        <td class="sehri">4:49</td>
-                        <td class="default">12:22</td>
-                        <td class="default">4:22</td>
-                        <td class="iftar">6:13</td>
-                        <td class="default">7:45</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day10" id="day10"></td>
+                        <td>10</td>
+                        <td>Marzo 10</td>
+                        <td>Lun</td>
+                        <td>04:54 AM</td>
+                        <td>04:52 AM</td>
+                        <td>12:22 PM</td>
+                        <td>04:21 PM</td>
+                        <td>06:11 PM</td>
+                        <td>07:40 PM</td>
+                    </tr>
+
+                    <!-- 10 DAY MAGFERAT -->
+                    <tr class="section-header">
+                        <td colspan="10">10 DAY MAGFERAT</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mer, 12 Marzo"></td>
-                        <td>Mer, 12 Marzo</td>
-                        <td class="sehri">4:47</td>
-                        <td class="default">12:21</td>
-                        <td class="default">4:23</td>
-                        <td class="iftar">6:14</td>
-                        <td class="default">7:46</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day11" id="day11"></td>
+                        <td>11</td>
+                        <td>Marzo 11</td>
+                        <td>Mar</td>
+                        <td>04:52 AM</td>
+                        <td>04:50 AM</td>
+                        <td>12:22 PM</td>
+                        <td>04:22 PM</td>
+                        <td>06:12 PM</td>
+                        <td>07:41 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Gio, 13 Marzo"></td>
-                        <td>Gio, 13 Marzo</td>
-                        <td class="sehri">4:45</td>
-                        <td class="default">12:21</td>
-                        <td class="default">4:24</td>
-                        <td class="iftar">6:15</td>
-                        <td class="default">7:47</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day12" id="day12"></td>
+                        <td>12</td>
+                        <td>Marzo 12</td>
+                        <td>Mer</td>
+                        <td>04:50 AM</td>
+                        <td>04:48 AM</td>
+                        <td>12:21 PM</td>
+                        <td>04:23 PM</td>
+                        <td>06:13 PM</td>
+                        <td>07:42 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Ven, 14 Marzo"></td>
-                        <td>Ven, 14 Marzo</td>
-                        <td class="sehri">4:43</td>
-                        <td class="default">12:21</td>
-                        <td class="default">4:25</td>
-                        <td class="iftar">6:16</td>
-                        <td class="default">7:49</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day13" id="day13"></td>
+                        <td>13</td>
+                        <td>Marzo 13</td>
+                        <td>Gio</td>
+                        <td>04:48 AM</td>
+                        <td>04:46 AM</td>
+                        <td>12:21 PM</td>
+                        <td>04:24 PM</td>
+                        <td>06:14 PM</td>
+                        <td>07:43 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 15 Marzo"></td>
-                        <td>Sab, 15 Marzo</td>
-                        <td class="sehri">4:41</td>
-                        <td class="default">12:21</td>
-                        <td class="default">4:26</td>
-                        <td class="iftar">6:17</td>
-                        <td class="default">7:50</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day14" id="day14"></td>
+                        <td>14</td>
+                        <td>Marzo 14</td>
+                        <td>Ven</td>
+                        <td>04:46 AM</td>
+                        <td>04:44 AM</td>
+                        <td>12:21 PM</td>
+                        <td>04:25 PM</td>
+                        <td>06:15 PM</td>
+                        <td>07:44 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 16 Marzo"></td>
-                        <td>Dom, 16 Marzo</td>
-                        <td class="sehri">4:39</td>
-                        <td class="default">12:20</td>
-                        <td class="default">4:27</td>
-                        <td class="iftar">6:18</td>
-                        <td class="default">7:51</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day15" id="day15"></td>
+                        <td>15</td>
+                        <td>Marzo 15</td>
+                        <td>Sab</td>
+                        <td>04:44 AM</td>
+                        <td>04:42 AM</td>
+                        <td>12:21 PM</td>
+                        <td>04:26 PM</td>
+                        <td>06:16 PM</td>
+                        <td>07:45 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 17 Marzo"></td>
-                        <td>Lun, 17 Marzo</td>
-                        <td class="sehri">4:37</td>
-                        <td class="default">12:20</td>
-                        <td class="default">4:28</td>
-                        <td class="iftar">6:19</td>
-                        <td class="default">7:53</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day16" id="day16"></td>
+                        <td>16</td>
+                        <td>Marzo 16</td>
+                        <td>Dom</td>
+                        <td>04:42 AM</td>
+                        <td>04:40 AM</td>
+                        <td>12:20 PM</td>
+                        <td>04:27 PM</td>
+                        <td>06:17 PM</td>
+                        <td>07:46 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mar, 18 Marzo"></td>
-                        <td>Mar, 18 Marzo</td>
-                        <td class="sehri">4:35</td>
-                        <td class="default">12:20</td>
-                        <td class="default">4:29</td>
-                        <td class="iftar">6:20</td>
-                        <td class="default">7:54</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day17" id="day17"></td>
+                        <td>17</td>
+                        <td>Marzo 17</td>
+                        <td>Lun</td>
+                        <td>04:40 AM</td>
+                        <td>04:38 AM</td>
+                        <td>12:20 PM</td>
+                        <td>04:28 PM</td>
+                        <td>06:18 PM</td>
+                        <td>07:47 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mer, 19 Marzo"></td>
-                        <td>Mer, 19 Marzo</td>
-                        <td class="sehri">4:33</td>
-                        <td class="default">12:19</td>
-                        <td class="default">4:30</td>
-                        <td class="iftar">6:21</td>
-                        <td class="default">7:55</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day18" id="day18"></td>
+                        <td>18</td>
+                        <td>Marzo 18</td>
+                        <td>Mar</td>
+                        <td>04:38 AM</td>
+                        <td>04:36 AM</td>
+                        <td>12:20 PM</td>
+                        <td>04:29 PM</td>
+                        <td>06:19 PM</td>
+                        <td>07:48 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Gio, 20 Marzo"></td>
-                        <td>Gio, 20 Marzo</td>
-                        <td class="sehri">4:31</td>
-                        <td class="default">12:19</td>
-                        <td class="default">4:31</td>
-                        <td class="iftar">6:22</td>
-                        <td class="default">7:57</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day19" id="day19"></td>
+                        <td>19</td>
+                        <td>Marzo 19</td>
+                        <td>Mer</td>
+                        <td>04:36 AM</td>
+                        <td>04:34 AM</td>
+                        <td>12:19 PM</td>
+                        <td>04:30 PM</td>
+                        <td>06:20 PM</td>
+                        <td>07:49 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Ven, 21 Marzo"></td>
-                        <td>Ven, 21 Marzo</td>
-                        <td class="sehri">4:29</td>
-                        <td class="default">12:19</td>
-                        <td class="default">4:32</td>
-                        <td class="iftar">6:23</td>
-                        <td class="default">7:58</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day20" id="day20"></td>
+                        <td>20</td>
+                        <td>Marzo 20</td>
+                        <td>Gio</td>
+                        <td>04:34 AM</td>
+                        <td>04:32 AM</td>
+                        <td>12:19 PM</td>
+                        <td>04:31 PM</td>
+                        <td>06:21 PM</td>
+                        <td>07:50 PM</td>
+                    </tr>
+
+                    <!-- 10 DAY NAJAT -->
+                    <tr class="section-header">
+                        <td colspan="10">10 DAY NAJAT</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 22 Marzo"></td>
-                        <td>Sab, 22 Marzo</td>
-                        <td class="sehri">4:27</td>
-                        <td class="default">12:19</td>
-                        <td class="default">4:33</td>
-                        <td class="iftar">6:24</td>
-                        <td class="default">8:00</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day21" id="day21"></td>
+                        <td>21</td>
+                        <td>Marzo 21</td>
+                        <td>Ven</td>
+                        <td>04:32 AM</td>
+                        <td>04:30 AM</td>
+                        <td>12:19 PM</td>
+                        <td>04:32 PM</td>
+                        <td>06:22 PM</td>
+                        <td>07:51 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 23 Marzo"></td>
-                        <td>Dom, 23 Marzo</td>
-                        <td class="sehri">4:25</td>
-                        <td class="default">12:18</td>
-                        <td class="default">4:34</td>
-                        <td class="iftar">6:25</td>
-                        <td class="default">8:01</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day22" id="day22"></td>
+                        <td>22</td>
+                        <td>Marzo 22</td>
+                        <td>Sab</td>
+                        <td>04:30 AM</td>
+                        <td>04:28 AM</td>
+                        <td>12:19 PM</td>
+                        <td>04:33 PM</td>
+                        <td>06:23 PM</td>
+                        <td>07:52 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 24 Marzo"></td>
-                        <td>Lun, 24 Marzo</td>
-                        <td class="sehri">4:23</td>
-                        <td class="default">12:18</td>
-                        <td class="default">4:35</td>
-                        <td class="iftar">6:26</td>
-                        <td class="default">8:03</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day23" id="day23"></td>
+                        <td>23</td>
+                        <td>Marzo 23</td>
+                        <td>Dom</td>
+                        <td>04:28 AM</td>
+                        <td>04:26 AM</td>
+                        <td>12:18 PM</td>
+                        <td>04:34 PM</td>
+                        <td>06:24 PM</td>
+                        <td>07:53 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mar, 25 Marzo"></td>
-                        <td>Mar, 25 Marzo</td>
-                        <td class="sehri">4:21</td>
-                        <td class="default">12:18</td>
-                        <td class="default">4:36</td>
-                        <td class="iftar">6:27</td>
-                        <td class="default">8:04</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day24" id="day24"></td>
+                        <td>24</td>
+                        <td>Marzo 24</td>
+                        <td>Lun</td>
+                        <td>04:26 AM</td>
+                        <td>04:24 AM</td>
+                        <td>12:18 PM</td>
+                        <td>04:35 PM</td>
+                        <td>06:25 PM</td>
+                        <td>07:54 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Mer, 26 Marzo"></td>
-                        <td>Mer, 26 Marzo</td>
-                        <td class="sehri">4:19</td>
-                        <td class="default">12:17</td>
-                        <td class="default">4:37</td>
-                        <td class="iftar">6:28</td>
-                        <td class="default">8:05</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day25" id="day25"></td>
+                        <td>25</td>
+                        <td>Marzo 25</td>
+                        <td>Mar</td>
+                        <td>04:24 AM</td>
+                        <td>04:22 AM</td>
+                        <td>12:18 PM</td>
+                        <td>04:36 PM</td>
+                        <td>06:26 PM</td>
+                        <td>07:55 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Gio, 27 Marzo"></td>
-                        <td>Gio, 27 Marzo</td>
-                        <td class="sehri">4:17</td>
-                        <td class="default">12:17</td>
-                        <td class="default">4:38</td>
-                        <td class="iftar">6:29</td>
-                        <td class="default">8:07</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day26" id="day26"></td>
+                        <td>26</td>
+                        <td>Marzo 26</td>
+                        <td>Mer</td>
+                        <td>04:22 AM</td>
+                        <td>04:20 AM</td>
+                        <td>12:17 PM</td>
+                        <td>04:37 PM</td>
+                        <td>06:27 PM</td>
+                        <td>07:56 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Ven, 28 Marzo"></td>
-                        <td>Ven, 28 Marzo</td>
-                        <td class="sehri">4:15</td>
-                        <td class="default">12:17</td>
-                        <td class="default">4:39</td>
-                        <td class="iftar">6:30</td>
-                        <td class="default">8:08</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day27" id="day27"></td>
+                        <td>27</td>
+                        <td>Marzo 27</td>
+                        <td>Gio</td>
+                        <td>04:20 AM</td>
+                        <td>04:18 AM</td>
+                        <td>12:17 PM</td>
+                        <td>04:38 PM</td>
+                        <td>06:28 PM</td>
+                        <td>07:57 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Sab, 29 Marzo"></td>
-                        <td>Sab, 29 Marzo</td>
-                        <td class="sehri">4:13</td>
-                        <td class="default">12:16</td>
-                        <td class="default">4:40</td>
-                        <td class="iftar">6:31</td>
-                        <td class="default">8:10</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day28" id="day28"></td>
+                        <td>28</td>
+                        <td>Marzo 28</td>
+                        <td>Ven</td>
+                        <td>04:18 AM</td>
+                        <td>04:16 AM</td>
+                        <td>12:17 PM</td>
+                        <td>04:39 PM</td>
+                        <td>06:29 PM</td>
+                        <td>07:58 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Dom, 30 Marzo"></td>
-                        <td>Dom, 30 Marzo</td>
-                        <td class="sehri">4:11</td>
-                        <td class="default">12:16</td>
-                        <td class="default">4:41</td>
-                        <td class="iftar">6:32</td>
-                        <td class="default">8:11</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day29" id="day29"></td>
+                        <td>29</td>
+                        <td>Marzo 29</td>
+                        <td>Sab</td>
+                        <td>04:16 AM</td>
+                        <td>04:14 AM</td>
+                        <td>12:16 PM</td>
+                        <td>04:40 PM</td>
+                        <td>06:30 PM</td>
+                        <td>07:59 PM</td>
                     </tr>
                     <tr>
-                        <td class="checkbox-cell"><input type="checkbox" class="prayer-checkbox" data-date="Lun, 31 Marzo"></td>
-                        <td>Lun, 31 Marzo</td>
-                        <td class="sehri">4:08</td>
-                        <td class="default">12:14</td>
-                        <td class="default">4:41</td>
-                        <td class="iftar">6:37</td>
-                        <td class="default">8:21</td>
+                        <td class="checkbox-column"><input type="checkbox" name="day30" id="day30"></td>
+                        <td>30</td>
+                        <td>Marzo 30</td>
+                        <td>Dom</td>
+                        <td>04:14 AM</td>
+                        <td>04:12 AM</td>
+                        <td>12:16 PM</td>
+                        <td>04:41 PM</td>
+                        <td>06:31 PM</td>
+                        <td>08:00 PM</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <button class="save-button" onclick="savePreferences()">Save Preferences</button>
+        <button class="save-button" onclick="savePreferences()">Salva Preferenze</button>
 
         <footer>
             <p>© 2025 Ramadan Prayer Times. All rights reserved.</p>
@@ -540,50 +598,6 @@
     </div>
 
     <script>
-        // Script originale mantenuto invariato
+        // Carica le preferenze salvate al caricamento della pagina
         document.addEventListener('DOMContentLoaded', function() {
-            const checkboxes = document.querySelectorAll('.prayer-checkbox');
-            const savedPrefs = JSON.parse(localStorage.getItem('prayerPreferences')) || {};
-
-            checkboxes.forEach(checkbox => {
-                const date = checkbox.getAttribute('data-date');
-                if (savedPrefs[date]) {
-                    checkbox.checked = true;
-                    checkbox.closest('tr').classList.add('checked');
-                }
-                checkbox.addEventListener('change', function() {
-                    savePreference(date, this.checked);
-                    if (this.checked) {
-                        this.closest('tr').classList.add('checked');
-                    } else {
-                        this.closest('tr').classList.remove('checked');
-                    }
-                });
-                checkbox.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    this.click();
-                });
-            });
-        });
-
-        function savePreference(date, checked) {
-            const prefs = JSON.parse(localStorage.getItem('prayerPreferences')) || {};
-            prefs[date] = checked;
-            localStorage.setItem('prayerPreferences', JSON.stringify(prefs));
-        }
-
-        function savePreferences() {
-            const checkboxes = document.querySelectorAll('.prayer-checkbox');
-            const prefs = {};
-
-            checkboxes.forEach(checkbox => {
-                const date = checkbox.getAttribute('data-date');
-                prefs[date] = checkbox.checked;
-            });
-
-            localStorage.setItem('prayerPreferences', JSON.stringify(prefs));
-            alert('Preferences saved successfully!');
-        }
-    </script>
-</body>
-</html>
+            const​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
