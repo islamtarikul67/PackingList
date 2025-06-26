@@ -152,10 +152,22 @@
                 <div class="card">
                     <form id="addItemForm" class="p-6">
                         <h2 class="text-xl font-semibold text-slate-700 mb-4">Aggiungi Nuovo Articolo</h2>
+                        
+                        <!-- Filtro Marchio -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-slate-600 mb-2">Filtro Codici</label>
+                            <div id="brandFilterContainer" class="flex flex-wrap gap-2 rounded-lg bg-slate-100 p-1">
+                                <!-- Radio buttons verranno inseriti qui -->
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                              <div>
                                 <label for="itemCode" class="block text-sm font-medium text-slate-600 mb-1">Codice Articolo</label>
-                                <input type="text" id="itemCode" name="itemCode" class="form-input" required>
+                                <input list="itemCodesList" id="itemCode" name="itemCode" class="form-input" required>
+                                <datalist id="itemCodesList">
+                                    <!-- Options verranno inserite qui da JS -->
+                                </datalist>
                             </div>
                             <div>
                                 <label for="lotto" class="block text-sm font-medium text-slate-600 mb-1">Lotto</label>
@@ -201,6 +213,41 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Card Impostazioni Stampa -->
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold text-slate-700 mb-4">Impostazioni Stampa</h2>
+                    <div class="flex flex-col gap-3">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="logoNiceCheckbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            <span class="text-sm text-slate-600">Mostra logo "Nice"</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" id="logoCameCheckbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                            <span class="text-sm text-slate-600">Mostra logo "Came"</span>
+                        </label>
+                    </div>
+                </div>
+
+                 <!-- Card Gestione Codici -->
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold text-slate-700 mb-4">Gestione Codici Articolo</h2>
+                    <form id="addCodeForm" class="flex flex-col gap-3">
+                        <div>
+                            <label for="newCodeInput" class="block text-sm font-medium text-slate-600 mb-1">Nuovo Codice</label>
+                            <input type="text" id="newCodeInput" class="form-input" placeholder="Es. PMD1234..." required>
+                        </div>
+                        <div>
+                             <label for="newCodeBrandSelect" class="block text-sm font-medium text-slate-600 mb-1">Aggiungi a</label>
+                             <select id="newCodeBrandSelect" class="form-input">
+                                <option value="Nice">Nice</option>
+                                <option value="Came">Came</option>
+                             </select>
+                        </div>
+                        <button type="submit" class="btn btn-secondary w-full mt-2">Aggiungi Codice</button>
+                    </form>
+                </div>
+
             </div>
         </div>
 
@@ -275,39 +322,104 @@
             let itemIndexToDelete = -1;
 
             const toast = document.getElementById('toast');
+            
+            const logoNiceCheckbox = document.getElementById('logoNiceCheckbox');
+            const logoCameCheckbox = document.getElementById('logoCameCheckbox');
+            const brandFilterContainer = document.getElementById('brandFilterContainer');
+            const addCodeForm = document.getElementById('addCodeForm');
 
             let packingList = [];
+            let logoSettings = { showNice: true, showCame: false };
+            let brandFilter = 'Nice';
+            
             const PACKING_LIST_KEY = 'packingListApp_list_v2';
             const DDT_INFO_KEY = 'packingListApp_ddtInfo_v2';
+            const LOGO_SETTINGS_KEY = 'packingListApp_logoSettings_v2';
+            const BRAND_FILTER_KEY = 'packingListApp_brandFilter_v2';
+            const CUSTOM_NICE_CODES_KEY = 'packingListApp_customNiceCodes_v2';
+            const CUSTOM_CAME_CODES_KEY = 'packingListApp_customCameCodes_v2';
+
+            const baseNiceCodes = [ 'PMD1329R02.4610', 'PMD1739.4610', 'PMD2318R01.4610', 'PMD1655R04.4610', 'PD0973A0002', 'PD2187A0002', 'PMD1951R01.4610', 'PMD1633R01.4610', 'PD1064A2002', 'PD1912A0000', 'PMD2088R02.4610', 'PD1751A0000', 'PD2381A0001', 'PMD1095R02.4610', 'PMD1260R01.4610', 'PMD1950R01.4610', 'PD1353A0001', 'PMD1650R01.4610', 'PD2188A0000' ];
+            const baseCameCodes = [ '119BQ743-R05', '119DN792-REV01', '119DN372', '119BN807', '119DN368-R01', 'M001884AA0-R05', 'M002630AB0-REV02', 'M002192AA0-REV02' ];
+            
+            let niceItemCodes = [];
+            let cameItemCodes = [];
+
+            const populateItemCodes = (brand) => {
+                const datalist = document.getElementById('itemCodesList');
+                datalist.innerHTML = '';
+                let codes = [];
+                if (brand === 'Nice') codes = niceItemCodes;
+                if (brand === 'Came') codes = cameItemCodes;
+                
+                codes.forEach(code => {
+                    const option = document.createElement('option');
+                    option.value = code;
+                    datalist.appendChild(option);
+                });
+            };
+
+            const renderBrandFilters = () => {
+                const brands = ['Nice', 'Came', 'Manuale'];
+                brandFilterContainer.innerHTML = '';
+                brands.forEach(brand => {
+                    const isChecked = brand === brandFilter;
+                    const radioId = `filter-${brand.toLowerCase()}`;
+                    brandFilterContainer.innerHTML += `<div class="flex-1"><input type="radio" id="${radioId}" name="brandFilter" value="${brand}" class="sr-only peer" ${isChecked ? 'checked' : ''}><label for="${radioId}" class="block text-center w-full py-2 px-3 text-sm font-medium rounded-md cursor-pointer transition peer-checked:bg-white peer-checked:text-indigo-600 peer-checked:shadow text-slate-600">${brand}</label></div>`;
+                });
+            };
+
+            brandFilterContainer.addEventListener('change', (e) => {
+                if (e.target.name === 'brandFilter') {
+                    brandFilter = e.target.value;
+                    populateItemCodes(brandFilter);
+                    if (brandFilter === 'Nice') { logoNiceCheckbox.checked = true; logoCameCheckbox.checked = false; } 
+                    else if (brandFilter === 'Came') { logoNiceCheckbox.checked = false; logoCameCheckbox.checked = true; } 
+                    else { logoNiceCheckbox.checked = false; logoCameCheckbox.checked = false; }
+                    logoSettings.showNice = logoNiceCheckbox.checked;
+                    logoSettings.showCame = logoCameCheckbox.checked;
+                    saveData();
+                }
+            });
 
             const showToast = (message) => {
                 toast.textContent = message;
                 toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.add('hide');
-                    setTimeout(() => {
-                        toast.classList.remove('show', 'hide');
-                    }, 300);
-                }, 2000);
+                setTimeout(() => { toast.classList.add('hide'); setTimeout(() => { toast.classList.remove('show', 'hide'); }, 300); }, 2000);
             };
             
             const saveData = () => {
-                const ddtInfo = { ddtNumber: ddtNumberInput.value, docDate: docDateInput.value };
                 localStorage.setItem(PACKING_LIST_KEY, JSON.stringify(packingList));
-                localStorage.setItem(DDT_INFO_KEY, JSON.stringify(ddtInfo));
+                localStorage.setItem(DDT_INFO_KEY, JSON.stringify({ ddtNumber: ddtNumberInput.value, docDate: docDateInput.value }));
+                localStorage.setItem(LOGO_SETTINGS_KEY, JSON.stringify(logoSettings));
+                localStorage.setItem(BRAND_FILTER_KEY, brandFilter);
+                
+                const customNice = niceItemCodes.filter(c => !baseNiceCodes.includes(c));
+                const customCame = cameItemCodes.filter(c => !baseCameCodes.includes(c));
+                localStorage.setItem(CUSTOM_NICE_CODES_KEY, JSON.stringify(customNice));
+                localStorage.setItem(CUSTOM_CAME_CODES_KEY, JSON.stringify(customCame));
             };
 
             const loadData = () => {
-                const savedList = localStorage.getItem(PACKING_LIST_KEY);
-                const savedDdtInfo = localStorage.getItem(DDT_INFO_KEY);
-                if (savedList) packingList = JSON.parse(savedList);
-                if (savedDdtInfo) {
-                    const ddtInfo = JSON.parse(savedDdtInfo);
-                    ddtNumberInput.value = ddtInfo.ddtNumber;
-                    docDateInput.value = ddtInfo.docDate;
-                } else {
-                    docDateInput.valueAsDate = new Date();
-                }
+                packingList = JSON.parse(localStorage.getItem(PACKING_LIST_KEY)) || [];
+                const ddtInfo = JSON.parse(localStorage.getItem(DDT_INFO_KEY));
+                const savedLogoSettings = JSON.parse(localStorage.getItem(LOGO_SETTINGS_KEY));
+                brandFilter = localStorage.getItem(BRAND_FILTER_KEY) || 'Nice';
+                
+                const customNice = JSON.parse(localStorage.getItem(CUSTOM_NICE_CODES_KEY)) || [];
+                const customCame = JSON.parse(localStorage.getItem(CUSTOM_CAME_CODES_KEY)) || [];
+                niceItemCodes = [...new Set([...baseNiceCodes, ...customNice])];
+                cameItemCodes = [...new Set([...baseCameCodes, ...customCame])];
+
+                if (ddtInfo) { ddtNumberInput.value = ddtInfo.ddtNumber; docDateInput.value = ddtInfo.docDate; } 
+                else { docDateInput.valueAsDate = new Date(); }
+                if(savedLogoSettings) logoSettings = savedLogoSettings;
+                
+                logoNiceCheckbox.checked = logoSettings.showNice;
+                logoCameCheckbox.checked = logoSettings.showCame;
+
+                renderBrandFilters();
+                populateItemCodes(brandFilter);
                 renderTable();
             };
 
@@ -322,13 +434,7 @@
             const createBoxRow = () => {
                 const row = document.createElement('div');
                 row.className = 'grid grid-cols-[1fr_1fr_auto] gap-2 items-center box-row';
-                row.innerHTML = `
-                    <input type="number" name="boxCount" class="form-input text-sm" placeholder="N. Scatole" required>
-                    <input type="number" name="quantityPerBox" class="form-input text-sm" placeholder="Qtà x Scatola" required>
-                    <button type="button" class="remove-box-row text-slate-400 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                    </button>
-                `;
+                row.innerHTML = `<input type="number" name="boxCount" class="form-input text-sm" placeholder="N. Scatole" required><input type="number" name="quantityPerBox" class="form-input text-sm" placeholder="Qtà x Scatola" required><button type="button" class="remove-box-row text-slate-400 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>`;
                 boxDetailsContainer.appendChild(row);
                 updateTotalQuantity();
             };
@@ -340,219 +446,95 @@
 
                 packingList.forEach((item, index) => {
                     const row = document.createElement('tr');
-                    // Aggiunge colore alternato alle righe
-                    if(index % 2 !== 0) {
-                        row.classList.add('bg-slate-50');
-                    }
+                    if(index % 2 !== 0) row.classList.add('bg-slate-50');
                     const boxDetailsHtml = item.boxes.map(box => `<p class="whitespace-nowrap">${box.count} SCAT. X ${box.qty}</p>`).join('');
-
-                    row.innerHTML = `
-                        <td class="px-4 py-3 align-middle">
-                            <div class="font-semibold text-slate-800">${item.itemCode}</div>
-                            <div class="font-mono text-xs text-slate-500">Lotto: ${item.lotto}</div>
-                        </td>
-                        <td class="px-4 py-3 align-middle text-slate-600">${boxDetailsHtml}</td>
-                        <td class="px-4 py-3 align-middle font-semibold text-slate-800">${item.totalQuantity} PZ</td>
-                        <td class="px-4 py-3 align-middle text-slate-600">${item.palletNumber}°</td>
-                        <td class="px-4 py-3 align-middle text-right">
-                            <button data-index="${index}" class="delete-btn text-slate-500 hover:text-red-600 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                            </button>
-                        </td>
-                    `;
+                    row.innerHTML = `<td class="px-4 py-3 align-middle"><div class="font-semibold text-slate-800">${item.itemCode}</div><div class="font-mono text-xs text-slate-500">Lotto: ${item.lotto}</div></td><td class="px-4 py-3 align-middle text-slate-600">${boxDetailsHtml}</td><td class="px-4 py-3 align-middle font-semibold text-slate-800">${item.totalQuantity} PZ</td><td class="px-4 py-3 align-middle text-slate-600">${item.palletNumber}°</td><td class="px-4 py-3 align-middle text-right"><button data-index="${index}" class="delete-btn text-slate-500 hover:text-red-600 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>`;
                     packingListBody.appendChild(row);
                 });
             }
             
-            // --- Event Listeners ---
             addBoxRowBtn.addEventListener('click', createBoxRow);
             boxDetailsContainer.addEventListener('click', (e) => {
                 const removeBtn = e.target.closest('.remove-box-row');
-                if (removeBtn && boxDetailsContainer.children.length > 1) {
-                    removeBtn.parentElement.remove();
-                    updateTotalQuantity();
-                }
+                if (removeBtn && boxDetailsContainer.children.length > 1) { removeBtn.parentElement.remove(); updateTotalQuantity(); }
             });
 
             boxDetailsContainer.addEventListener('input', updateTotalQuantity);
             ddtNumberInput.addEventListener('input', saveData);
             docDateInput.addEventListener('input', saveData);
+            logoNiceCheckbox.addEventListener('change', (e) => { logoSettings.showNice = e.target.checked; saveData(); });
+            logoCameCheckbox.addEventListener('change', (e) => { logoSettings.showCame = e.target.checked; saveData(); });
+
+            addCodeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newCodeInput = document.getElementById('newCodeInput');
+                const newCodeBrandSelect = document.getElementById('newCodeBrandSelect');
+                const newCode = newCodeInput.value.trim();
+                const brand = newCodeBrandSelect.value;
+                if (!newCode) return;
+
+                if (brand === 'Nice' && !niceItemCodes.includes(newCode)) {
+                    niceItemCodes.push(newCode);
+                } else if (brand === 'Came' && !cameItemCodes.includes(newCode)) {
+                    cameItemCodes.push(newCode);
+                }
+                saveData();
+                populateItemCodes(brandFilter);
+                newCodeInput.value = '';
+                showToast(`Codice "${newCode}" aggiunto alla lista ${brand}.`);
+            });
 
             addItemForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const formData = new FormData(addItemForm);
-                const boxes = Array.from(boxDetailsContainer.querySelectorAll('.box-row')).map(row => ({
-                    count: row.querySelector('[name="boxCount"]').value,
-                    qty: row.querySelector('[name="quantityPerBox"]').value
-                }));
-                
-                packingList.push({
-                    itemCode: formData.get('itemCode'),
-                    lotto: formData.get('lotto'),
-                    palletNumber: formData.get('palletNumber'),
-                    totalQuantity: formData.get('totalQuantity'),
-                    boxes: boxes,
-                });
-                saveData();
-                renderTable();
-                
-                addItemForm.reset();
-                boxDetailsContainer.innerHTML = '';
-                createBoxRow();
-                updateTotalQuantity();
-                document.getElementById('itemCode').focus();
+                const boxes = Array.from(boxDetailsContainer.querySelectorAll('.box-row')).map(row => ({ count: row.querySelector('[name="boxCount"]').value, qty: row.querySelector('[name="quantityPerBox"]').value }));
+                packingList.push({ itemCode: formData.get('itemCode'), lotto: formData.get('lotto'), palletNumber: formData.get('palletNumber'), totalQuantity: formData.get('totalQuantity'), boxes: boxes, });
+                saveData(); renderTable(); addItemForm.reset(); boxDetailsContainer.innerHTML = '';
+                createBoxRow(); updateTotalQuantity(); document.getElementById('itemCode').focus();
                 showToast('Articolo aggiunto con successo!');
             });
 
             packingListBody.addEventListener('click', (e) => {
                 const deleteBtn = e.target.closest('.delete-btn');
-                if (deleteBtn) {
-                    itemIndexToDelete = parseInt(deleteBtn.dataset.index, 10);
-                    deleteModal.style.display = 'block';
-                }
+                if (deleteBtn) { itemIndexToDelete = parseInt(deleteBtn.dataset.index, 10); deleteModal.style.display = 'block'; }
             });
 
             const closeModal = (modal) => modal.style.display = 'none';
             cancelDeleteBtn.addEventListener('click', () => closeModal(deleteModal));
             confirmDeleteBtn.addEventListener('click', () => {
-                if (itemIndexToDelete > -1) {
-                    packingList.splice(itemIndexToDelete, 1);
-                    saveData();
-                    renderTable();
-                    showToast('Articolo eliminato.');
-                    itemIndexToDelete = -1;
-                }
+                if (itemIndexToDelete > -1) { packingList.splice(itemIndexToDelete, 1); saveData(); renderTable(); showToast('Articolo eliminato.'); itemIndexToDelete = -1; }
                 closeModal(deleteModal);
             });
             
             resetButton.addEventListener('click', () => resetModal.style.display = 'block');
             cancelResetBtn.addEventListener('click', () => closeModal(resetModal));
             confirmResetBtn.addEventListener('click', () => {
-                localStorage.removeItem(PACKING_LIST_KEY);
-                localStorage.removeItem(DDT_INFO_KEY);
-                packingList = [];
-                ddtNumberInput.value = '';
-                docDateInput.value = '';
-                loadData(); // Ricarica lo stato vuoto e imposta la data
-                showToast('Applicazione resettata.');
-                closeModal(resetModal);
+                localStorage.clear();
+                packingList = []; ddtNumberInput.value = ''; docDateInput.value = '';
+                loadData(); showToast('Applicazione resettata.'); closeModal(resetModal);
             });
-            window.addEventListener('click', (e) => {
-                if (e.target === resetModal) closeModal(resetModal);
-                if (e.target === deleteModal) closeModal(deleteModal);
-            });
+            window.addEventListener('click', (e) => { if (e.target === resetModal) closeModal(resetModal); if (e.target === deleteModal) closeModal(deleteModal); });
 
-            // --- Logica di Stampa Professionale con Stile Pulito ---
             printButton.addEventListener('click', () => {
                 const ddtNum = ddtNumberInput.value.trim();
                 const pageTitle = `DDT N. ${ddtNum || 'Packing List'}`;
                 const date = new Date(docDateInput.value);
                 const formattedDate = !isNaN(date) ? date.toLocaleDateString('it-IT') : '';
-
-                let printStyle = `
-                <style>
-                    @page {
-                        size: A4;
-                        margin: 0; /* Rimuove i margini del browser */
-                    }
-                    body { 
-                        font-family: 'Inter', Arial, sans-serif; 
-                        color: #1f2937;
-                        margin: 20mm; /* Aggiunge i margini per il contenuto */
-                    }
-                    .print-header { 
-                        border-bottom: 2px solid #e5e7eb; 
-                        padding-bottom: 1rem; 
-                        margin-bottom: 1.5rem; 
-                    }
-                    .print-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
-                    .print-logo { text-align: right; }
-                    .print-info { margin-top: 1.5rem; }
-                    .print-info p { margin: 0; font-size: 14px; }
-                    .print-info strong { font-weight: 600; }
-                    .print-table { 
-                        font-size: 11px; 
-                        width: 100%; 
-                        border-collapse: collapse; 
-                    }
-                    .print-table th, .print-table td { 
-                        border: 1px solid #e5e7eb; 
-                        padding: 10px; 
-                        text-align: center; /* Allineamento orizzontale di default */
-                        vertical-align: middle; /* Allineamento verticale */
-                    }
-                    .print-table th { 
-                        background-color: #f9fafb; 
-                        font-weight: 600; 
-                        color: #374151;
-                        text-transform: uppercase;
-                        letter-spacing: 0.05em;
-                        text-align: left; /* Header a sinistra */
-                    }
-                    .print-table tbody tr:nth-child(even) {
-                        background-color: #f9fafb;
-                    }
-                    .print-table td { color: #374151; }
-                    .print-barcode-img { 
-                        display: block; 
-                        margin: 0 auto 4px auto;
-                        max-width: 200px;
-                        height: auto;
-                    }
-                    .cell-details { text-align: left; }
-                    .cell-quantita, .cell-bancale {
-                        font-size: 1.5rem;
-                        font-weight: 700;
-                    }
-                </style>`;
                 
-                let printContents = `<html><head><title>${pageTitle}</title>${printStyle}</head><body>
-                    <div class="print-header">
-                        <div class="print-grid">
-                            <div><p style="font-size:1.25rem;font-weight:700;">INFORMAZIONI PER IL CLIENTE</p></div>
-                            <div class="print-logo"><img src="https://placehold.co/100x40/4f46e5/ffffff?text=Nice" alt="Logo" style="display:inline-block;height:2.5rem"></div>
-                        </div>
-                        <div class="print-grid print-info">
-                            <p><strong>DDT N.&nbsp;&nbsp;</strong> ${ddtNum}</p>
-                            <p><strong>DEL&nbsp;&nbsp;</strong> ${formattedDate}</p>
-                        </div>
-                    </div>
-                    <table class="print-table">
-                        <thead>
-                            <tr>
-                                <th style="text-align: center;">Codice Particolare</th>
-                                <th>Dettagli Scatole</th>
-                                <th style="text-align: center;">Quantità Totale</th>
-                                <th style="text-align: center;">Bancale N.</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
+                let logosHtml = '';
+                if(logoSettings.showNice) {
+                    const niceLogoBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI1IiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDQ3OTciLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiBmb250LXdlaWdodD0iYm9sZCI+TmljZTwvdGV4dD48L3N2Zz4=";
+                    logosHtml += `<img src="${niceLogoBase64}" alt="Logo Nice" style="height:2.5rem; width:auto;">`;
+                }
+                if(logoSettings.showCame) {
+                    const cameLogoBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTMwIDQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxzdHlsZT4udGNhc2V7Zm9udDo0MDBCAzRweCBBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZjtmaWxsOiMwMDAwMDA7fS5pY29ue2ZpbGw6IzAwYWVlZjt9PC9zdHlsZT48dGV4dCB4PSIwIiB5PSIzMiIgY2xhc3M9InRjYXNlIj5DQU1FPC90ZXh0PjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDExMCkiIGNsYXNzPSJpY29uIj48Y2lyY2xlIGN4PSI1IiBjeT0iNCIgcj0iNCIvPjxwYXRoIGQ9Ik0zIDMwVjEwaDR2MjBIM3oiLz48cGF0aCBkPSJNOS41IDI5LjVINi43MjVMNi4xNSAyMy4xMzNIMy45NjdMMi40NDUgMjkuNUgwVjIxaDMuMDMzdjEuMjY3aC41MzRsMi4xMzMtNi40aDMuNjY3TDEzIDMySDl6Ii8+PC9nPjwvc3ZnPg=="
+                    logosHtml += `<img src="${cameLogoBase64}" alt="Logo Came" style="height:2.5rem; width:auto;">`;
+                }
 
-                packingList.forEach(item => {
-                    const boxDetailsHtml = item.boxes.map(box => `<p>${box.count} SCAT. X ${box.qty}</p>`).join('');
-                    const canvas = document.createElement('canvas');
-                    try {
-                        JsBarcode(canvas, item.itemCode, { height: 50, displayValue: false, margin: 10 });
-                        const barcodeDataUrl = canvas.toDataURL();
-                        printContents += `
-                            <tr>
-                                <td>
-                                    <img src="${barcodeDataUrl}" class="print-barcode-img">
-                                    <div style="font-family:monospace;font-size:1.1rem;margin-top:4px; letter-spacing: 0.05em;">${item.itemCode}</div>
-                                </td>
-                                <td class="cell-details">
-                                    ${boxDetailsHtml}
-                                    <p style="margin-top:8px; font-size: 10px; color: #6b7280;">Lotto: <span>${item.lotto}</span></p>
-                                </td>
-                                <td class="cell-quantita">${item.totalQuantity} PZ</td>
-                                <td class="cell-bancale">${item.palletNumber}°</td>
-                            </tr>`;
-                    } catch (e) { console.error("Barcode generation error:", e); }
-                });
-
-                printContents += `</tbody></table>
-                </body></html>`;
-                
+                const printStyle = `<style>@page{size:A4;margin:0}body{font-family:'Inter',Arial,sans-serif;color:#1f2937;margin:20mm}.print-header{border-bottom:2px solid #e5e7eb;padding-bottom:1rem;margin-bottom:1.5rem}.print-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start}.print-logo-container{text-align:right;display:flex;justify-content:flex-end;align-items:center;gap:1rem}.print-info{margin-top:1.5rem}.print-info p{margin:0;font-size:14px}.print-info strong{font-weight:600}.print-table{font-size:11px;width:100%;border-collapse:collapse}.print-table th,.print-table td{border:1px solid #e5e7eb;padding:10px;text-align:center;vertical-align:middle}.print-table th{background-color:#f9fafb;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.05em;text-align:left}.print-table tbody tr:nth-child(even){background-color:#f9fafb}.print-table td{color:#374151}.print-barcode-img{display:block;margin:0 auto 4px;max-width:200px;height:auto}.cell-details{text-align:left}.cell-quantita,.cell-bancale{font-size:1.5rem;font-weight:700}</style>`;
+                let printContents = `<html><head><title>${pageTitle}</title>${printStyle}</head><body><div class="print-header"><div class="print-grid"><div><p style="font-size:1.25rem;font-weight:700">INFORMAZIONI PER IL CLIENTE</p></div><div class="print-logo-container">${logosHtml}</div></div><div class="print-grid print-info"><p><strong>DDT N.&nbsp;&nbsp;</strong> ${ddtNum}</p><p><strong>DEL&nbsp;&nbsp;</strong> ${formattedDate}</p></div></div><table class="print-table"><thead><tr><th style="text-align:center">Codice Particolare</th><th>Dettagli Scatole</th><th style="text-align:center">Quantità Totale</th><th style="text-align:center">Bancale N.</th></tr></thead><tbody>`;
+                packingList.forEach(item=>{const boxDetailsHtml=item.boxes.map(box=>`<p>${box.count} SCAT. X ${box.qty}</p>`).join('');const canvas=document.createElement('canvas');try{JsBarcode(canvas,item.itemCode,{height:50,displayValue:!1,margin:10});const barcodeDataUrl=canvas.toDataURL();printContents+=`<tr><td><img src="${barcodeDataUrl}" class="print-barcode-img"><div style="font-family:monospace;font-size:1.1rem;margin-top:4px;letter-spacing:.05em">${item.itemCode}</div></td><td class="cell-details">${boxDetailsHtml}<p style="margin-top:8px;font-size:10px;color:#6b7280">Lotto: <span>${item.lotto}</span></p></td><td class="cell-quantita">${item.totalQuantity} PZ</td><td class="cell-bancale">${item.palletNumber}°</td></tr>`}catch(e){console.error("Barcode generation error:",e)}});
+                printContents += `</tbody></table></body></html>`;
                 const printWindow = window.open('', '_blank');
                 printWindow.document.open();
                 printWindow.document.write(printContents);
