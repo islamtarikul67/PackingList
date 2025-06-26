@@ -3,648 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramadan Prayer Times</title>
+    <title>Generatore di Packing List</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Lato', sans-serif;
+        :root {
+            --primary: #4f46e5; /* Indigo 600 */
+            --primary-light: #e0e7ff; /* Indigo 100 */
+            --destructive: #dc2626; /* Red 600 */
+            --destructive-light: #fee2e2; /* Red 100 */
         }
-
         body {
-            background: linear-gradient(135deg, #f0f8ff 0%, #a2cffe 100%);
-            color: #333;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0; /* Slate 200 */
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        }
+        .form-input {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #cbd5e1; /* Slate 300 */
+            padding: 0.5rem 0.75rem;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .form-input:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+        .btn {
+            display: inline-flex;
             align-items: center;
-        }
-
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .container:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        header {
-            text-align: center;
-            padding: 20px;
-            background-color: #ff0000;
-            color: #fff;
-            border-bottom: 2px solid #00ff00;
-        }
-
-        header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .table-wrapper {
-            max-height: 70vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: center;
-            border: 1px solid #e0e0e0;
-            min-width: 80px;
-        }
-
-        th {
-            background-color: #ff0000;
-            color: #fff;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        .section-header {
-            background-color: #ffcccc;
-            font-weight: bold;
-            text-align: center;
-            padding: 15px;
-            border-top: 2px solid #00ff00;
-        }
-
-        .checkbox-column {
-            width: 5%;
-            min-width: 50px;
-        }
-
-        input[type="checkbox"] {
-            transform: scale(1.5);
-            margin-right: 5px;
-            vertical-align: middle;
-            cursor: pointer;
-            accent-color: #ff0000;
-            transition: transform 0.2s ease;
-        }
-
-        input[type="checkbox"]:hover {
-            transform: scale(1.6);
-        }
-
-        tr {
-            background-color: #ffffff;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        tr:hover {
-            background-color: #f5f8fa;
-            transform: scale(1.02);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        tr.checked {
-            background-color: #e8f5e9;
-        }
-
-        .save-button {
-            display: block;
-            margin: 20px auto 0;
-            padding: 10px 25px;
-            background-color: #ff0000;
-            color: #fff;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
+            justify-content: center;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 3px 10px rgba(255, 0, 0, 0.3);
-            -webkit-tap-highlight-color: transparent;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
         }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .btn-primary:hover {
+            background-color: #4338ca; /* Indigo 700 */
+        }
+        .btn-destructive {
+            background-color: var(--destructive);
+            color: white;
+        }
+        .btn-destructive:hover {
+             background-color: #b91c1c; /* Red 700 */
+        }
+        .btn-secondary {
+            background-color: #e2e8f0; /* Slate 200 */
+            color: #1e293b; /* Slate 800 */
+        }
+        .btn-secondary:hover {
+            background-color: #cbd5e1; /* Slate 300 */
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.5);
+            animation: fadeIn 150ms ease-out;
+        }
+        .modal-content {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            animation: slideIn 200ms ease-out;
+        }
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #059669; /* Emerald 600 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 300ms ease-in-out;
+            animation: slideUpIn 300ms forwards;
+        }
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .toast.hide {
+            animation: slideDownOut 300ms forwards;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideIn { from { transform: translate(-50%, -40%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
+        @keyframes slideUpIn { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+        @keyframes slideDownOut { from { transform: translate(-50%, 0); opacity: 1; } to { transform: translate(-50%, 20px); opacity: 0; } }
 
-        .save-button:hover {
-            background-color: #cc0000;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(204, 0, 0, 0.4);
-        }
-
-        .save-button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 8px rgba(204, 0, 0, 0.3);
-        }
-
-        footer {
-            text-align: center;
-            padding: 15px;
-            color: #666;
-            font-size: 12px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        @media (max-width: 768px) {
-            table {
-                font-size: 12px;
-            }
-            th, td {
-                padding: 10px 12px;
-                min-width: 60px;
-            }
-            .container {
-                margin: 10px;
-            }
-            header h1 {
-                font-size: 22px;
-            }
-            .save-button {
-                font-size: 14px;
-                padding: 8px 20px;
-            }
-        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Ramadan Prayer Times</h1>
-            <p>Metodo Hanafi (Fajr 18° - Isha 17°)</p>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
+            <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
         </header>
 
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="checkbox-column"></th>
-                        <th>Ramadan</th>
-                        <th>Data</th>
-                        <th>Giorno</th>
-                        <th>Fine Sehri</th>
-                        <th>Fajr</th>
-                        <th>Zuhr</th>
-                        <th>Asr</th>
-                        <th>Iftar (Maghrib)</th>
-                        <th>Isha</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- 10 DAY RAHMAH -->
-                    <tr class="section-header">
-                        <td colspan="10">10 DAY RAHMAH</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day1" id="day1"></td>
-                        <td>01</td>
-                        <td>Marzo 01</td>
-                        <td>Sab</td>
-                        <td>05:12 AM</td>
-                        <td>05:10 AM</td>
-                        <td>12:24 PM</td>
-                        <td>04:12 PM</td>
-                        <td>06:02 PM</td>
-                        <td>07:31 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day2" id="day2"></td>
-                        <td>02</td>
-                        <td>Marzo 02</td>
-                        <td>Dom</td>
-                        <td>05:10 AM</td>
-                        <td>05:08 AM</td>
-                        <td>12:24 PM</td>
-                        <td>04:13 PM</td>
-                        <td>06:03 PM</td>
-                        <td>07:32 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day3" id="day3"></td>
-                        <td>03</td>
-                        <td>Marzo 03</td>
-                        <td>Lun</td>
-                        <td>05:08 AM</td>
-                        <td>05:06 AM</td>
-                        <td>12:24 PM</td>
-                        <td>04:14 PM</td>
-                        <td>06:04 PM</td>
-                        <td>07:33 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day4" id="day4"></td>
-                        <td>04</td>
-                        <td>Marzo 04</td>
-                        <td>Mar</td>
-                        <td>05:06 AM</td>
-                        <td>05:04 AM</td>
-                        <td>12:23 PM</td>
-                        <td>04:15 PM</td>
-                        <td>06:05 PM</td>
-                        <td>07:34 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day5" id="day5"></td>
-                        <td>05</td>
-                        <td>Marzo 05</td>
-                        <td>Mer</td>
-                        <td>05:04 AM</td>
-                        <td>05:02 AM</td>
-                        <td>12:23 PM</td>
-                        <td>04:16 PM</td>
-                        <td>06:06 PM</td>
-                        <td>07:35 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day6" id="day6"></td>
-                        <td>06</td>
-                        <td>Marzo 06</td>
-                        <td>Gio</td>
-                        <td>05:02 AM</td>
-                        <td>05:00 AM</td>
-                        <td>12:23 PM</td>
-                        <td>04:17 PM</td>
-                        <td>06:07 PM</td>
-                        <td>07:36 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day7" id="day7"></td>
-                        <td>07</td>
-                        <td>Marzo 07</td>
-                        <td>Ven</td>
-                        <td>05:00 AM</td>
-                        <td>04:58 AM</td>
-                        <td>12:23 PM</td>
-                        <td>04:18 PM</td>
-                        <td>06:08 PM</td>
-                        <td>07:37 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day8" id="day8"></td>
-                        <td>08</td>
-                        <td>Marzo 08</td>
-                        <td>Sab</td>
-                        <td>04:58 AM</td>
-                        <td>04:56 AM</td>
-                        <td>12:22 PM</td>
-                        <td>04:19 PM</td>
-                        <td>06:09 PM</td>
-                        <td>07:38 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day9" id="day9"></td>
-                        <td>09</td>
-                        <td>Marzo 09</td>
-                        <td>Dom</td>
-                        <td>04:56 AM</td>
-                        <td>04:54 AM</td>
-                        <td>12:22 PM</td>
-                        <td>04:20 PM</td>
-                        <td>06:10 PM</td>
-                        <td>07:39 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day10" id="day10"></td>
-                        <td>10</td>
-                        <td>Marzo 10</td>
-                        <td>Lun</td>
-                        <td>04:54 AM</td>
-                        <td>04:52 AM</td>
-                        <td>12:22 PM</td>
-                        <td>04:21 PM</td>
-                        <td>06:11 PM</td>
-                        <td>07:40 PM</td>
-                    </tr>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <!-- Colonna Sinistra / Principale -->
+            <div class="lg:col-span-2 flex flex-col gap-8">
+                
+                <!-- Card Informazioni Documento -->
+                <div class="card p-6">
+                    <h2 class="text-xl font-semibold text-slate-700 mb-4">Informazioni Documento</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="ddtNumber" class="block text-sm font-medium text-slate-600 mb-1">DDT N.</label>
+                            <input type="text" id="ddtNumber" name="ddtNumber" class="form-input">
+                        </div>
+                        <div>
+                            <label for="docDate" class="block text-sm font-medium text-slate-600 mb-1">Data Documento</label>
+                            <input type="date" id="docDate" name="docDate" class="form-input">
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- 10 DAY MAGFERAT -->
-                    <tr class="section-header">
-                        <td colspan="10">10 DAY MAGFERAT</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day11" id="day11"></td>
-                        <td>11</td>
-                        <td>Marzo 11</td>
-                        <td>Mar</td>
-                        <td>04:52 AM</td>
-                        <td>04:50 AM</td>
-                        <td>12:22 PM</td>
-                        <td>04:22 PM</td>
-                        <td>06:12 PM</td>
-                        <td>07:41 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day12" id="day12"></td>
-                        <td>12</td>
-                        <td>Marzo 12</td>
-                        <td>Mer</td>
-                        <td>04:50 AM</td>
-                        <td>04:48 AM</td>
-                        <td>12:21 PM</td>
-                        <td>04:23 PM</td>
-                        <td>06:13 PM</td>
-                        <td>07:42 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day13" id="day13"></td>
-                        <td>13</td>
-                        <td>Marzo 13</td>
-                        <td>Gio</td>
-                        <td>04:48 AM</td>
-                        <td>04:46 AM</td>
-                        <td>12:21 PM</td>
-                        <td>04:24 PM</td>
-                        <td>06:14 PM</td>
-                        <td>07:43 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day14" id="day14"></td>
-                        <td>14</td>
-                        <td>Marzo 14</td>
-                        <td>Ven</td>
-                        <td>04:46 AM</td>
-                        <td>04:44 AM</td>
-                        <td>12:21 PM</td>
-                        <td>04:25 PM</td>
-                        <td>06:15 PM</td>
-                        <td>07:44 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day15" id="day15"></td>
-                        <td>15</td>
-                        <td>Marzo 15</td>
-                        <td>Sab</td>
-                        <td>04:44 AM</td>
-                        <td>04:42 AM</td>
-                        <td>12:21 PM</td>
-                        <td>04:26 PM</td>
-                        <td>06:16 PM</td>
-                        <td>07:45 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day16" id="day16"></td>
-                        <td>16</td>
-                        <td>Marzo 16</td>
-                        <td>Dom</td>
-                        <td>04:42 AM</td>
-                        <td>04:40 AM</td>
-                        <td>12:20 PM</td>
-                        <td>04:27 PM</td>
-                        <td>06:17 PM</td>
-                        <td>07:46 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day17" id="day17"></td>
-                        <td>17</td>
-                        <td>Marzo 17</td>
-                        <td>Lun</td>
-                        <td>04:40 AM</td>
-                        <td>04:38 AM</td>
-                        <td>12:20 PM</td>
-                        <td>04:28 PM</td>
-                        <td>06:18 PM</td>
-                        <td>07:47 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day18" id="day18"></td>
-                        <td>18</td>
-                        <td>Marzo 18</td>
-                        <td>Mar</td>
-                        <td>04:38 AM</td>
-                        <td>04:36 AM</td>
-                        <td>12:20 PM</td>
-                        <td>04:29 PM</td>
-                        <td>06:19 PM</td>
-                        <td>07:48 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day19" id="day19"></td>
-                        <td>19</td>
-                        <td>Marzo 19</td>
-                        <td>Mer</td>
-                        <td>04:36 AM</td>
-                        <td>04:34 AM</td>
-                        <td>12:19 PM</td>
-                        <td>04:30 PM</td>
-                        <td>06:20 PM</td>
-                        <td>07:49 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day20" id="day20"></td>
-                        <td>20</td>
-                        <td>Marzo 20</td>
-                        <td>Gio</td>
-                        <td>04:34 AM</td>
-                        <td>04:32 AM</td>
-                        <td>12:19 PM</td>
-                        <td>04:31 PM</td>
-                        <td>06:21 PM</td>
-                        <td>07:50 PM</td>
-                    </tr>
+                <!-- Card Aggiungi Articolo -->
+                <div class="card">
+                    <form id="addItemForm" class="p-6">
+                        <h2 class="text-xl font-semibold text-slate-700 mb-4">Aggiungi Nuovo Articolo</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                             <div>
+                                <label for="itemCode" class="block text-sm font-medium text-slate-600 mb-1">Codice Articolo</label>
+                                <input type="text" id="itemCode" name="itemCode" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="lotto" class="block text-sm font-medium text-slate-600 mb-1">Lotto</label>
+                                <input type="text" id="lotto" name="lotto" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="palletNumber" class="block text-sm font-medium text-slate-600 mb-1">Bancale n.</label>
+                                <input type="number" id="palletNumber" name="palletNumber" class="form-input" required>
+                            </div>
+                            <div>
+                                <label for="totalQuantity" class="block text-sm font-medium text-slate-600 mb-1">Quantità Totale (auto)</label>
+                                <input type="number" id="totalQuantity" name="totalQuantity" class="form-input" readonly required>
+                            </div>
+                        </div>
 
-                    <!-- 10 DAY NAJAT -->
-                    <tr class="section-header">
-                        <td colspan="10">10 DAY NAJAT</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day21" id="day21"></td>
-                        <td>21</td>
-                        <td>Marzo 21</td>
-                        <td>Ven</td>
-                        <td>04:32 AM</td>
-                        <td>04:30 AM</td>
-                        <td>12:19 PM</td>
-                        <td>04:32 PM</td>
-                        <td>06:22 PM</td>
-                        <td>07:51 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day22" id="day22"></td>
-                        <td>22</td>
-                        <td>Marzo 22</td>
-                        <td>Sab</td>
-                        <td>04:30 AM</td>
-                        <td>04:28 AM</td>
-                        <td>12:19 PM</td>
-                        <td>04:33 PM</td>
-                        <td>06:23 PM</td>
-                        <td>07:52 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day23" id="day23"></td>
-                        <td>23</td>
-                        <td>Marzo 23</td>
-                        <td>Dom</td>
-                        <td>04:28 AM</td>
-                        <td>04:26 AM</td>
-                        <td>12:18 PM</td>
-                        <td>04:34 PM</td>
-                        <td>06:24 PM</td>
-                        <td>07:53 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day24" id="day24"></td>
-                        <td>24</td>
-                        <td>Marzo 24</td>
-                        <td>Lun</td>
-                        <td>04:26 AM</td>
-                        <td>04:24 AM</td>
-                        <td>12:18 PM</td>
-                        <td>04:35 PM</td>
-                        <td>06:25 PM</td>
-                        <td>07:54 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day25" id="day25"></td>
-                        <td>25</td>
-                        <td>Marzo 25</td>
-                        <td>Mar</td>
-                        <td>04:24 AM</td>
-                        <td>04:22 AM</td>
-                        <td>12:18 PM</td>
-                        <td>04:36 PM</td>
-                        <td>06:26 PM</td>
-                        <td>07:55 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day26" id="day26"></td>
-                        <td>26</td>
-                        <td>Marzo 26</td>
-                        <td>Mer</td>
-                        <td>04:22 AM</td>
-                        <td>04:20 AM</td>
-                        <td>12:17 PM</td>
-                        <td>04:37 PM</td>
-                        <td>06:27 PM</td>
-                        <td>07:56 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day27" id="day27"></td>
-                        <td>27</td>
-                        <td>Marzo 27</td>
-                        <td>Gio</td>
-                        <td>04:20 AM</td>
-                        <td>04:18 AM</td>
-                        <td>12:17 PM</td>
-                        <td>04:38 PM</td>
-                        <td>06:28 PM</td>
-                        <td>07:57 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day28" id="day28"></td>
-                        <td>28</td>
-                        <td>Marzo 28</td>
-                        <td>Ven</td>
-                        <td>04:18 AM</td>
-                        <td>04:16 AM</td>
-                        <td>12:17 PM</td>
-                        <td>04:39 PM</td>
-                        <td>06:29 PM</td>
-                        <td>07:58 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day29" id="day29"></td>
-                        <td>29</td>
-                        <td>Marzo 29</td>
-                        <td>Sab</td>
-                        <td>04:16 AM</td>
-                        <td>04:14 AM</td>
-                        <td>12:16 PM</td>
-                        <td>04:40 PM</td>
-                        <td>06:30 PM</td>
-                        <td>07:59 PM</td>
-                    </tr>
-                    <tr>
-                        <td class="checkbox-column"><input type="checkbox" name="day30" id="day30"></td>
-                        <td>30</td>
-                        <td>Marzo 30</td>
-                        <td>Dom</td>
-                        <td>04:14 AM</td>
-                        <td>04:12 AM</td>
-                        <td>12:16 PM</td>
-                        <td>04:41 PM</td>
-                        <td>06:31 PM</td>
-                        <td>08:00 PM</td>
-                    </tr>
-                </tbody>
-            </table>
+                        <div class="p-4 border border-slate-200 rounded-lg bg-slate-50">
+                            <label class="block text-sm font-medium text-slate-600 mb-3">Dettagli Scatole</label>
+                            <div id="boxDetailsContainer" class="flex flex-col gap-2"></div>
+                            <button type="button" id="addBoxRow" class="mt-3 text-sm btn bg-white border-slate-300 hover:bg-slate-100 text-slate-700 w-full">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                                Aggiungi Tipo Scatola
+                            </button>
+                        </div>
+                         <div class="mt-6 border-t border-slate-200 pt-6 text-right">
+                            <button type="submit" class="btn btn-primary w-full sm:w-auto">Aggiungi Articolo</button>
+                         </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Colonna Destra / Azioni -->
+            <div class="lg:col-span-1 flex flex-col gap-8 sticky top-8">
+                 <div class="card p-6">
+                    <h2 class="text-xl font-semibold text-slate-700 mb-4">Azioni</h2>
+                    <div class="flex flex-col gap-3">
+                        <button id="printButton" class="btn btn-primary w-full" disabled>
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                           Stampa
+                        </button>
+                        <button id="resetButton" class="btn btn-secondary w-full border-red-200 bg-red-50 text-red-700 hover:bg-red-100">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M3 2v6h6"/><path d="M21 12A9 9 0 0 0 6 5.3L3 8"/><path d="M21 22v-6h-6"/><path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"/></svg>
+                           Reset App
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <button class="save-button" onclick="savePreferences()">Save Preferences</button>
-
-        <footer>
-            <p>TK © 2025 Ramadan Prayer Times. All rights reserved.</p>
-        </footer>
+        <!-- Packing List Table -->
+        <div class="card mt-8">
+            <div class="p-6">
+                 <h2 class="text-xl font-semibold text-slate-700">Packing List Finale</h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm">
+                    <thead class="bg-slate-50 border-b border-t border-slate-200">
+                        <tr>
+                            <th class="px-4 py-3 font-medium text-slate-500 text-left">Codice</th>
+                            <th class="px-4 py-3 font-medium text-slate-500 text-left">Dettagli Scatole</th>
+                            <th class="px-4 py-3 font-medium text-slate-500 text-left">Qtà Totale</th>
+                            <th class="px-4 py-3 font-medium text-slate-500 text-left">Bancale</th>
+                            <th class="px-4 py-3 font-medium text-slate-500 text-right">Azione</th>
+                        </tr>
+                    </thead>
+                    <tbody id="packingListBody" class="divide-y divide-slate-200"></tbody>
+                </table>
+            </div>
+             <p id="emptyListMessage" class="text-slate-500 text-center py-12">La lista è vuota. Aggiungi un articolo per iniziare.</p>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="resetModal" class="modal">
+        <div class="modal-content">
+            <h3 class="text-lg font-semibold text-slate-800 mb-2">Conferma Reset</h3>
+            <p class="text-slate-500 mb-6">Sei sicuro di voler cancellare tutti i dati? L'operazione non è reversibile.</p>
+            <div class="flex justify-end gap-3">
+                 <button id="cancelReset" class="btn btn-secondary">Annulla</button>
+                 <button id="confirmReset" class="btn btn-destructive">Sì, cancella</button>
+            </div>
+        </div>
+    </div>
+     <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3 class="text-lg font-semibold text-slate-800 mb-2">Conferma Eliminazione</h3>
+            <p class="text-slate-500 mb-6">Sei sicuro di voler eliminare questo articolo?</p>
+            <div class="flex justify-end gap-3">
+                 <button id="cancelDelete" class="btn btn-secondary">Annulla</button>
+                 <button id="confirmDelete" class="btn btn-destructive">Sì, elimina</button>
+            </div>
+        </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
     <script>
-        // Carica le preferenze salvate dal localStorage quando la pagina si carica
-        document.addEventListener('DOMContentLoaded', function() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const savedPrefs = JSON.parse(localStorage.getItem('prayerPreferences')) || {};
+        document.addEventListener('DOMContentLoaded', () => {
+            const addItemForm = document.getElementById('addItemForm');
+            const packingListBody = document.getElementById('packingListBody');
+            const printButton = document.getElementById('printButton');
+            const resetButton = document.getElementById('resetButton');
+            const emptyListMessage = document.getElementById('emptyListMessage');
+            const ddtNumberInput = document.getElementById('ddtNumber');
+            const docDateInput = document.getElementById('docDate');
+            const boxDetailsContainer = document.getElementById('boxDetailsContainer');
+            const addBoxRowBtn = document.getElementById('addBoxRow');
+            const totalQuantityInput = document.getElementById('totalQuantity');
+            
+            const resetModal = document.getElementById('resetModal');
+            const cancelResetBtn = document.getElementById('cancelReset');
+            const confirmResetBtn = document.getElementById('confirmReset');
+            
+            const deleteModal = document.getElementById('deleteModal');
+            const cancelDeleteBtn = document.getElementById('cancelDelete');
+            const confirmDeleteBtn = document.getElementById('confirmDelete');
+            let itemIndexToDelete = -1;
 
-            checkboxes.forEach(checkbox => {
-                const day = checkbox.getAttribute('name');
-                if (savedPrefs[day]) {
-                    checkbox.checked = true;
-                    checkbox.closest('tr').classList.add('checked');
+            const toast = document.getElementById('toast');
+
+            let packingList = [];
+            const PACKING_LIST_KEY = 'packingListApp_list_v2';
+            const DDT_INFO_KEY = 'packingListApp_ddtInfo_v2';
+
+            const showToast = (message) => {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.add('hide');
+                    setTimeout(() => {
+                        toast.classList.remove('show', 'hide');
+                    }, 300);
+                }, 2000);
+            };
+            
+            const saveData = () => {
+                const ddtInfo = { ddtNumber: ddtNumberInput.value, docDate: docDateInput.value };
+                localStorage.setItem(PACKING_LIST_KEY, JSON.stringify(packingList));
+                localStorage.setItem(DDT_INFO_KEY, JSON.stringify(ddtInfo));
+            };
+
+            const loadData = () => {
+                const savedList = localStorage.getItem(PACKING_LIST_KEY);
+                const savedDdtInfo = localStorage.getItem(DDT_INFO_KEY);
+                if (savedList) packingList = JSON.parse(savedList);
+                if (savedDdtInfo) {
+                    const ddtInfo = JSON.parse(savedDdtInfo);
+                    ddtNumberInput.value = ddtInfo.ddtNumber;
+                    docDateInput.value = ddtInfo.docDate;
+                } else {
+                    docDateInput.valueAsDate = new Date();
                 }
-                checkbox.addEventListener('change', function() {
-                    savePreference(day, this.checked);
-                    if (this.checked) {
-                        this.closest('tr').classList.add('checked');
-                    } else {
-                        this.closest('tr').classList.remove('checked');
+                renderTable();
+            };
+
+            const updateTotalQuantity = () => {
+                totalQuantityInput.value = Array.from(boxDetailsContainer.querySelectorAll('.box-row')).reduce((total, row) => {
+                    const boxCount = parseInt(row.querySelector('input[name="boxCount"]').value) || 0;
+                    const quantityPerBox = parseInt(row.querySelector('input[name="quantityPerBox"]').value) || 0;
+                    return total + (boxCount * quantityPerBox);
+                }, 0);
+            };
+
+            const createBoxRow = () => {
+                const row = document.createElement('div');
+                row.className = 'grid grid-cols-[1fr_1fr_auto] gap-2 items-center box-row';
+                row.innerHTML = `
+                    <input type="number" name="boxCount" class="form-input text-sm" placeholder="N. Scatole" required>
+                    <input type="number" name="quantityPerBox" class="form-input text-sm" placeholder="Qtà x Scatola" required>
+                    <button type="button" class="remove-box-row text-slate-400 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                `;
+                boxDetailsContainer.appendChild(row);
+                updateTotalQuantity();
+            };
+
+            function renderTable() {
+                packingListBody.innerHTML = '';
+                emptyListMessage.style.display = packingList.length === 0 ? 'block' : 'none';
+                printButton.disabled = packingList.length === 0;
+
+                packingList.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    // Aggiunge colore alternato alle righe
+                    if(index % 2 !== 0) {
+                        row.classList.add('bg-slate-50');
                     }
+                    const boxDetailsHtml = item.boxes.map(box => `<p class="whitespace-nowrap">${box.count} SCAT. X ${box.qty}</p>`).join('');
+
+                    row.innerHTML = `
+                        <td class="px-4 py-3 align-middle">
+                            <div class="font-semibold text-slate-800">${item.itemCode}</div>
+                            <div class="font-mono text-xs text-slate-500">Lotto: ${item.lotto}</div>
+                        </td>
+                        <td class="px-4 py-3 align-middle text-slate-600">${boxDetailsHtml}</td>
+                        <td class="px-4 py-3 align-middle font-semibold text-slate-800">${item.totalQuantity} PZ</td>
+                        <td class="px-4 py-3 align-middle text-slate-600">${item.palletNumber}°</td>
+                        <td class="px-4 py-3 align-middle text-right">
+                            <button data-index="${index}" class="delete-btn text-slate-500 hover:text-red-600 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </button>
+                        </td>
+                    `;
+                    packingListBody.appendChild(row);
                 });
-                // Aggiungi evento touch per compatibilità con iOS
-                checkbox.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    this.click();
-                });
+            }
+            
+            // --- Event Listeners ---
+            addBoxRowBtn.addEventListener('click', createBoxRow);
+            boxDetailsContainer.addEventListener('click', (e) => {
+                const removeBtn = e.target.closest('.remove-box-row');
+                if (removeBtn && boxDetailsContainer.children.length > 1) {
+                    removeBtn.parentElement.remove();
+                    updateTotalQuantity();
+                }
             });
+
+            boxDetailsContainer.addEventListener('input', updateTotalQuantity);
+            ddtNumberInput.addEventListener('input', saveData);
+            docDateInput.addEventListener('input', saveData);
+
+            addItemForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const formData = new FormData(addItemForm);
+                const boxes = Array.from(boxDetailsContainer.querySelectorAll('.box-row')).map(row => ({
+                    count: row.querySelector('[name="boxCount"]').value,
+                    qty: row.querySelector('[name="quantityPerBox"]').value
+                }));
+                
+                packingList.push({
+                    itemCode: formData.get('itemCode'),
+                    lotto: formData.get('lotto'),
+                    palletNumber: formData.get('palletNumber'),
+                    totalQuantity: formData.get('totalQuantity'),
+                    boxes: boxes,
+                });
+                saveData();
+                renderTable();
+                
+                addItemForm.reset();
+                boxDetailsContainer.innerHTML = '';
+                createBoxRow();
+                updateTotalQuantity();
+                document.getElementById('itemCode').focus();
+                showToast('Articolo aggiunto con successo!');
+            });
+
+            packingListBody.addEventListener('click', (e) => {
+                const deleteBtn = e.target.closest('.delete-btn');
+                if (deleteBtn) {
+                    itemIndexToDelete = parseInt(deleteBtn.dataset.index, 10);
+                    deleteModal.style.display = 'block';
+                }
+            });
+
+            const closeModal = (modal) => modal.style.display = 'none';
+            cancelDeleteBtn.addEventListener('click', () => closeModal(deleteModal));
+            confirmDeleteBtn.addEventListener('click', () => {
+                if (itemIndexToDelete > -1) {
+                    packingList.splice(itemIndexToDelete, 1);
+                    saveData();
+                    renderTable();
+                    showToast('Articolo eliminato.');
+                    itemIndexToDelete = -1;
+                }
+                closeModal(deleteModal);
+            });
+            
+            resetButton.addEventListener('click', () => resetModal.style.display = 'block');
+            cancelResetBtn.addEventListener('click', () => closeModal(resetModal));
+            confirmResetBtn.addEventListener('click', () => {
+                localStorage.removeItem(PACKING_LIST_KEY);
+                localStorage.removeItem(DDT_INFO_KEY);
+                packingList = [];
+                ddtNumberInput.value = '';
+                docDateInput.value = '';
+                loadData(); // Ricarica lo stato vuoto e imposta la data
+                showToast('Applicazione resettata.');
+                closeModal(resetModal);
+            });
+            window.addEventListener('click', (e) => {
+                if (e.target === resetModal) closeModal(resetModal);
+                if (e.target === deleteModal) closeModal(deleteModal);
+            });
+
+            // --- Logica di Stampa Professionale con Stile Pulito ---
+            printButton.addEventListener('click', () => {
+                const ddtNum = ddtNumberInput.value.trim();
+                const pageTitle = `DDT N. ${ddtNum || 'Packing List'}`;
+                const date = new Date(docDateInput.value);
+                const formattedDate = !isNaN(date) ? date.toLocaleDateString('it-IT') : '';
+
+                let printStyle = `
+                <style>
+                    @page {
+                        size: A4;
+                        margin: 0; /* Rimuove i margini del browser */
+                    }
+                    body { 
+                        font-family: 'Inter', Arial, sans-serif; 
+                        color: #1f2937;
+                        margin: 20mm; /* Aggiunge i margini per il contenuto */
+                    }
+                    .print-header { 
+                        border-bottom: 2px solid #e5e7eb; 
+                        padding-bottom: 1rem; 
+                        margin-bottom: 1.5rem; 
+                    }
+                    .print-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: start; }
+                    .print-logo { text-align: right; }
+                    .print-info { margin-top: 1.5rem; }
+                    .print-info p { margin: 0; font-size: 14px; }
+                    .print-info strong { font-weight: 600; }
+                    .print-table { 
+                        font-size: 11px; 
+                        width: 100%; 
+                        border-collapse: collapse; 
+                    }
+                    .print-table th, .print-table td { 
+                        border: 1px solid #e5e7eb; 
+                        padding: 10px; 
+                        text-align: center; /* Allineamento orizzontale di default */
+                        vertical-align: middle; /* Allineamento verticale */
+                    }
+                    .print-table th { 
+                        background-color: #f9fafb; 
+                        font-weight: 600; 
+                        color: #374151;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        text-align: left; /* Header a sinistra */
+                    }
+                    .print-table tbody tr:nth-child(even) {
+                        background-color: #f9fafb;
+                    }
+                    .print-table td { color: #374151; }
+                    .print-barcode-img { 
+                        display: block; 
+                        margin: 0 auto 4px auto;
+                        max-width: 200px;
+                        height: auto;
+                    }
+                    .cell-details { text-align: left; }
+                    .cell-quantita, .cell-bancale {
+                        font-size: 1.5rem;
+                        font-weight: 700;
+                    }
+                </style>`;
+                
+                let printContents = `<html><head><title>${pageTitle}</title>${printStyle}</head><body>
+                    <div class="print-header">
+                        <div class="print-grid">
+                            <div><p style="font-size:1.25rem;font-weight:700;">INFORMAZIONI PER IL CLIENTE</p></div>
+                            <div class="print-logo"><img src="https://placehold.co/100x40/4f46e5/ffffff?text=Nice" alt="Logo" style="display:inline-block;height:2.5rem"></div>
+                        </div>
+                        <div class="print-grid print-info">
+                            <p><strong>DDT N.&nbsp;&nbsp;</strong> ${ddtNum}</p>
+                            <p><strong>DEL&nbsp;&nbsp;</strong> ${formattedDate}</p>
+                        </div>
+                    </div>
+                    <table class="print-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Codice Particolare</th>
+                                <th>Dettagli Scatole</th>
+                                <th style="text-align: center;">Quantità Totale</th>
+                                <th style="text-align: center;">Bancale N.</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                packingList.forEach(item => {
+                    const boxDetailsHtml = item.boxes.map(box => `<p>${box.count} SCAT. X ${box.qty}</p>`).join('');
+                    const canvas = document.createElement('canvas');
+                    try {
+                        JsBarcode(canvas, item.itemCode, { height: 50, displayValue: false, margin: 10 });
+                        const barcodeDataUrl = canvas.toDataURL();
+                        printContents += `
+                            <tr>
+                                <td>
+                                    <img src="${barcodeDataUrl}" class="print-barcode-img">
+                                    <div style="font-family:monospace;font-size:1.1rem;margin-top:4px; letter-spacing: 0.05em;">${item.itemCode}</div>
+                                </td>
+                                <td class="cell-details">
+                                    ${boxDetailsHtml}
+                                    <p style="margin-top:8px; font-size: 10px; color: #6b7280;">Lotto: <span>${item.lotto}</span></p>
+                                </td>
+                                <td class="cell-quantita">${item.totalQuantity} PZ</td>
+                                <td class="cell-bancale">${item.palletNumber}°</td>
+                            </tr>`;
+                    } catch (e) { console.error("Barcode generation error:", e); }
+                });
+
+                printContents += `</tbody></table>
+                </body></html>`;
+                
+                const printWindow = window.open('', '_blank');
+                printWindow.document.open();
+                printWindow.document.write(printContents);
+                printWindow.document.close();
+                printWindow.onload = () => { printWindow.focus(); printWindow.print(); };
+            });
+            
+            // --- Init ---
+            createBoxRow();
+            loadData();
         });
-
-        // Salva una preferenza nel localStorage
-        function savePreference(day, checked) {
-            const prefs = JSON.parse(localStorage.getItem('prayerPreferences')) || {};
-            prefs[day] = checked;
-            localStorage.setItem('prayerPreferences', JSON.stringify(prefs));
-        }
-
-        // Salva tutte le preferenze quando il pulsante viene cliccato
-        function savePreferences() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            const prefs = {};
-
-            checkboxes.forEach(checkbox => {
-                const day = checkbox.getAttribute('name');
-                prefs[day] = checkbox.checked;
-            });
-
-            localStorage.setItem('prayerPreferences', JSON.stringify(prefs));
-            alert('Preferences saved successfully!');
-        }
     </script>
 </body>
 </html>
