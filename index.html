@@ -518,9 +518,13 @@
                 const pageTitle = `DDT N. ${ddtNum || 'Packing List'}`;
                 const date = new Date(docDateInput.value);
                 const formattedDate = !isNaN(date) ? date.toLocaleDateString('it-IT') : '';
-                
-                const leftLogoHtml = `<img src="data:https://i.ibb.co/qM7HbdWS/IMG0-Senza-titolo-1-png.png,iVBORw0KGgoAAAANSUhEUgAAARgAAAAoCAYAAAD9a3odAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIjSURBVHhe7dixTsQwEAVB3P+e3QW2oEMsbfmyhBRSt+yqzPTd3g0AAAAAAMBPxf23f/2u32//293dla9n8//fwc//f/v5fX/J63k/z3+eP/f8nZ+j50z/3+fn/L7+fL70+fzv9fP/n9fP+X1/yX+e/wMAAPAS0/v35+f5v/5+f8nv9/f5/z3P3+fP/z+v5+f5f/v5+f7X6+f8/n/J7/f5+/v+lx/z+/15/p//+33//p8/5/f5+/f5+f5X6/f7/PUCAAC4Fpn5/f1+f8nv9/v81+vn/D7/dX5+v8/f569fP+f3+fv9/p+fn/L7/Xn+9/f5+/f5+f5X6/f7+f5nAAAAuBcM9vv9fj8/f5+/z5/z+/z16+f8vv91fn6/z5/z+/x+/+vz/D//9/v9/f7X6/f7/PUCAAC4Fmn/ev+8/p8/5/f5+/15/p//+/2+n5/y+/35/tfz9/l+/f38l+vn/D5/f+9ffs7v9+fr/D//9/v9/p/f5+/f5+f7X6/f7/PUCAAC4Fpny+/35/tfz9/l+/f38l+vn/D5/f+9fPs7v9+fr/D//9/v9/p/f5+/f5+f7X6/f7/PUCAAC4Fhlq9/f7/X5/y+/3+/x+/+vz/J/f5+fn+1/P3+fP+X3+ev39/Jfr5/w+/+fn/L7/dX6/z5/z+/x+f73+fC4AAIBfYjQAAAD+GmMDAAAA2AwGAQAAgM1gEAAAAIAMBgEAAMDNYBAAAADIYBAAAADYbAYBAAAAIINBAAAA4GawCQAAAGQwCgAAANhsBgEAAIDNYBAAAADIYBAAAADYbAYBAAAAIINBAAAA4GYwCgAAAMhgsAkAAADYbAYBAAAAIINBAAAA4GawCQAAAGQwCgAAANhsBgEAAIDNYBAAAADIYBAAAADYbAYBAAAAIINBAAAA4GawCQAAAGQwCgAAANhsBgEAAIDNYBAAAADIYBAAAADYbAYBAAAAIINBAAAA4GawCQAAAGQwCgAAANhsBgEAAIDNYBAAAADIYBAAAADYbAYBAAAAIINBAAAA4GawCQAAAGQwCgAAANhsBgEAAIDNYBAAAADIYBAAAADYbAYBAAAAIINBAAAA4GawCQAAAGQwCgAAANhsBgEAAIDNYBAAAADIYBAAAADYbAYBAAAAIINBAAAA4GawCQAAAGQwCgAAANhsBgEAAIDN/AMoA4kFESsUbgAAAABJRU5ErkJggg==" alt="Logo Panotec Metalworking" style="height:2.5rem; width:auto;">`;
-
+const leftLogoHtml = `
+  <div style="display: flex; align-items: center;">
+    <a href="https://imgbb.com/" target="_blank">
+      <img src="https://i.ibb.co/qM7HbdWS/IMG0-Senza-titolo-1-png.png" alt="Logo Metalworking" style="height:2.5rem; width:auto; border:0;">
+    </a>
+  </div>
+`;
                 let rightLogosHtml = '';
                 if(logoSettings.showNice) {
                     const niceLogoBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI1IiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDQ3OTciLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiBmb250LXdlaWdodD0iYm9sZCI+TmljZTwvdGV4dD48L3N2Zz4=";
