@@ -124,7 +124,7 @@
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
         
         <header class="mb-8">
-            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
+             <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
             <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
         </header>
 
@@ -155,7 +155,7 @@
                         
                         <!-- Filtro Marchio -->
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-slate-600 mb-2">Filtro Codici</label>
+                            <label class="block text-sm font-medium text-slate-600 mb-2">Filtro Codici Cliente</label>
                             <div id="brandFilterContainer" class="flex flex-wrap gap-2 rounded-lg bg-slate-100 p-1">
                                 <!-- Radio buttons verranno inseriti qui -->
                             </div>
@@ -216,7 +216,7 @@
 
                 <!-- Card Impostazioni Stampa -->
                 <div class="card p-6">
-                    <h2 class="text-xl font-semibold text-slate-700 mb-4">Impostazioni Stampa</h2>
+                    <h2 class="text-xl font-semibold text-slate-700 mb-4">Impostazioni Stampa Cliente</h2>
                     <div class="flex flex-col gap-3">
                         <label class="flex items-center gap-3 cursor-pointer">
                             <input type="checkbox" id="logoNiceCheckbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
@@ -473,11 +473,9 @@
                 const brand = newCodeBrandSelect.value;
                 if (!newCode) return;
 
-                if (brand === 'Nice' && !niceItemCodes.includes(newCode)) {
-                    niceItemCodes.push(newCode);
-                } else if (brand === 'Came' && !cameItemCodes.includes(newCode)) {
-                    cameItemCodes.push(newCode);
-                }
+                if (brand === 'Nice' && !niceItemCodes.includes(newCode)) { niceItemCodes.push(newCode); } 
+                else if (brand === 'Came' && !cameItemCodes.includes(newCode)) { cameItemCodes.push(newCode); }
+                
                 saveData();
                 populateItemCodes(brandFilter);
                 newCodeInput.value = '';
@@ -521,20 +519,32 @@
                 const date = new Date(docDateInput.value);
                 const formattedDate = !isNaN(date) ? date.toLocaleDateString('it-IT') : '';
                 
-                let logosHtml = '';
+                const panotecLogoBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGZpbGw9IiMwMDQ3OTciIGQ9Ik0zMS4yIDEwLjVIMjEuN3YtLjZsLjk0LS4wN2MuNTgtLjA0IDEuMDQtLjI0IDEuNC0uNi4zNC0uMzguNTQtLjkzLjU0LTEuNjNWNC44YzAtLjctLjE4LTEuMjQtLjU0LTEuNjRzLS44LS42LTEuMzQtLjZMLjIuMTV2MzAuNGgxMS4yVjE4LjFsMS4yLjA4Yy42LjA0IDEuMS4yNSAxLjQ4LjYzLjM4LjM2LjU2Ljg4LjU2IDEuNTZ2My4yOGMwIC43LS4xOCAxLjI0LS41NSAxLjYycy0uODQuNTYtMS40My42bC0xLjIuMDd2MS4zNWg5LjVWMjMuN2wtMS4yLS4wN2MtLjU4LS4wNC0xLjA0LS4yNC0xLjQtLjU4LS4zNS0uMzYtLjUyLS44OC0uNTItMS41NXYtMy4zYzAtLjctLjE4LTEuMjUtLjU0LTEuNjRzLS44LS42LTEuMzQtLjZsLTEuMjYtLjA4VjE0LjlsMS4yNi0uMDhjLjU4LS4wNCAxLjA0LS4yNCAxLjQtLjU4cy41NC0uOS41NC0xLjY1di0uNjRoMy43djE5aDExLjJWMTAuNXoiLz48dGV4dCB4PSI0NSIgeT0iMTciIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMwMDQ3OTciIGZvbnQtd2VpZ2h0PSI5MDAiPkhFVEFMV09SS0lORzwvdGV4dD48dGV4dCB4PSI0NSIgeT0iMzIiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMwMDQ3OTciIGZvbnQtd2VpZ2h0PSI5MDAiPFRPUk5FUklBIERJIFBSRUNJU0lPTkU8L3RleHQ+PC9zdmc+";
+                const leftLogoHtml = `<img src="$https://i.ibb.co/qM7HbdWS/IMG0-Senza-titolo-1-png.png" alt="Logo Panotec Metalworking" style="height:2.5rem; width:auto;">`;
+
+                let rightLogosHtml = '';
                 if(logoSettings.showNice) {
                     const niceLogoBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI1IiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDQ3OTciLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiBmb250LXdlaWdodD0iYm9sZCI+TmljZTwvdGV4dD48L3N2Zz4=";
-                    logosHtml += `<img src="${niceLogoBase64}" alt="Logo Nice" style="height:2.5rem; width:auto;">`;
+                    rightLogosHtml += `<img src="${niceLogoBase64}" alt="Logo Nice" style="height:2.5rem; width:auto;">`;
                 }
                 if(logoSettings.showCame) {
                     const cameLogoBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI1IiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDQ3OTciLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9ImJsYWNrIiBmb250LXdlaWdodD0iYm9sZCI+Q0FNRTwvdGV4dD48L3N2Zz4=";
-                    logosHtml += `<img src="${cameLogoBase64}" alt="Logo Came" style="height:2.5rem; width:auto;">`;
+                    rightLogosHtml += `<img src="${cameLogoBase64}" alt="Logo Came" style="height:2.5rem; width:auto;">`;
                 }
+                
+                const footerHtml = `<div class="print-footer">
+                        <div class="footer-grid">
+                            <div class="footer-col"><strong>PANOTEC Srl Unipersonale</strong><br>Sede legale - Registered office<br>Via G. Polese 2<br>31010 Cimadolmo (TV)<br>Italy</div>
+                            <div class="footer-col">www.panotec.com<br>info@panotec.it<br>panotecsrl@cgn.legalmail.it<br>T +39 0422 432715<br>F +39 0422 1821423</div>
+                            <div class="footer-col">CAP. SOC. € 5.000.000,00 i.v.<br>Reg. imp. TV e Bl. n. 02482830260<br>R.E.A. n. TV-211573<br>P.IVA / VAT. IT02482830260<br>SDI: M5UXCRI</div>
+                            <div class="footer-col"><strong>Panotec Metalworking</strong><br>Sede operativa - Operational HQ<br>Via Francesco Baracca, 38 - 31010 Cimadolmo (TV), Italy<br>T +39 0438 492553 - info@panotecmetalworking.it<br>www.panotecmetalworking.com</div>
+                        </div>
+                    </div>`;
 
-                const printStyle = `<style>@page{size:A4;margin:0}body{font-family:'Inter',Arial,sans-serif;color:#1f2937;margin:20mm}.print-header{border-bottom:2px solid #e5e7eb;padding-bottom:1rem;margin-bottom:1.5rem}.print-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start}.print-logo-container{text-align:right;display:flex;justify-content:flex-end;align-items:center;gap:1rem}.print-info{margin-top:1.5rem}.print-info p{margin:0;font-size:14px}.print-info strong{font-weight:600}.print-table{font-size:11px;width:100%;border-collapse:collapse}.print-table th,.print-table td{border:1px solid #e5e7eb;padding:10px;text-align:center;vertical-align:middle}.print-table th{background-color:#f9fafb;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.05em;text-align:left}.print-table tbody tr:nth-child(even){background-color:#f9fafb}.print-table td{color:#374151}.print-barcode-img{display:block;margin:0 auto 4px;max-width:200px;height:auto}.cell-details{text-align:left}.cell-quantita,.cell-bancale{font-size:1.5rem;font-weight:700}</style>`;
-                let printContents = `<html><head><title>${pageTitle}</title>${printStyle}</head><body><div class="print-header"><div class="print-grid"><div><p style="font-size:1.25rem;font-weight:700">INFORMAZIONI PER IL CLIENTE</p></div><div class="print-logo-container">${logosHtml}</div></div><div class="print-grid print-info"><p><strong>DDT N.&nbsp;&nbsp;</strong> ${ddtNum}</p><p><strong>DEL&nbsp;&nbsp;</strong> ${formattedDate}</p></div></div><table class="print-table"><thead><tr><th style="text-align:center">Codice Particolare</th><th>Dettagli Scatole</th><th style="text-align:center">Quantità Totale</th><th style="text-align:center">Bancale N.</th></tr></thead><tbody>`;
+                const printStyle = `<style>@page{size:A4;margin:0}body{font-family:'Inter',Arial,sans-serif;color:#1f2937;margin:20mm}.print-header{border-bottom:2px solid #e5e7eb;padding-bottom:1rem;margin-bottom:1.5rem}.print-grid{display:grid;grid-template-columns:1fr 1fr;align-items:start}.print-logo-container{text-align:right;display:flex;justify-content:flex-end;align-items:center;gap:1rem}.print-info{margin-top:1.5rem}.print-info p{margin:0;font-size:14px}.print-info strong{font-weight:600}.print-table{font-size:11px;width:100%;border-collapse:collapse}.print-table th,.print-table td{border:1px solid #e5e7eb;padding:10px;text-align:center;vertical-align:middle}.print-table th{background-color:#f9fafb;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.05em;text-align:left}.print-table tbody tr:nth-child(even){background-color:#f9fafb}.print-table td{color:#374151}.print-barcode-img{display:block;margin:0 auto 4px;max-width:200px;height:auto}.cell-details{text-align:left}.cell-quantita,.cell-bancale{font-size:1.5rem;font-weight:700}.print-footer{position:fixed;bottom:10mm;left:20mm;right:20mm;font-size:8px;color:#6b7280;border-top:1px solid #e5e7eb;padding-top:8px}.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.footer-col strong{font-weight:600}</style>`;
+                let printContents = `<html><head><title>${pageTitle}</title>${printStyle}</head><body><div class="print-header"><div class="print-grid"><div>${leftLogoHtml}<p style="font-size:1.25rem;font-weight:700; margin-top: 1rem;">INFORMAZIONI PER IL CLIENTE</p></div><div class="print-logo-container">${rightLogosHtml}</div></div><div class="print-grid print-info"><p><strong>DDT N.&nbsp;&nbsp;</strong> ${ddtNum}</p><p><strong>DEL&nbsp;&nbsp;</strong> ${formattedDate}</p></div></div><table class="print-table"><thead><tr><th style="text-align:center">Codice Particolare</th><th>Dettagli Scatole</th><th style="text-align:center">Quantità Totale</th><th style="text-align:center">Bancale N.</th></tr></thead><tbody>`;
                 packingList.forEach(item=>{const boxDetailsHtml=item.boxes.map(box=>`<p>${box.count} SCAT. X ${box.qty}</p>`).join('');const canvas=document.createElement('canvas');try{JsBarcode(canvas,item.itemCode,{height:50,displayValue:!1,margin:10});const barcodeDataUrl=canvas.toDataURL();printContents+=`<tr><td><img src="${barcodeDataUrl}" class="print-barcode-img"><div style="font-family:monospace;font-size:1.1rem;margin-top:4px;letter-spacing:.05em">${item.itemCode}</div></td><td class="cell-details">${boxDetailsHtml}<p style="margin-top:8px;font-size:10px;color:#6b7280">Lotto: <span>${item.lotto}</span></p></td><td class="cell-quantita">${item.totalQuantity} PZ</td><td class="cell-bancale">${item.palletNumber}°</td></tr>`}catch(e){console.error("Barcode generation error:",e)}});
-                printContents += `</tbody></table></body></html>`;
+                printContents += `</tbody></table>${footerHtml}</body></html>`;
                 const printWindow = window.open('', '_blank');
                 printWindow.document.open();
                 printWindow.document.write(printContents);
