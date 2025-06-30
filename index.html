@@ -124,7 +124,7 @@
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
         
         <header class="mb-8">
-             <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
+            <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
             <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
         </header>
 
@@ -518,22 +518,15 @@
                 const pageTitle = `DDT N. ${ddtNum || 'Packing List'}`;
                 const date = new Date(docDateInput.value);
                 const formattedDate = !isNaN(date) ? date.toLocaleDateString('it-IT') : '';
-const leftLogoHtml = `
-  <div style="display: flex; align-items: center;">
-    <a href="https://imgbb.com/" target="_blank">
-      <img src="https://i.ibb.co/nMw5XTTm/2024-Nuovo-Logo.png" alt="Logo Metalworking" style="height:2.5rem; width:auto; border:0;">
-    </a>
-  </div>
-`;
+                
+                const leftLogoHtml = `<img src="https://i.ibb.co/XZ3vWwdY/2024-Nuovo-Logo.png" alt="Logo Panotec Metalworking" style="height:2.5rem; width:auto;">`;
+
                 let rightLogosHtml = '';
                 if(logoSettings.showNice) {
-                    const niceLogoBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI1IiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDQ3OTciLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IndoaXRlIiBmb250LXdlaWdodD0iYm9sZCI+TmljZTwvdGV4dD48L3N2Zz4=";
-                    rightLogosHtml += `<img src="${niceLogoBase64}" alt="Logo Nice"style="height:2.5rem; width:auto; position:absolute; top:82px; right:20px;"
-">`;
+                    rightLogosHtml += `<img src="https://i.ibb.co/3YNHWbgz/Nice-spa-logo.png" alt="Logo Nice" style="height:2.5rem; width:auto;">`;
                 }
                 if(logoSettings.showCame) {
-                    const cameLogoBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTI1IiBoZWlnaHQ9IjQwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiMwMDQ3OTciLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkhlbHZldGljYSwgQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9ImJsYWNrIiBmb250LXdlaWdodD0iYm9sZCI+Q0FNRTwvdGV4dD48L3N2Zz4=";
-                    rightLogosHtml += `<img src="${cameLogoBase64}" alt="Logo Came" style="height:2.5rem; width:auto; position:absolute; top:82px; right:20px;">`;
+                    rightLogosHtml += `<img src="https://i.ibb.co/35tk8S9g/CAME-Horizontal-Color.png" alt="Logo Came" style="height:2.5rem; width:auto;">`;
                 }
                 
                 const footerHtml = `<div class="print-footer">
@@ -545,14 +538,8 @@ const leftLogoHtml = `
                         </div>
                     </div>`;
 
-                const printStyle = `<style>@page{size:A4;margin:0}body{font-family:'Inter',Arial,sans-serif;color:#1f2937;margin:20mm}.print-header{border-bottom:2px solid #e5e7eb;padding-bottom:1rem;margin-bottom:1.5rem}.print-grid{display:grid-template-columns: 1fr 1fr;align-items:start}.print-logo-left{text-align:left;}.print-title {
-  grid-column: 1 / -1; /* occupa entrambe le colonne */
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0.5rem 0;
-}.print-logo-right{text-align:right;display:flex;justify-content:flex-end;align-items:center;gap:1rem}.print-info{margin-top:0.5rem;grid-template-columns:1fr 1fr}.print-info p{margin:0;font-size:14px}.print-info strong{font-weight:600}.print-table{font-size:11px;width:100%;border-collapse:collapse}.print-table th,.print-table td{border:1px solid #e5e7eb;padding:10px;text-align:center;vertical-align:middle}.print-table th{background-color:#f9fafb;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.05em;text-align:left}.print-table tbody tr:nth-child(even){background-color:#f9fafb}.print-table td{color:#374151}.print-barcode-img{display:block;margin:0 auto 4px;max-width:200px;height:auto}.cell-details{text-align:left}.cell-quantita,.cell-bancale{font-size:1.5rem;font-weight:700}.print-footer{position:fixed;bottom:10mm;left:20mm;right:20mm;font-size:8px;color:#6b7280;border-top:1px solid #e5e7eb;padding-top:8px}.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.footer-col strong{font-weight:600}</style>`;
-                let printContents = `<html><head><title>${pageTitle}</title>${printStyle}</head><body><div class="print-header"><div class="print-grid"><div class="print-logo-left">${leftLogoHtml}</div><div><p class="print-title">INFORMAZIONI PER IL CLIENTE</p></div><div class="print-logo-right">${rightLogosHtml}</div></div><div class="print-grid print-info"><p><strong>DDT N.&nbsp;&nbsp;</strong> ${ddtNum}</p><p><strong>DEL&nbsp;&nbsp;</strong> ${formattedDate}</p></div></div><table class="print-table"><thead><tr><th style="text-align:center">Codice Particolare</th><th>Dettagli Scatole</th><th style="text-align:center">Quantità Totale</th><th style="text-align:center">Bancale N.</th></tr></thead><tbody>`;
+                const printStyle = `<style>@page{size:A4;margin:0}body{font-family:'Inter',Arial,sans-serif;color:#1f2937;margin:20mm}.print-header{border-bottom:2px solid #e5e7eb;padding-bottom:1rem;margin-bottom:1.5rem}.print-grid-top{display:grid;grid-template-columns:1fr 1fr;align-items:center;margin-bottom:1rem}.print-logo-left{text-align:left}.print-title-container{text-align:center;font-size:1.25rem;font-weight:700}.print-logo-right{text-align:right;display:flex;justify-content:flex-end;align-items:center;gap:1rem}.print-info{display:grid;grid-template-columns:1fr 1fr;margin-top:1.5rem}.print-info p{margin:0;font-size:14px}.print-info strong{font-weight:600}.print-table{font-size:11px;width:100%;border-collapse:collapse}.print-table th,.print-table td{border:1px solid #e5e7eb;padding:10px;text-align:center;vertical-align:middle}.print-table th{background-color:#f9fafb;font-weight:600;color:#374151;text-transform:uppercase;letter-spacing:.05em;text-align:left}.print-table tbody tr:nth-child(even){background-color:#f9fafb}.print-table td{color:#374151}.print-barcode-img{display:block;margin:0 auto 4px;max-width:200px;height:auto}.cell-details{text-align:left}.cell-quantita,.cell-bancale{font-size:1.5rem;font-weight:700}.print-footer{position:fixed;bottom:10mm;left:20mm;right:20mm;font-size:8px;color:#1a2d6a;border-top:1px solid #e5e7eb;padding-top:8px}.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.footer-col strong{font-weight:600}</style>`;
+                let printContents = `<html><head><title>${pageTitle}</title>${printStyle}</head><body><div class="print-header"><div class="print-grid-top"><div class="print-logo-left">${leftLogoHtml}</div><div class="print-logo-right">${rightLogosHtml}</div></div><div class="print-title-container">INFORMAZIONI PER IL CLIENTE</div><div class="print-info"><p><strong>DDT N.&nbsp;&nbsp;</strong> ${ddtNum}</p><p><strong>DEL&nbsp;&nbsp;</strong> ${formattedDate}</p></div></div><table class="print-table"><thead><tr><th style="text-align:center">Codice Particolare</th><th>Dettagli Scatole</th><th style="text-align:center">Quantità Totale</th><th style="text-align:center">Bancale N.</th></tr></thead><tbody>`;
                 packingList.forEach(item=>{const boxDetailsHtml=item.boxes.map(box=>`<p>${box.count} SCAT. X ${box.qty}</p>`).join('');const canvas=document.createElement('canvas');try{JsBarcode(canvas,item.itemCode,{height:50,displayValue:!1,margin:10});const barcodeDataUrl=canvas.toDataURL();printContents+=`<tr><td><img src="${barcodeDataUrl}" class="print-barcode-img"><div style="font-family:monospace;font-size:1.1rem;margin-top:4px;letter-spacing:.05em">${item.itemCode}</div></td><td class="cell-details">${boxDetailsHtml}<p style="margin-top:8px;font-size:10px;color:#6b7280">Lotto: <span>${item.lotto}</span></p></td><td class="cell-quantita">${item.totalQuantity} PZ</td><td class="cell-bancale">${item.palletNumber}°</td></tr>`}catch(e){console.error("Barcode generation error:",e)}});
                 printContents += `</tbody></table>${footerHtml}</body></html>`;
                 const printWindow = window.open('', '_blank');
