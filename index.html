@@ -130,7 +130,7 @@
                     <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
                     <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
                 </div>
-                <p class="text-sm text-slate-400 mt-2">Versione 2.21</p>
+                <p class="text-sm text-slate-400 mt-2">Versione 2.22</p>
             </div>
         </header>
 
@@ -157,6 +157,7 @@
                         <h2 class="text-xl font-semibold text-slate-700 mb-4">Aggiungi Nuovo Articolo</h2>
                         
                         <div class="mb-6">
+                             <label class="block text-sm font-medium text-slate-600 mb-1">Filtro Codici Cliente</label>
                             <div id="brandFilterContainer" class="flex flex-wrap gap-2 rounded-lg bg-slate-100 p-1">
                                 </div>
                         </div>
@@ -288,10 +289,10 @@
     <div id="resetModal" class="modal">
         <div class="modal-content">
             <h3 class="text-lg font-semibold text-slate-800 mb-2">Conferma Reset</h3>
-            <p class="text-slate-500 mb-6">Sei sicuro di voler cancellare tutti i dati? L'operazione non è reversibile.</p>
+            <p class="text-slate-500 mb-6">Sei sicuro di voler cancellare tutti i dati della sessione corrente?</p>
             <div class="flex justify-end gap-3">
                  <button id="cancelReset" class="btn btn-secondary">Annulla</button>
-                 <button id="confirmReset" class="btn btn-destructive">Sì, cancella</button>
+                 <button id="confirmReset" class="btn btn-destructive">Sì, resetta</button>
             </div>
         </div>
     </div>
@@ -335,24 +336,20 @@
             const cassoneNumberInput = document.getElementById('cassoneNumber');
             const refHeaderEl = document.getElementById('refHeader');
             
-            // Sezione Manuale e Imballo
             const manualeSection = document.getElementById('manualeSection');
             const packageTypeSelect = document.getElementById('packageType');
             const packageDetailsSection = document.getElementById('packageDetailsSection');
-            const bancaleDetails = document.getElementById('bancaleDetails');
             const boxDetailsContainer = document.getElementById('boxDetailsContainer');
             const addBoxRowBtn = document.getElementById('addBoxRow');
 
-            // Modali e Toast
             const resetModal = document.getElementById('resetModal');
-            const cancelResetBtn = document.getElementById('cancelReset');
             const confirmResetBtn = document.getElementById('confirmReset');
+            const cancelResetBtn = document.getElementById('cancelReset');
             const deleteModal = document.getElementById('deleteModal');
-            const cancelDeleteBtn = document.getElementById('cancelDelete');
             const confirmDeleteBtn = document.getElementById('confirmDelete');
+            const cancelDeleteBtn = document.getElementById('cancelDelete');
             const toast = document.getElementById('toast');
             
-            // Impostazioni e Filtri
             const logoNiceCheckbox = document.getElementById('logoNiceCheckbox');
             const logoCameCheckbox = document.getElementById('logoCameCheckbox');
             const brandFilterContainer = document.getElementById('brandFilterContainer');
@@ -364,10 +361,10 @@
             let brandFilter = 'Nice';
             let itemIndexToDelete = -1;
             
-            // --- Costanti Local Storage (ancora usate per dati non persistenti) ---
-            const DDT_INFO_KEY = 'packingListApp_ddtInfo_v6';
-            const LOGO_SETTINGS_KEY = 'packingListApp_logoSettings_v6';
-            const BRAND_FILTER_KEY = 'packingListApp_brandFilter_v6';
+            // --- Costanti Local Storage ---
+            const DDT_INFO_KEY = 'packingListApp_ddtInfo_v7';
+            const LOGO_SETTINGS_KEY = 'packingListApp_logoSettings_v7';
+            const BRAND_FILTER_KEY = 'packingListApp_brandFilter_v7';
 
             // --- Dati Iniziali ---
             const baseNiceCodes = [ 'PMD1329R02.4610', 'PMD1739.4610', 'PMD2318R01.4610', 'PMD1655R04.4610', 'PD0973A0002', 'PD2187A0002', 'PD2386A0000', 'PMD1951R01.4610', 'PMD1633R01.4610', 'PD1064A2002', 'PD1912A0000', 'PMD2088R02.4610', 'PD0579A0003', 'PD1751A0000', 'PD2381A0001', 'PMD1095R02.4610', 'PMD1260R01.4610', 'PMD1501R05.4610', 'PMD1950R01.4610', 'PMD2319.4610-REV06', 'PD1353A0001', 'PMD1650R01.4610', 'PD2188A0000' ];
@@ -380,10 +377,7 @@
             const populateItemCodes = (brand) => {
                 const datalist = document.getElementById('itemCodesList');
                 datalist.innerHTML = '';
-                let codes = [];
-                if (brand === 'Nice') codes = niceItemCodes;
-                if (brand === 'Came') codes = cameItemCodes;
-                
+                let codes = (brand === 'Nice') ? niceItemCodes : (brand === 'Came') ? cameItemCodes : [];
                 codes.forEach(code => {
                     const option = document.createElement('option');
                     option.value = code;
@@ -402,47 +396,41 @@
             };
 
             const updateFormVisibility = () => {
+                const isManual = brandFilter === 'Manuale';
+                manualeSection.classList.toggle('hidden', !isManual);
+
                 const packageType = packageTypeSelect.value;
-                const isManualCassone = brandFilter === 'Manuale' && packageType === 'Cassone';
+                const isManualCassone = isManual && packageType === 'Cassone';
+
                 packageDetailsSection.classList.toggle('hidden', isManualCassone);
                 palletNumberWrapper.classList.toggle('hidden', isManualCassone);
                 palletNumberInput.required = !isManualCassone;
                 cassoneNumberWrapper.classList.toggle('hidden', !isManualCassone);
                 cassoneNumberInput.required = isManualCassone;
                 totalQuantityInput.readOnly = !isManualCassone;
-                if (isManualCassone) {
-                    totalQuantityInput.placeholder = "Inserisci quantità";
-                    totalQuantityInput.value = '';
-                } else {
-                    totalQuantityInput.placeholder = "Qtà Totale (auto)";
+
+                if (!isManualCassone) {
                     updateTotalQuantity();
                 }
             };
             
-            const toggleManualSection = () => {
-                manualeSection.classList.toggle('hidden', brandFilter !== 'Manuale');
-                updateFormVisibility(); 
-            };
-
             const showToast = (message) => {
                 toast.textContent = message;
                 toast.classList.add('show');
-                setTimeout(() => { toast.classList.add('hide'); setTimeout(() => { toast.classList.remove('show', 'hide'); }, 300); }, 2000);
+                setTimeout(() => { toast.classList.add('hide'); setTimeout(() => { toast.classList.remove('show', 'hide'); }, 300); }, 2500);
             };
             
-            const saveData = () => {
+            const saveDataToLocal = () => {
                 localStorage.setItem(DDT_INFO_KEY, JSON.stringify({ ddtNumber: ddtNumberInput.value, docDate: docDateInput.value }));
                 localStorage.setItem(LOGO_SETTINGS_KEY, JSON.stringify(logoSettings));
                 localStorage.setItem(BRAND_FILTER_KEY, brandFilter);
             };
 
             const loadData = async () => {
-                const { data: customCodes, error: codesError } = await supabase
-                    .from('custom_item_codes')
-                    .select('code, brand');
-
+                const { data: customCodes, error: codesError } = await supabase.from('custom_item_codes').select('code, brand');
                 if (codesError) {
-                    console.error('Errore nel caricamento dei codici da Supabase:', codesError);
+                    console.error('Errore caricamento codici da Supabase:', codesError);
+                    showToast('Errore di connessione al database.');
                 } else {
                     const customNice = customCodes.filter(c => c.brand === 'Nice').map(c => c.code);
                     const customCame = customCodes.filter(c => c.brand === 'Came').map(c => c.code);
@@ -470,7 +458,7 @@
 
                 renderBrandFilters();
                 populateItemCodes(brandFilter);
-                toggleManualSection();
+                updateFormVisibility();
                 renderTable();
             };
 
@@ -489,7 +477,6 @@
                 row.className = 'grid grid-cols-[1fr_1fr_auto] gap-2 items-center box-row';
                 row.innerHTML = `<input type="number" name="boxCount" class="form-input text-sm" placeholder="N. Scatole"><input type="number" name="quantityPerBox" class="form-input text-sm" placeholder="Qtà x Scatola"><button type="button" class="remove-box-row text-slate-400 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>`;
                 boxDetailsContainer.appendChild(row);
-                updateTotalQuantity();
             };
 
             function renderTable() {
@@ -526,13 +513,15 @@
                 if (e.target.name === 'brandFilter') {
                     brandFilter = e.target.value;
                     populateItemCodes(brandFilter);
-                    toggleManualSection();
-                    if (brandFilter === 'Nice') { logoNiceCheckbox.checked = true; logoCameCheckbox.checked = false; } 
-                    else if (brandFilter === 'Came') { logoNiceCheckbox.checked = false; logoCameCheckbox.checked = true; } 
-                    else { logoNiceCheckbox.checked = false; logoCameCheckbox.checked = false; }
+                    updateFormVisibility();
+                    if (brandFilter !== 'Manuale') {
+                        const showNice = brandFilter === 'Nice';
+                        logoNiceCheckbox.checked = showNice;
+                        logoCameCheckbox.checked = !showNice;
+                    }
                     logoSettings.showNice = logoNiceCheckbox.checked;
                     logoSettings.showCame = logoCameCheckbox.checked;
-                    saveData();
+                    saveDataToLocal();
                 }
             });
             
@@ -541,14 +530,17 @@
             addBoxRowBtn.addEventListener('click', createBoxRow);
             boxDetailsContainer.addEventListener('click', (e) => {
                 const removeBtn = e.target.closest('.remove-box-row');
-                if (removeBtn && boxDetailsContainer.children.length > 1) { removeBtn.parentElement.remove(); updateTotalQuantity(); }
+                if (removeBtn && boxDetailsContainer.children.length > 1) { 
+                    removeBtn.parentElement.remove(); 
+                    updateTotalQuantity();
+                }
             });
 
             boxDetailsContainer.addEventListener('input', updateTotalQuantity);
-            ddtNumberInput.addEventListener('input', saveData);
-            docDateInput.addEventListener('input', saveData);
-            logoNiceCheckbox.addEventListener('change', (e) => { logoSettings.showNice = e.target.checked; saveData(); });
-            logoCameCheckbox.addEventListener('change', (e) => { logoSettings.showCame = e.target.checked; saveData(); });
+            ddtNumberInput.addEventListener('input', saveDataToLocal);
+            docDateInput.addEventListener('input', saveDataToLocal);
+            logoNiceCheckbox.addEventListener('change', (e) => { logoSettings.showNice = e.target.checked; saveDataToLocal(); });
+            logoCameCheckbox.addEventListener('change', (e) => { logoSettings.showCame = e.target.checked; saveDataToLocal(); });
 
             addCodeForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -558,18 +550,15 @@
                 const brand = newCodeBrandSelect.value;
                 if (!newCode) return;
 
-                const { error } = await supabase
-                    .from('custom_item_codes')
-                    .insert([{ code: newCode, brand: brand }]);
-
+                const { error } = await supabase.from('custom_item_codes').insert([{ code: newCode, brand: brand }]);
                 if (error) {
                     console.error("Errore salvataggio codice:", error.message);
                     showToast(`Errore: il codice "${newCode}" potrebbe già esistere.`);
                     return;
                 }
                 
-                if (brand === 'Nice' && !niceItemCodes.includes(newCode)) niceItemCodes.push(newCode);
-                else if (brand === 'Came' && !cameItemCodes.includes(newCode)) cameItemCodes.push(newCode);
+                if (brand === 'Nice') niceItemCodes.push(newCode);
+                else if (brand === 'Came') cameItemCodes.push(newCode);
                 
                 populateItemCodes(brandFilter);
                 newCodeInput.value = '';
@@ -583,8 +572,7 @@
                     return;
                 }
                 const formData = new FormData(addItemForm);
-                const isManual = brandFilter === 'Manuale';
-                const packageType = isManual ? formData.get('packageType') : 'Bancale';
+                const packageType = brandFilter === 'Manuale' ? formData.get('packageType') : 'Bancale';
                 const newItem = {
                     itemCode: formData.get('itemCode'), lotto: formData.get('lotto'),
                     palletNumber: '', totalQuantity: 0, packageType: packageType, boxes: [], cassoneNumber: ''
@@ -602,22 +590,35 @@
                 }
                 packingList.push(newItem);
                 renderTable(); 
+                
+                // CORREZIONE: Salva lo stato del form prima di resettarlo
                 const currentBrandFilter = brandFilter;
+                const currentPackageType = packageTypeSelect.value;
+                
                 addItemForm.reset(); 
+                
                 brandFilter = currentBrandFilter;
                 const radioToRestore = document.querySelector(`input[name="brandFilter"][value="${brandFilter}"]`);
                 if(radioToRestore) radioToRestore.checked = true;
+                
+                if (brandFilter === 'Manuale') {
+                    packageTypeSelect.value = currentPackageType;
+                }
+                
                 boxDetailsContainer.innerHTML = '';
                 createBoxRow();
-                toggleManualSection();
+                updateFormVisibility();
+                
                 document.getElementById('itemCode').focus();
                 showToast('Articolo aggiunto con successo!');
             });
 
-
             packingListBody.addEventListener('click', (e) => {
                 const deleteBtn = e.target.closest('.delete-btn');
-                if (deleteBtn) { itemIndexToDelete = parseInt(deleteBtn.dataset.index, 10); deleteModal.style.display = 'block'; }
+                if (deleteBtn) { 
+                    itemIndexToDelete = parseInt(deleteBtn.dataset.index, 10); 
+                    deleteModal.style.display = 'block'; 
+                }
             });
 
             const closeModal = (modal) => modal.style.display = 'none';
@@ -645,7 +646,10 @@
                 closeModal(resetModal);
             });
 
-            window.addEventListener('click', (e) => { if (e.target === resetModal) closeModal(resetModal); if (e.target === deleteModal) closeModal(deleteModal); });
+            window.addEventListener('click', (e) => { 
+                if (e.target === resetModal) closeModal(resetModal); 
+                if (e.target === deleteModal) closeModal(deleteModal); 
+            });
 
             printButton.addEventListener('click', () => {
                 const ddtNum = ddtNumberInput.value.trim();
@@ -681,7 +685,7 @@
                         const barcodeDataUrl = canvas.toDataURL();
                         printContents += `<tr><td><img src="${barcodeDataUrl}" class="print-barcode-img"><div style="font-family:monospace;font-size:1.1rem;margin-top:4px;letter-spacing:.05em">${item.itemCode}</div></td><td class="cell-details">${detailsHtml}</td><td class="cell-quantita">${item.totalQuantity} PZ</td><td class="cell-bancale">${refDisplayPrint}</td></tr>`;
                     } catch (e) {
-                        console.error("Barcode generation error:", e);
+                        console.error("Errore generazione barcode:", e);
                         printContents += `<tr><td><div style="font-family:monospace;font-size:1.1rem;margin-top:4px;letter-spacing:.05em">${item.itemCode}</div><p style="color:red;font-size:9px;">Errore Barcode</p></td><td class="cell-details">${detailsHtml}</td><td class="cell-quantita">${item.totalQuantity} PZ</td><td class="cell-bancale">${refDisplayPrint}</td></tr>`;
                     }
                 });
