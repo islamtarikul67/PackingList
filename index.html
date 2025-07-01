@@ -129,7 +129,7 @@
                     <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
                     <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
                 </div>
-                <p class="text-sm text-slate-400 mt-2">Versione 2.12</p>
+                <p class="text-sm text-slate-400 mt-2">Versione 2.21</p>
             </div>
         </header>
 
@@ -179,22 +179,22 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                              <div>
                                 <label for="itemCode" class="block text-sm font-medium text-slate-600 mb-1">Codice Articolo</label>
-                                <input list="itemCodesList" id="itemCode" name="itemCode" class="form-input" required>
+                                <input list="itemCodesList" id="itemCode" name="itemCode" class="form-input" placeholder="ES. PMD1501R05.4610" required>
                                 <datalist id="itemCodesList">
                                     <!-- Options verranno inserite qui da JS -->
                                 </datalist>
                             </div>
                             <div>
                                 <label for="lotto" class="block text-sm font-medium text-slate-600 mb-1">Lotto</label>
-                                <input type="text" id="lotto" name="lotto" class="form-input" required>
+                                <input type="text" id="lotto" name="lotto" class="form-input" placeholder="Es. 250001" required>
                             </div>
                             <div id="palletNumberWrapper">
                                 <label for="palletNumber" class="block text-sm font-medium text-slate-600 mb-1">Bancale n.</label>
-                                <input type="number" id="palletNumber" name="palletNumber" class="form-input" required>
+                                <input type="number" id="palletNumber" name="palletNumber" class="form-input" placeholder="Es. 1°" required>
                             </div>
                              <div id="cassoneNumberWrapper" class="hidden">
                                 <label for="cassoneNumber" class="block text-sm font-medium text-slate-600 mb-1">N° Cassone</label>
-                                <input type="text" id="cassoneNumber" name="cassoneNumber" class="form-input">
+                                <input type="text" id="cassoneNumber" name="cassoneNumber" class="form-input" placeholder="Es. 1°">
                             </div>
                             <div>
                                 <label for="totalQuantity" class="block text-sm font-medium text-slate-600 mb-1">Quantità Totale</label>
@@ -321,6 +321,10 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
+    <footer class="text-center py-8">
+        <p class="text-sm text-slate-400 italic">© 2025 Hoque Mohammed Tarikul. Tutti i diritti riservati.</p>
+    </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- Elementi DOM ---
@@ -423,7 +427,11 @@
 
                 // Gestione campo Quantità Totale
                 totalQuantityInput.readOnly = !isManualCassone;
-                if (!isManualCassone) {
+                if (isManualCassone) {
+                    totalQuantityInput.placeholder = "Inserisci quantità";
+                    totalQuantityInput.value = ''; // Svuota il campo per mostrare il placeholder
+                } else {
+                    totalQuantityInput.placeholder = "Qtà Totale (auto)";
                     updateTotalQuantity(); // Ricalcola se non è cassone manuale
                 }
             };
@@ -531,7 +539,7 @@
                     
                     const refDisplay = item.packageType === 'Cassone' ? (item.cassoneNumber || '---') : (item.palletNumber ? `${item.palletNumber}°` : '---');
 
-                    row.innerHTML = `<td class="px-4 py-3 align-middle"><div class="font-semibold text-slate-800">${item.itemCode}</div></td><td class="px-4 py-3 align-middle text-slate-600">${detailsHtml}</td><td class="px-4 py-3 align-middle font-semibold text-slate-800">${item.totalQuantity} PZ</td><td class="px-4 py-3 align-middle text-slate-600">${refDisplay}</td><td class="px-4 py-3 align-middle text-right"><button data-index="${index}" class="delete-btn text-slate-500 hover:text-red-600 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>`;
+                    row.innerHTML = `<td class="px-4 py-3 align-middle"><div class="font-semibold text-slate-800">${item.itemCode}</div></td><td class="px-4 py-3 align-middle text-slate-600">${detailsHtml}</td><td class="px-4 py-3 align-middle font-semibold text-slate-800">${item.totalQuantity} PZ</td><td class="px-4 py-3 align-middle text-slate-600">${refDisplay}</td><td class="px-4 py-3 align-middle"><div class="flex justify-end"><button data-index="${index}" class="delete-btn text-slate-500 hover:text-red-600 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-100"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></div></td>`;
                     packingListBody.appendChild(row);
                 });
             }
