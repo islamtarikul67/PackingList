@@ -130,7 +130,7 @@
                     <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
                     <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
                 </div>
-                <p class="text-sm text-slate-400 mt-2">Versione 2.22</p>
+                <p class="text-sm text-slate-400 mt-2">Versione 2.25</p>
             </div>
         </header>
 
@@ -289,7 +289,7 @@
     <div id="resetModal" class="modal">
         <div class="modal-content">
             <h3 class="text-lg font-semibold text-slate-800 mb-2">Conferma Reset</h3>
-            <p class="text-slate-500 mb-6">Sei sicuro di voler cancellare tutti i dati della sessione corrente?</p>
+            <p class="text-slate-500 mb-6">Sei sicuro di voler cancellare i dati della sessione corrente? I codici salvati non verranno eliminati.</p>
             <div class="flex justify-end gap-3">
                  <button id="cancelReset" class="btn btn-secondary">Annulla</button>
                  <button id="confirmReset" class="btn btn-destructive">Sì, resetta</button>
@@ -318,8 +318,9 @@
             // --- Inizializzazione di Supabase ---
             const SUPABASE_URL = 'https://pjyxclvbufbdgpgjduov.supabase.co';
             const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqeXhjbHZidWZiZGdwZ2pkdW92Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTEzNzUxNjYsImV4cCI6MjA2Njk1MTE2Nn0.ZbS3ORrBWwT_Q1ELt4igrMBFvG0tW5pBeAYCRTtsCjo';
-
-            const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            
+            const { createClient } = supabase;
+            const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
             // --- Elementi DOM ---
             const addItemForm = document.getElementById('addItemForm');
@@ -404,12 +405,13 @@
 
                 packageDetailsSection.classList.toggle('hidden', isManualCassone);
                 palletNumberWrapper.classList.toggle('hidden', isManualCassone);
-                palletNumberInput.required = !isManualCassone;
                 cassoneNumberWrapper.classList.toggle('hidden', !isManualCassone);
-                cassoneNumberInput.required = isManualCassone;
-                totalQuantityInput.readOnly = !isManualCassone;
 
-                if (!isManualCassone) {
+                palletNumberInput.required = !isManualCassone;
+                cassoneNumberInput.required = isManualCassone;
+
+                totalQuantityInput.readOnly = !isManualCassone;
+                if (totalQuantityInput.readOnly) {
                     updateTotalQuantity();
                 }
             };
@@ -427,15 +429,21 @@
             };
 
             const loadData = async () => {
-                const { data: customCodes, error: codesError } = await supabase.from('custom_item_codes').select('code, brand');
+                // *** CORREZIONE ***
+                // Carica prima i codici di base, così funzionano anche offline.
+                niceItemCodes = [...baseNiceCodes];
+                cameItemCodes = [...baseCameCodes];
+
+                // Poi tenta di aggiungere i codici custom dal database.
+                const { data: customCodes, error: codesError } = await supabaseClient.from('custom_item_codes').select('code, brand');
                 if (codesError) {
                     console.error('Errore caricamento codici da Supabase:', codesError);
                     showToast('Errore di connessione al database.');
                 } else {
                     const customNice = customCodes.filter(c => c.brand === 'Nice').map(c => c.code);
                     const customCame = customCodes.filter(c => c.brand === 'Came').map(c => c.code);
-                    niceItemCodes = [...new Set([...baseNiceCodes, ...customNice])];
-                    cameItemCodes = [...new Set([...baseCameCodes, ...customCame])];
+                    niceItemCodes = [...new Set([...niceItemCodes, ...customNice])];
+                    cameItemCodes = [...new Set([...cameItemCodes, ...customCame])];
                 }
                 
                 packingList = [];
@@ -550,7 +558,7 @@
                 const brand = newCodeBrandSelect.value;
                 if (!newCode) return;
 
-                const { error } = await supabase.from('custom_item_codes').insert([{ code: newCode, brand: brand }]);
+                const { error } = await supabaseClient.from('custom_item_codes').insert([{ code: newCode, brand: brand }]);
                 if (error) {
                     console.error("Errore salvataggio codice:", error.message);
                     showToast(`Errore: il codice "${newCode}" potrebbe già esistere.`);
@@ -591,23 +599,15 @@
                 packingList.push(newItem);
                 renderTable(); 
                 
-                // CORREZIONE: Salva lo stato del form prima di resettarlo
-                const currentBrandFilter = brandFilter;
-                const currentPackageType = packageTypeSelect.value;
-                
-                addItemForm.reset(); 
-                
-                brandFilter = currentBrandFilter;
-                const radioToRestore = document.querySelector(`input[name="brandFilter"][value="${brandFilter}"]`);
-                if(radioToRestore) radioToRestore.checked = true;
-                
-                if (brandFilter === 'Manuale') {
-                    packageTypeSelect.value = currentPackageType;
-                }
+                document.getElementById('itemCode').value = '';
+                document.getElementById('lotto').value = '';
+                document.getElementById('palletNumber').value = '';
+                document.getElementById('cassoneNumber').value = '';
+                document.getElementById('totalQuantity').value = '';
                 
                 boxDetailsContainer.innerHTML = '';
                 createBoxRow();
-                updateFormVisibility();
+                updateTotalQuantity();
                 
                 document.getElementById('itemCode').focus();
                 showToast('Articolo aggiunto con successo!');
