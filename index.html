@@ -129,7 +129,7 @@
                     <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
                     <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
                 </div>
-                <p class="text-sm text-slate-400 mt-2">Versione 2.21</p>
+                <p class="text-sm text-slate-400 mt-2">Versione 2.22</p>
             </div>
         </header>
 
@@ -251,25 +251,6 @@
                     </div>
                 </div>
 
-                 <!-- Card Gestione Codici -->
-                <div class="card p-6">
-                    <h2 class="text-xl font-semibold text-slate-700 mb-4">Gestione Codici Articolo</h2>
-                    <form id="addCodeForm" class="flex flex-col gap-3">
-                        <div>
-                            <label for="newCodeInput" class="block text-sm font-medium text-slate-600 mb-1">Nuovo Codice</label>
-                            <input type="text" id="newCodeInput" class="form-input" placeholder="Es. PMD1234..." required>
-                        </div>
-                        <div>
-                             <label for="newCodeBrandSelect" class="block text-sm font-medium text-slate-600 mb-1">Aggiungi a</label>
-                             <select id="newCodeBrandSelect" class="form-input">
-                                 <option value="Nice">Nice</option>
-                                 <option value="Came">Came</option>
-                             </select>
-                        </div>
-                        <button type="submit" class="btn btn-secondary w-full mt-2">Aggiungi Codice</button>
-                    </form>
-                </div>
-
             </div>
         </div>
 
@@ -363,7 +344,6 @@
             const logoNiceCheckbox = document.getElementById('logoNiceCheckbox');
             const logoCameCheckbox = document.getElementById('logoCameCheckbox');
             const brandFilterContainer = document.getElementById('brandFilterContainer');
-            const addCodeForm = document.getElementById('addCodeForm');
 
             // --- Stato Applicazione ---
             let packingList = [];
@@ -376,14 +356,10 @@
             const DDT_INFO_KEY = 'packingListApp_ddtInfo_v6';
             const LOGO_SETTINGS_KEY = 'packingListApp_logoSettings_v6';
             const BRAND_FILTER_KEY = 'packingListApp_brandFilter_v6';
-            const CUSTOM_NICE_CODES_KEY = 'packingListApp_customNiceCodes_v6';
-            const CUSTOM_CAME_CODES_KEY = 'packingListApp_customCameCodes_v6';
 
             // --- Dati Iniziali ---
-            const baseNiceCodes = [ 'PMD1329R02.4610', 'PMD1739.4610', 'PMD2318R01.4610', 'PMD1655R04.4610', 'PD0973A0002', 'PD2187A0002', 'PD2386A0000', 'PMD1951R01.4610', 'PMD1633R01.4610', 'PD1064A2002', 'PD1912A0000', 'PMD2088R02.4610', 'PD0579A0003', 'PD1751A0000', 'PD2381A0001', 'PMD1095R02.4610', 'PMD1260R01.4610', 'PMD1501R05.4610', 'PMD1950R01.4610', 'PMD2319.4610-REV06', 'PD1353A0001', 'PMD1650R01.4610', 'PD2188A0000' ];
-            const baseCameCodes = [ '119BQ743-R05', '119DN792-REV01', '119DN372', '119BN807', '119DN368-R01', 'M001884AA0-R05', 'M002630AB0-REV02', 'M002192AA0-REV02' ];
-            let niceItemCodes = [];
-            let cameItemCodes = [];
+            const niceItemCodes = [ 'PMD1329R02.4610', 'PMD1739.4610', 'PMD2318R01.4610', 'PMD1655R04.4610', 'PD0973A0002', 'PD2187A0002', 'PD2386A0000', 'PMD1951R01.4610', 'PMD1633R01.4610', 'PD1064A2002', 'PD1912A0000', 'PMD2088R02.4610', 'PD0579A0003', 'PD1751A0000', 'PD2381A0001', 'PMD1095R02.4610', 'PMD1260R01.4610', 'PMD1501R05.4610', 'PMD1950R01.4610', 'PMD2319.4610-REV06', 'PD1353A0001', 'PMD1650R01.4610', 'PD2188A0000' ];
+            const cameItemCodes = [ '119BQ743-R05', '119DN792-REV01', '119DN372', '119BN807', '119DN368-R01', 'M001884AA0-R05', 'M002630AB0-REV02', 'M002192AA0-REV02' ];
 
             // --- Funzioni ---
 
@@ -431,7 +407,7 @@
                     totalQuantityInput.placeholder = "Inserisci quantità";
                     totalQuantityInput.value = ''; // Svuota il campo per mostrare il placeholder
                 } else {
-                    totalQuantityInput.placeholder = "Qtà Totale (auto)";
+                    totalQuantityInput.placeholder = "";
                     updateTotalQuantity(); // Ricalcola se non è cassone manuale
                 }
             };
@@ -452,11 +428,6 @@
                 localStorage.setItem(DDT_INFO_KEY, JSON.stringify({ ddtNumber: ddtNumberInput.value, docDate: docDateInput.value }));
                 localStorage.setItem(LOGO_SETTINGS_KEY, JSON.stringify(logoSettings));
                 localStorage.setItem(BRAND_FILTER_KEY, brandFilter);
-                
-                const customNice = niceItemCodes.filter(c => !baseNiceCodes.includes(c));
-                const customCame = cameItemCodes.filter(c => !baseCameCodes.includes(c));
-                localStorage.setItem(CUSTOM_NICE_CODES_KEY, JSON.stringify(customNice));
-                localStorage.setItem(CUSTOM_CAME_CODES_KEY, JSON.stringify(customCame));
             };
 
             const loadData = () => {
@@ -465,11 +436,6 @@
                 const savedLogoSettings = JSON.parse(localStorage.getItem(LOGO_SETTINGS_KEY));
                 brandFilter = localStorage.getItem(BRAND_FILTER_KEY) || 'Nice';
                 
-                const customNice = JSON.parse(localStorage.getItem(CUSTOM_NICE_CODES_KEY)) || [];
-                const customCame = JSON.parse(localStorage.getItem(CUSTOM_CAME_CODES_KEY)) || [];
-                niceItemCodes = [...new Set([...baseNiceCodes, ...customNice])];
-                cameItemCodes = [...new Set([...baseCameCodes, ...customCame])];
-
                 if (ddtInfo) { 
                     ddtNumberInput.value = ddtInfo.ddtNumber; 
                     docDateInput.value = ddtInfo.docDate; 
@@ -573,23 +539,6 @@
             docDateInput.addEventListener('input', saveData);
             logoNiceCheckbox.addEventListener('change', (e) => { logoSettings.showNice = e.target.checked; saveData(); });
             logoCameCheckbox.addEventListener('change', (e) => { logoSettings.showCame = e.target.checked; saveData(); });
-
-            addCodeForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const newCodeInput = document.getElementById('newCodeInput');
-                const newCodeBrandSelect = document.getElementById('newCodeBrandSelect');
-                const newCode = newCodeInput.value.trim();
-                const brand = newCodeBrandSelect.value;
-                if (!newCode) return;
-
-                if (brand === 'Nice' && !niceItemCodes.includes(newCode)) { niceItemCodes.push(newCode); } 
-                else if (brand === 'Came' && !cameItemCodes.includes(newCode)) { cameItemCodes.push(newCode); }
-                
-                saveData();
-                populateItemCodes(brandFilter);
-                newCodeInput.value = '';
-                showToast(`Codice "${newCode}" aggiunto alla lista ${brand}.`);
-            });
 
             addItemForm.addEventListener('submit', (e) => {
                 e.preventDefault();
