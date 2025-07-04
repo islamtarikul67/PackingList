@@ -129,7 +129,7 @@
                     <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
                     <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
                 </div>
-                <p class="text-sm text-slate-400 mt-2">Versione 2.22</p>
+                <p class="text-sm text-slate-400 mt-2">Versione 2.25</p>
             </div>
         </header>
 
@@ -348,15 +348,14 @@
             // --- Stato Applicazione ---
             let packingList = [];
             let logoSettings = { showNice: true, showCame: false };
-            let brandFilter = 'Nice';
+            let brandFilter = 'Nice'; // Default a Nice
             let itemIndexToDelete = -1;
             
             // --- Costanti Local Storage ---
             const PACKING_LIST_KEY = 'packingListApp_list_v6';
             const DDT_INFO_KEY = 'packingListApp_ddtInfo_v6';
             const LOGO_SETTINGS_KEY = 'packingListApp_logoSettings_v6';
-            const BRAND_FILTER_KEY = 'packingListApp_brandFilter_v6';
-
+            
             // --- Dati Iniziali ---
             const niceItemCodes = [ 'PMD1329R02.4610', 'PMD1739.4610', 'PMD2318R01.4610', 'PMD1655R04.4610', 'PD0973A0002', 'PD2187A0002', 'PD2386A0000', 'PMD1951R01.4610', 'PMD1633R01.4610', 'PD1064A2002', 'PD1912A0000', 'PMD2088R02.4610', 'PD0579A0003', 'PD1751A0000', 'PD2381A0001', 'PMD1095R02.4610', 'PMD1260R01.4610', 'PMD1501R05.4610', 'PMD1950R01.4610', 'PMD2319.4610-REV06', 'PD1353A0001', 'PMD1650R01.4610', 'PD2188A0000' ];
             const cameItemCodes = [ '119BQ743-R05', '119DN792-REV01', '119DN372', '119BN807', '119DN368-R01', 'M001884AA0-R05', 'M002630AB0-REV02', 'M002192AA0-REV02' ];
@@ -427,14 +426,13 @@
                 localStorage.setItem(PACKING_LIST_KEY, JSON.stringify(packingList));
                 localStorage.setItem(DDT_INFO_KEY, JSON.stringify({ ddtNumber: ddtNumberInput.value, docDate: docDateInput.value }));
                 localStorage.setItem(LOGO_SETTINGS_KEY, JSON.stringify(logoSettings));
-                localStorage.setItem(BRAND_FILTER_KEY, brandFilter);
             };
 
             const loadData = () => {
                 packingList = JSON.parse(localStorage.getItem(PACKING_LIST_KEY)) || [];
                 const ddtInfo = JSON.parse(localStorage.getItem(DDT_INFO_KEY));
                 const savedLogoSettings = JSON.parse(localStorage.getItem(LOGO_SETTINGS_KEY));
-                brandFilter = localStorage.getItem(BRAND_FILTER_KEY) || 'Nice';
+                brandFilter = 'Nice'; // Sempre Nice al caricamento
                 
                 if (ddtInfo) { 
                     ddtNumberInput.value = ddtInfo.ddtNumber; 
@@ -444,7 +442,11 @@
                     docDateInput.valueAsDate = new Date(); 
                 }
                 
-                if(savedLogoSettings) logoSettings = savedLogoSettings;
+                if(savedLogoSettings) {
+                    logoSettings = savedLogoSettings;
+                } else {
+                    logoSettings = { showNice: true, showCame: false };
+                }
                 
                 logoNiceCheckbox.checked = logoSettings.showNice;
                 logoCameCheckbox.checked = logoSettings.showCame;
@@ -611,8 +613,12 @@
             cancelResetBtn.addEventListener('click', () => closeModal(resetModal));
             confirmResetBtn.addEventListener('click', () => {
                 localStorage.clear();
-                packingList = []; ddtNumberInput.value = ''; docDateInput.value = '';
-                loadData(); showToast('Applicazione resettata.'); closeModal(resetModal);
+                packingList = []; 
+                ddtNumberInput.value = ''; 
+                docDateInput.value = '';
+                loadData(); 
+                showToast('Applicazione resettata.'); 
+                closeModal(resetModal);
             });
             window.addEventListener('click', (e) => { if (e.target === resetModal) closeModal(resetModal); if (e.target === deleteModal) closeModal(deleteModal); });
 
