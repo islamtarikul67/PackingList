@@ -129,7 +129,7 @@
                     <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Packing List Generator</h1>
                     <p class="text-slate-500 mt-1">Crea e gestisci le tue packing list in modo semplice e veloce.</p>
                 </div>
-                <p class="text-sm text-slate-400 mt-2">Versione 2.25</p>
+                <p class="text-sm text-slate-400 mt-2">Versione 2.26</p>
             </div>
         </header>
 
@@ -351,11 +351,6 @@
             let brandFilter = 'Nice'; // Default a Nice
             let itemIndexToDelete = -1;
             
-            // --- Costanti Local Storage ---
-            const PACKING_LIST_KEY = 'packingListApp_list_v6';
-            const DDT_INFO_KEY = 'packingListApp_ddtInfo_v6';
-            const LOGO_SETTINGS_KEY = 'packingListApp_logoSettings_v6';
-            
             // --- Dati Iniziali ---
             const niceItemCodes = [ 'PMD1329R02.4610', 'PMD1739.4610', 'PMD2318R01.4610', 'PMD1655R04.4610', 'PD0973A0002', 'PD2187A0002', 'PD2386A0000', 'PMD1951R01.4610', 'PMD1633R01.4610', 'PD1064A2002', 'PD1912A0000', 'PMD2088R02.4610', 'PD0579A0003', 'PD1751A0000', 'PD2381A0001', 'PMD1095R02.4610', 'PMD1260R01.4610', 'PMD1501R05.4610', 'PMD1950R01.4610', 'PMD2319.4610-REV06', 'PD1353A0001', 'PMD1650R01.4610', 'PD2188A0000' ];
             const cameItemCodes = [ '119BQ743-R05', '119DN792-REV01', '119DN372', '119BN807', '119DN368-R01', 'M001884AA0-R05', 'M002630AB0-REV02', 'M002192AA0-REV02' ];
@@ -422,31 +417,13 @@
                 setTimeout(() => { toast.classList.add('hide'); setTimeout(() => { toast.classList.remove('show', 'hide'); }, 300); }, 2000);
             };
             
-            const saveData = () => {
-                localStorage.setItem(PACKING_LIST_KEY, JSON.stringify(packingList));
-                localStorage.setItem(DDT_INFO_KEY, JSON.stringify({ ddtNumber: ddtNumberInput.value, docDate: docDateInput.value }));
-                localStorage.setItem(LOGO_SETTINGS_KEY, JSON.stringify(logoSettings));
-            };
-
-            const loadData = () => {
-                packingList = JSON.parse(localStorage.getItem(PACKING_LIST_KEY)) || [];
-                const ddtInfo = JSON.parse(localStorage.getItem(DDT_INFO_KEY));
-                const savedLogoSettings = JSON.parse(localStorage.getItem(LOGO_SETTINGS_KEY));
-                brandFilter = 'Nice'; // Sempre Nice al caricamento
+            const initializeApp = () => {
+                packingList = [];
+                brandFilter = 'Nice'; // Sempre Nice all'avvio
+                logoSettings = { showNice: true, showCame: false };
                 
-                if (ddtInfo) { 
-                    ddtNumberInput.value = ddtInfo.ddtNumber; 
-                    docDateInput.value = ddtInfo.docDate; 
-                } else { 
-                    ddtNumberInput.value = 'BV1-'; // Imposta il valore predefinito
-                    docDateInput.valueAsDate = new Date(); 
-                }
-                
-                if(savedLogoSettings) {
-                    logoSettings = savedLogoSettings;
-                } else {
-                    logoSettings = { showNice: true, showCame: false };
-                }
+                ddtNumberInput.value = 'BV1-';
+                docDateInput.valueAsDate = new Date(); 
                 
                 logoNiceCheckbox.checked = logoSettings.showNice;
                 logoCameCheckbox.checked = logoSettings.showCame;
@@ -524,7 +501,6 @@
                     else { logoNiceCheckbox.checked = false; logoCameCheckbox.checked = false; }
                     logoSettings.showNice = logoNiceCheckbox.checked;
                     logoSettings.showCame = logoCameCheckbox.checked;
-                    saveData();
                 }
             });
             
@@ -537,10 +513,6 @@
             });
 
             boxDetailsContainer.addEventListener('input', updateTotalQuantity);
-            ddtNumberInput.addEventListener('input', saveData);
-            docDateInput.addEventListener('input', saveData);
-            logoNiceCheckbox.addEventListener('change', (e) => { logoSettings.showNice = e.target.checked; saveData(); });
-            logoCameCheckbox.addEventListener('change', (e) => { logoSettings.showCame = e.target.checked; saveData(); });
 
             addItemForm.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -579,7 +551,6 @@
                 }
 
                 packingList.push(newItem);
-                saveData(); 
                 renderTable(); 
                 
                 const currentBrandFilter = brandFilter;
@@ -605,18 +576,19 @@
             const closeModal = (modal) => modal.style.display = 'none';
             cancelDeleteBtn.addEventListener('click', () => closeModal(deleteModal));
             confirmDeleteBtn.addEventListener('click', () => {
-                if (itemIndexToDelete > -1) { packingList.splice(itemIndexToDelete, 1); saveData(); renderTable(); showToast('Articolo eliminato.'); itemIndexToDelete = -1; }
+                if (itemIndexToDelete > -1) {
+                    packingList.splice(itemIndexToDelete, 1);
+                    renderTable();
+                    showToast('Articolo eliminato.');
+                    itemIndexToDelete = -1;
+                }
                 closeModal(deleteModal);
             });
             
             resetButton.addEventListener('click', () => resetModal.style.display = 'block');
             cancelResetBtn.addEventListener('click', () => closeModal(resetModal));
             confirmResetBtn.addEventListener('click', () => {
-                localStorage.clear();
-                packingList = []; 
-                ddtNumberInput.value = ''; 
-                docDateInput.value = '';
-                loadData(); 
+                initializeApp(); 
                 showToast('Applicazione resettata.'); 
                 closeModal(resetModal);
             });
@@ -685,8 +657,8 @@
             });
             
             // --- Init ---
+            initializeApp();
             createBoxRow();
-            loadData();
         });
     </script>
 </body>
